@@ -1,57 +1,29 @@
 import { useState, useEffect } from 'react';
+import useAuth from '../authentication/useAuth';
 
 export default function Login() {
-    const [isLoading, setIsLoading] = useState(true);
+    const {signUp, isLoading, error, user} = useAuth();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [dob, setDob] = useState('');
-
-    const [validationErrors, setValidationErrors] = useState('');
-
-    const signUp = async(e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        try {
-            const formData = new URLSearchParams();
-            formData.append('email', email);
-            formData.append('password', password);
-            formData.append('confirmPassword', confirmPassword);
-            formData.append('firstName', firstName);
-            formData.append('lastName', lastName);
-            formData.append('phoneNumber', phoneNumber);
-            formData.append('dob', dob);
-            const response = await fetch('http://127.0.0.1:3000/student/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: formData.toString(),
-            });
-            const res = await response.json();
-            
-            if (response.ok) {
-                // redirect and login the user
-            } else {
-                setValidationErrors(res.error.error_detail);
-            }
 
-        } catch(err) {
-            setValidationErrors('Could not process your requrest at the moment. Please try again later.');  
-        }
+        const formData = new FormData(e.target);
+        const loginCreds = new URLSearchParams();
+
+        for (const [key, value] of formData.entries()) {
+            loginCreds.append(key, value);
+          }
+          
+        signUp(loginCreds.toString());
 
     }
 
   return (
-    // The default screen will be showing the user in sign in mode.
     <div className="w-screen h-screen flex flex-col justify-center items-center">
         <div> Logo </div>
         <h1>Sign Sign Up to FriendZone</h1>
-        <form className="w-[40%] flex flex-col" onSubmit={signUpMode ? signUp : signIn}>
-            {validationErrors && <div className="text-red-500">{validationErrors}</div>}
+        <form className="w-[40%] flex flex-col" onSubmit={handleSubmit}>
+            {error && <div className="text-red-500">{error}</div>}
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" className="border-2 border-blue-800" onChange={e=>setEmail(e.currentTarget.value)}/>
             <label htmlFor="password">Password</label>
@@ -70,7 +42,7 @@ export default function Login() {
             
             <label htmlFor='dob'>Date of Birth</label>
             <input type="date" name="dob" id="dob" className="border-2 border-blue-800" onChange={e=>setDob(e.currentTarget.value)}/>
-            <button type="submit" className='w-1/2 bg-slate-500 self-center'>Sign {signUpMode ? 'Up' : 'In'}</button>
+            <button type="submit" className='w-1/2 bg-slate-500 self-center'>Sign Up</button>
         </form>
     </div>
   )

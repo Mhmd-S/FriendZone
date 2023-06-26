@@ -1,6 +1,4 @@
-// AuthContext.js
-
-import React, { createContext, useState, useMemo, useHistory, useLocation, useEffect, useContext } from 'react';
+import { createContext, useState, useMemo, useEffect, useContext } from 'react';
 
 import * as userAPI from '../api/usersAPI';
 
@@ -12,43 +10,32 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
 
-  // To keep track of the user current location
-  const history = useHistory(); 
-  const location = useLocation();
-
-  // Whenever the user changes the location, we want to clear the error
-  useEffect(()=>{
-    if (error) setError(null);
-  },[location.pathName])
-
   // Check if user already has a session, if so, set the user state and finaly set the initail loading to false.
   useEffect(()=>{
-    userAPI.getCurrentUser()
+    userAPI.checkIfAuthenticated()
       .then(user => setUser(user))
       .catch(err => {}) // Do nothing because there is no user session
       .finally(()=>setInitialLoading(false))
     },[])
 
-  const login = (email, password) => {
+  const login = (loginCreds) => {
     setIsLoading(true);
 
-    userAPI.login(email, password)
+    userAPI.login(loginCreds)
       .then((user)=> {
         setUser(user);
-        history.push('/home');
       })
       .catch(err => setError(err))
       .finally(()=> setIsLoading(false));
   }
 
   // Send the API the user's information and set the user state to the response. If error is found we set the error state.
-  const signUp = (email, password, confirmPassword, firstName, lastName, phoneNumber, dob) => {
+  const signUp = (signUpCreds) => {
     setIsLoading(true);
 
-    userAPI.signUp(email, password, confirmPassword, firstName, lastName, phoneNumber, dob)
+    userAPI.signUp(signUpCreds)
       .then((user) => {
         setUser(user);
-        history.push('/home');
       })
       .catch(err=>setError(err))
       .finally(()=>setIsLoading(false));
@@ -58,7 +45,6 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     userAPI.logout().then(()=>setUser(null));
   };
-
 
   // We are using useMemo here to avoid re-rendering the context provider when the user state changes.
   // We are going only to re-render the context provider when the user, loading or error state changes.

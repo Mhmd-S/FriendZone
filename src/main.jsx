@@ -18,13 +18,17 @@ const router = createBrowserRouter([
   {
     path:'/login',
     element: <Login />
+  },
+  {
+    path:'/',
+    element: <Home />
   }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router}>
+      <RouterProvider router={router} />
     </AuthProvider>    
   </React.StrictMode>
 )

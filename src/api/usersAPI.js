@@ -9,25 +9,31 @@ export async function signUp (email, password, confirmPassword, firstName, lastN
                 body: {email, password, confirmPassword, firstName, lastName, phoneNumber, dob},
         });
         const res = await response.json();
-        return res;
+        if (res.status !== 'success') {
+            throw new Error(res.data);
+        }
+        return res.data;
     } catch(err) {
         console.log('Could not process your requrest at the moment. Please try again later.');  
     }
 }
 
-export async function login(email,password) {
+export async function login(loginCreds) {
     try {
         const response = await fetch('http://127.0.0.1:3000/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
               },
-              body:{email, password},
+              body: loginCreds,
         });
         
         const res = await response.json();
-    
-        return res; // Get the user info
+        
+        if (res.status !== 'success') {
+            throw new Error(res.data);
+        }
+        return res.data;
     }catch(err) {
         console.log('Could not process your requrest at the moment. Please try again later.');
     }
@@ -41,7 +47,27 @@ export async function logout() {
         
         const res = await response.json();
     
-        return res; // Get the user info
+        if (res.status !== 'success') {
+            throw new Error(res.data);
+        }
+        return res.data;
+    }catch(err) {
+        console.log('Could not process your requrest at the moment. Please try again later.');
+    }
+}
+
+export async function checkIfAuthenticated() {
+    try {
+        const response = await fetch('http://127.0.0.1:3000/user/auth', {
+            method: 'GET',
+        });
+        
+        const res = await response.json();
+    
+        if (res.status !== 'success') {
+            throw new Error(res.data);
+        }
+        return res.data;
     }catch(err) {
         console.log('Could not process your requrest at the moment. Please try again later.');
     }
