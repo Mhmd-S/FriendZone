@@ -1,7 +1,7 @@
 import useAuth from '../authentication/useAuth';
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
     
@@ -27,7 +27,7 @@ export default function Login() {
             loginCreds.append(key, value);
           }
           
-        login(loginCreds.toString());
+        login(loginCreds);
     }
 
   return (
@@ -45,7 +45,7 @@ export default function Login() {
         </form>
         <button>Join as visitor</button>
         <button>Reset Password</button>
-        <div>No Account? <button className='underline'>Sign Up!</button></div>
+        <div>No Account? <Link to={'/signup'} >Sign Up!</Link></div>
     </div>
   )
 }

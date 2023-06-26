@@ -12,8 +12,9 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user already has a session, if so, set the user state and finaly set the initail loading to false.
   useEffect(()=>{
+    console.log('effect')
     userAPI.checkIfAuthenticated()
-      .then(user => setUser(user))
+      .then(user => setUser(user.user))
       .catch(err => {}) // Do nothing because there is no user session
       .finally(()=>setInitialLoading(false))
     },[])
@@ -33,9 +34,12 @@ export const AuthProvider = ({ children }) => {
   const signUp = (signUpCreds) => {
     setIsLoading(true);
 
+    const {email, password} = signUpCreds;
+
     userAPI.signUp(signUpCreds)
-      .then((user) => {
-        setUser(user);
+      .then(() => {
+        login({email, password})
+          .then(user => setUser(user))
       })
       .catch(err=>setError(err))
       .finally(()=>setIsLoading(false));

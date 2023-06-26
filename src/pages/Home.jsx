@@ -1,12 +1,29 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import useAuth from '../authentication/useAuth';
 
 export default function Landing() {
-  
+    const navigate = useNavigate();
+
+    const { user, error, isLoading} = useAuth();
+
     const [page, setPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(true);
     const [posts, setPosts] = useState([]);
 
     const [errors,setErrors] = useState(null);
+
+    useEffect(()=>{
+        // If the user is already logged in, redirect them to the home page.
+        if(!isLoading && !user) {
+            navigate('/login');
+            console.log('User is not logged in');
+        }
+    },[isLoading, user])
+
+    useEffect(()=>{
+        fetchPosts();
+    }, []);
 
     const fetchPosts = async() => {
         try {
@@ -29,9 +46,7 @@ export default function Landing() {
         setIsLoading(false);
     }
 
-    useEffect(()=>{
-        fetchPosts();
-    }, []);
+    
 
     return (
     <div>

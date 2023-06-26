@@ -1,12 +1,12 @@
 
-export async function signUp (email, password, confirmPassword, firstName, lastName, phoneNumber, dob) {
+export async function signUp (signUpCreds) {
     try {
         const response = await fetch('http://127.0.0.1:3000/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: {email, password, confirmPassword, firstName, lastName, phoneNumber, dob},
+                body: signUpCreds.toString(),
         });
         const res = await response.json();
         if (res.status !== 'success') {
@@ -25,7 +25,7 @@ export async function login(loginCreds) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
               },
-              body: loginCreds,
+              body: loginCreds.toString(),
         });
         
         const res = await response.json();

@@ -9,6 +9,8 @@ import useAuth, {AuthProvider} from './authentication/useAuth';
 
 import Login from './pages/Login.jsx'; 
 import Landing from './pages/Landing.jsx';
+import Home from './pages/Home.jsx';
+import Signup from './pages/Signup.jsx';
 
 const router = createBrowserRouter([
   {
@@ -20,7 +22,11 @@ const router = createBrowserRouter([
     element: <Login />
   },
   {
-    path:'/',
+    path:'/signup',
+    element: <Signup />
+  },
+  {
+    path:'/home',
     element: <Home />
   }
 ]);
