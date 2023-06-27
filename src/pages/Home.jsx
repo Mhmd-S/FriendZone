@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useAuth from '../authentication/useAuth';
+import * as postAPI from '../api/postAPI';
 
-export default function Landing() {
+import PostForm from '../components/PostForm';
+
+const Landing = () => {
     const navigate = useNavigate();
 
-    const { user, error, isLoading, logout} = useAuth();
+    const { user, isLoading, logout} = useAuth();
 
     const [page, setPage] = useState(1);
     const [posts, setPosts] = useState([]);
@@ -26,30 +29,23 @@ export default function Landing() {
     }, []);
 
     const fetchPosts = async() => {
-        try {
+        const res = await postAPI.getPosts(page);
 
-            const response = await fetch(`http://127.0.0.1:3000/posts?page=${page}`, {
-                method: 'GET',
-            });
-            const res = await response.json();
-            if (response.ok) {
-                if (!res.data && !res.data.length > 0) {
-                    setErrors('No posts found.');
-                } else {
-                    setPosts(posts.concat(res.data));
-                    setPage(page+1);
-                }
-            } 
-        } catch(err) {
-            setErrors('Could not process your requrest at the moment. Please try again later.');
+        if (res.status === 'success') {
+            setPosts(res.data);
+            setPage(page+1);
+            return;
         }
+
+        setErrors("Could not fetch posts");
     }
 
-    
-
     return (
-    <div>
-        <button onClick={logout}>Logout</button>
-    </div>
-  );
-};
+        <div>
+            <button onClick={logout}>Logout</button>
+            <PostForm />
+        </div>
+    );
+}
+
+export default Landing;
