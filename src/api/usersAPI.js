@@ -9,10 +9,7 @@ export async function signUp (signUpCreds) {
                 body: signUpCreds.toString(),
         });
         const res = await response.json();
-        if (res.status !== 'success') {
-            throw new Error(res.data);
-        }
-        return res.data;
+        return res;
     } catch(err) {
         console.log('Could not process your requrest at the moment. Please try again later.');  
     }
@@ -29,11 +26,7 @@ export async function login(loginCreds) {
         });
         
         const res = await response.json();
-        
-        if (res.status !== 'success') {
-            throw new Error(res.data);
-        }
-        return res.data;
+        return res;
     }catch(err) {
         console.log('Could not process your requrest at the moment. Please try again later.');
     }

@@ -33,7 +33,7 @@ export default function Signup() {
         <div> Logo </div>
         <h1>Sign Sign Up to FriendZone</h1>
         <form className="w-[40%] flex flex-col" onSubmit={handleSubmit}>
-            {error && <div className="text-red-500">{error}</div>}
+            {error && <div className="text-red-500">{Array.isArray(error) ? error.map(error => {return error.msg}) : error}</div>}
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" className="border-2 border-blue-800"/>
 

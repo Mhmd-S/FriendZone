@@ -31,19 +31,43 @@ export const AuthProvider = ({ children }) => {
   }
 
   // Send the API the user's information and set the user state to the response. If error is found we set the error state.
-  const signUp = (signUpCreds) => {
+  const signUp = async(signUpCreds) => {
     setIsLoading(true);
-
-    const {email, password} = signUpCreds;
-
+    
     userAPI.signUp(signUpCreds)
-      .then(() => {
-        login({email, password})
-          .then(user => setUser(user))
+      .then((res)=> {
+        if (res.status === 'fail') {
+          setError(res.data);
+          setIsLoading(false);
+          return;
+        }
+        const loginCreds = new URLSearchParams();
+        loginCreds.append('email', signUpCreds.get('email'));
+        loginCreds.append('password', signUpCreds.get('password'));
+        login(loginCreds)
+          .then((user)=>setUser(user))
+          .catch((err) => {console.log(err); setError(err)});
       })
-      .catch(err=>setError(err))
-      .finally(()=>setIsLoading(false));
-  }
+      .catch(err => setError('Could not proccess your request. Try again later.'))
+      .finally(()=> setIsLoading(false));
+    // try {
+    //   const responseSignUp = await userAPI.signUp(signUpCreds);
+    //   if (responseSignUp.fail) {
+    //     setError(responseSignUp.data);
+    //   }
+    //   const loginCreds = new URLSearchParams();
+    //   loginCreds.append('email', signUpCreds.get('email'));
+    //   loginCreds.append('password', signUpCreds.get('password'));
+    //   const user = await login(loginCreds);
+    //   setUser(user);
+    // } catch (err) {
+    //   console.log(err);
+    //   setError(err);
+    // } finally {
+    //   setIsLoading(false);
+    // }
+    
+  };
 
   // Make a request to the API to log the user out and then set the user state to null.
   const logout = () => {

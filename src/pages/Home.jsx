@@ -6,7 +6,7 @@ import useAuth from '../authentication/useAuth';
 export default function Landing() {
     const navigate = useNavigate();
 
-    const { user, error, isLoading} = useAuth();
+    const { user, error, isLoading, logout} = useAuth();
 
     const [page, setPage] = useState(1);
     const [posts, setPosts] = useState([]);
@@ -43,14 +43,13 @@ export default function Landing() {
         } catch(err) {
             setErrors('Could not process your requrest at the moment. Please try again later.');
         }
-        setIsLoading(false);
     }
 
     
 
     return (
     <div>
-
+        <button onClick={logout}>Logout</button>
     </div>
   );
 };
