@@ -23,8 +23,13 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
 
     userAPI.login(loginCreds)
-      .then((user)=> {
-        setUser(user);
+      .then((res)=> {
+        if (res.status === 'fail') {
+          setError(res.data);
+          setIsLoading(false);
+          return;
+        }
+        setUser(res.data);
       })
       .catch(err => setError(err))
       .finally(()=> setIsLoading(false));
@@ -41,32 +46,14 @@ export const AuthProvider = ({ children }) => {
           setIsLoading(false);
           return;
         }
+        
         const loginCreds = new URLSearchParams();
         loginCreds.append('email', signUpCreds.get('email'));
         loginCreds.append('password', signUpCreds.get('password'));
+
         login(loginCreds)
-          .then((user)=>setUser(user))
-          .catch((err) => {console.log(err); setError(err)});
       })
-      .catch(err => setError('Could not proccess your request. Try again later.'))
-      .finally(()=> setIsLoading(false));
-    // try {
-    //   const responseSignUp = await userAPI.signUp(signUpCreds);
-    //   if (responseSignUp.fail) {
-    //     setError(responseSignUp.data);
-    //   }
-    //   const loginCreds = new URLSearchParams();
-    //   loginCreds.append('email', signUpCreds.get('email'));
-    //   loginCreds.append('password', signUpCreds.get('password'));
-    //   const user = await login(loginCreds);
-    //   setUser(user);
-    // } catch (err) {
-    //   console.log(err);
-    //   setError(err);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-    
+      .catch(err => setError('Could not proccess your request. Try again later.'));    
   };
 
   // Make a request to the API to log the user out and then set the user state to null.

@@ -36,11 +36,16 @@ export default function Login() {
         <div> Logo </div>
         <h1>Sign In to FriendZone</h1>
         <form className="w-[40%] flex flex-col" onSubmit={signIn}>
-            {error && <div className="text-red-500">{error}</div>}
+            {error?.auth && <div className="text-red-500">{error.auth}</div>}
+            
             <label htmlFor="email">Email</label>
             <input type="email" name="email" id="email" className="border-2 border-blue-800" />
+            {error?.email && <div className='py-px text-sm text-red-500'>{error.email}</div>}
+
             <label htmlFor="password">Password</label>
             <input type="password" name="password" id="password" className="border-2 border-blue-800" />
+            {error?.password && <div className='py-px text-sm text-red-500'>{error.password}</div>}
+            
             <button type="submit" className='w-1/2 bg-slate-500 self-center'>Sign In</button>
         </form>
         <button>Join as visitor</button>
