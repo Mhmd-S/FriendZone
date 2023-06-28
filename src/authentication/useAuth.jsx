@@ -12,9 +12,8 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user already has a session, if so, set the user state and finaly set the initail loading to false.
   useEffect(()=>{
-    console.log('effect')
     userAPI.checkIfAuthenticated()
-      .then(user => setUser(user.user))
+      .then(data => setUser(data.user))
       .catch(err => {}) // Do nothing because there is no user session
       .finally(()=>setInitialLoading(false))
     },[])
@@ -53,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
         login(loginCreds)
       })
-      .catch(err => setError('Could not proccess your request. Try again later.'));    
+      .catch(err => setError(err));    
   };
 
   // Make a request to the API to log the user out and then set the user state to null.

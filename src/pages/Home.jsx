@@ -5,6 +5,7 @@ import useAuth from '../authentication/useAuth';
 import * as postAPI from '../api/postAPI';
 
 import PostForm from '../components/PostForm';
+import SearchBar from '../components/SearchBar';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -42,7 +43,11 @@ const Landing = () => {
 
     return (
         <div>
-            <button onClick={logout}>Logout</button>
+            <div>
+                <SearchBar/>
+                <button onClick={logout}>Logout</button>
+            </div>
+            
             <PostForm />
         </div>
     );

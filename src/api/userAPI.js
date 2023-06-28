@@ -61,7 +61,7 @@ export async function checkIfAuthenticated() {
         const response = await fetch('http://127.0.0.1:3000/user/auth', {
             method: 'GET',
             credentials: 'include',
-            mode: 'no-cors'
+            mode: 'cors',
         });
         
         const res = await response.json();
@@ -72,5 +72,25 @@ export async function checkIfAuthenticated() {
         return res.data;
     }catch(err) {
         console.log('Could not process your requrest at the moment. Please try again later.');
+    }
+}
+
+export async function searchUsers (value) {
+    try{
+        const url = (
+            'http://127.0.0.1:3000/user/search?' +
+            new URLSearchParams({ keyword : value }).toString()
+        );
+
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+            mode: 'cors',
+        })
+        const res = await response.json()
+        return res;
+        console.log(res)
+    }catch(err) {
+        console.log('Could not proccess your request at the moment. Please try again later')
     }
 }

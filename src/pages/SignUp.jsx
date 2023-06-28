@@ -24,15 +24,15 @@ export default function Signup() {
         }
     },[isLoading, user])
 
-    const onSubmit = async(data) => {
-        const signUpCreds = new URLSearchParams();
-
-        for (const key of data) {
-            signUpCreds.set(data[key]);
-          }
-          
-        signUp(signUpCreds);
-    }
+    const onSubmit = async (data) => {
+      const signUpCreds = new URLSearchParams();
+    
+      for (const key in data) {
+        signUpCreds.set(key, data[key]);
+      }
+    
+      await signUp(signUpCreds);
+    };
 
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center">
@@ -53,7 +53,8 @@ export default function Signup() {
         {...register('email', { required: 'Email must be a valid email address', pattern: { value: /^\S+@\S+$/i, message: 'Email must be a valid email address'}, })}
         className="border-2 border-blue-800"
       />
-      {errors.email && <div className='py-px text-sm text-red-500'>{errors.email?.message}</div>}
+      {errors?.email && <div className='py-px text-sm text-red-500'>{errors.email.message}</div>} {/* Client Validation */}
+      {error?.email && <div className='py-px text-sm text-red-500'>{errors.email}</div>} {/* Server Validation */}
 
       <label htmlFor="username">Username</label>
       <input
@@ -67,7 +68,8 @@ export default function Signup() {
         })}
         className="border-2 border-blue-800"
       />
-      {errors.username && <div className='py-px text-sm text-red-500'>{errors.username?.message}</div>}
+     {errors?.username && <div className='py-px text-sm text-red-500'>{errors.username.message}</div>}
+      {error?.username && <div className='py-px text-sm text-red-500'>{errors.username}</div>}
 
       <label htmlFor="password">Password</label>
       <input
@@ -81,7 +83,8 @@ export default function Signup() {
         })}
         className="border-2 border-blue-800"
       />
-      {errors.password && <div className='py-px text-sm text-red-500'>{errors.password?.message}</div>}
+      {errors?.password && <div className='py-px text-sm text-red-500'>{errors.password.message}</div>}
+      {error?.password && <div className='py-px text-sm text-red-500'>{errors.password}</div>}
 
       <label htmlFor="confirmPassword">Confirm Password</label>
       <input
@@ -89,11 +92,12 @@ export default function Signup() {
         {...register('confirmPassword', {
           required: 'Confirm Password is required',
           validate: (value) =>
-            value === watchPassword.current || 'Passwords do not match',
+            value !== watchPassword.current || 'Passwords do not match',
         })}
         className="border-2 border-blue-800"
       />
-      {errors.confirmPassword && <div className='py-px text-sm text-red-500'>{errors.confirmPassword?.message}</div>}
+      {errors?.confirmPassword && <div className='py-px text-sm text-red-500'>{errors.confirmPassword.message}</div>}
+      {error?.confirmPassword && <div className='py-px text-sm text-red-500'>{errors.confirmPassword}</div>}
 
       <label htmlFor="firstName">First Name</label>
       <input
@@ -107,7 +111,8 @@ export default function Signup() {
         })}
         className="border-2 border-blue-800"
       />
-      {errors.firstName && <div className='py-px text-sm text-red-500'>{errors.firstName?.message}</div>}
+      {errors?.firstName && <div className='py-px text-sm text-red-500'>{errors.firstName.message}</div>}
+      {error?.firstName && <div className='py-px text-sm text-red-500'>{errors.firstName}</div>}
 
       <label htmlFor="lastName">Last Name</label>
       <input
@@ -121,7 +126,8 @@ export default function Signup() {
         })}
         className="border-2 border-blue-800"
       />
-      {errors.lastName && <div className='py-px text-sm text-red-500'>{errors.lastName?.message}</div>}
+      {errors?.lastName && <div className='py-px text-sm text-red-500'>{errors.lastName?.message}</div>}
+      {error?.lastName && <div className='py-px text-sm text-red-500'>{errors.lastName}</div>}
 
        <label htmlFor="dob">Date of Birth</label>
         <input
@@ -139,7 +145,8 @@ export default function Signup() {
           })}
           className="border-2 border-blue-800"
         />
-        {errors.dob && <div className='py-px text-sm text-red-500'>{errors.dob?.message}</div>}
+        {errors?.dob && <div className='py-px text-sm text-red-500'>{errors.dob.message}</div>}
+        {error?.dob && <div className='py-px text-sm text-red-500'>{errors.dob}</div>}
 
         <button type="submit" className="w-1/2 bg-slate-500 self-center">
           Sign Up
