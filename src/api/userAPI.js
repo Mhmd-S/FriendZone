@@ -75,11 +75,11 @@ export async function checkIfAuthenticated() {
     }
 }
 
-export async function searchUsers (value) {
+export async function searchUsers (value, limit) {
     try{
         const url = (
             'http://127.0.0.1:3000/user/search?' +
-            new URLSearchParams({ keyword : value }).toString()
+            new URLSearchParams({ keyword : value, limit : 5 }).toString()
         );
 
         const response = await fetch(url, {

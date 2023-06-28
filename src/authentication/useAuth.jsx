@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
     userAPI.login(loginCreds)
       .then((res)=> {
-        if (res.status === 'fail') {
+        if (res.status !== 'success') {
           setError(res.data);
           setIsLoading(false);
           return;
@@ -40,19 +40,14 @@ export const AuthProvider = ({ children }) => {
     
     userAPI.signUp(signUpCreds)
       .then((res)=> {
-        if (res.status === 'fail') {
+        if (res.status !== 'success') {
           setError(res.data);
           setIsLoading(false);
           return;
         }
-        
-        const loginCreds = new URLSearchParams();
-        loginCreds.append('email', signUpCreds.get('email'));
-        loginCreds.append('password', signUpCreds.get('password'));
-
-        login(loginCreds)
       })
-      .catch(err => setError(err));    
+      .catch(err => setError(err))
+      .finally(()=> setIsLoading(false));    
   };
 
   // Make a request to the API to log the user out and then set the user state to null.

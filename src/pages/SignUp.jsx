@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../authentication/useAuth';
 
@@ -32,6 +32,10 @@ export default function Signup() {
       }
     
       await signUp(signUpCreds);
+
+      if (!error) {
+        navigate('/login');
+      }
     };
 
   return (
@@ -39,13 +43,6 @@ export default function Signup() {
     <div>Logo</div>
     <h1>Sign Up to FriendZone</h1>
     <form className="w-[40%] flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      {error && (
-        <div className="text-red-500">
-          {Array.isArray(error) ? error.map((error, index) => (
-            <span key={index}>{error.message}</span>
-          )) : error.message}
-        </div>
-      )}
 
       <label htmlFor="email">Email</label>
       <input
@@ -54,7 +51,7 @@ export default function Signup() {
         className="border-2 border-blue-800"
       />
       {errors?.email && <div className='py-px text-sm text-red-500'>{errors.email.message}</div>} {/* Client Validation */}
-      {error?.email && <div className='py-px text-sm text-red-500'>{errors.email}</div>} {/* Server Validation */}
+      {error?.email && <div className='py-px text-sm text-red-500'>{error.email}</div>} {/* Server Validation */}
 
       <label htmlFor="username">Username</label>
       <input
@@ -69,7 +66,7 @@ export default function Signup() {
         className="border-2 border-blue-800"
       />
      {errors?.username && <div className='py-px text-sm text-red-500'>{errors.username.message}</div>}
-      {error?.username && <div className='py-px text-sm text-red-500'>{errors.username}</div>}
+      {error?.username && <div className='py-px text-sm text-red-500'>{error.username}</div>}
 
       <label htmlFor="password">Password</label>
       <input
@@ -84,7 +81,7 @@ export default function Signup() {
         className="border-2 border-blue-800"
       />
       {errors?.password && <div className='py-px text-sm text-red-500'>{errors.password.message}</div>}
-      {error?.password && <div className='py-px text-sm text-red-500'>{errors.password}</div>}
+      {error?.password && <div className='py-px text-sm text-red-500'>{error.password}</div>}
 
       <label htmlFor="confirmPassword">Confirm Password</label>
       <input
@@ -97,7 +94,7 @@ export default function Signup() {
         className="border-2 border-blue-800"
       />
       {errors?.confirmPassword && <div className='py-px text-sm text-red-500'>{errors.confirmPassword.message}</div>}
-      {error?.confirmPassword && <div className='py-px text-sm text-red-500'>{errors.confirmPassword}</div>}
+      {error?.confirmPassword && <div className='py-px text-sm text-red-500'>{error.confirmPassword}</div>}
 
       <label htmlFor="firstName">First Name</label>
       <input
@@ -112,7 +109,7 @@ export default function Signup() {
         className="border-2 border-blue-800"
       />
       {errors?.firstName && <div className='py-px text-sm text-red-500'>{errors.firstName.message}</div>}
-      {error?.firstName && <div className='py-px text-sm text-red-500'>{errors.firstName}</div>}
+      {error?.firstName && <div className='py-px text-sm text-red-500'>{error.firstName}</div>}
 
       <label htmlFor="lastName">Last Name</label>
       <input
@@ -127,7 +124,7 @@ export default function Signup() {
         className="border-2 border-blue-800"
       />
       {errors?.lastName && <div className='py-px text-sm text-red-500'>{errors.lastName?.message}</div>}
-      {error?.lastName && <div className='py-px text-sm text-red-500'>{errors.lastName}</div>}
+      {error?.lastName && <div className='py-px text-sm text-red-500'>{error.lastName}</div>}
 
        <label htmlFor="dob">Date of Birth</label>
         <input
@@ -146,7 +143,7 @@ export default function Signup() {
           className="border-2 border-blue-800"
         />
         {errors?.dob && <div className='py-px text-sm text-red-500'>{errors.dob.message}</div>}
-        {error?.dob && <div className='py-px text-sm text-red-500'>{errors.dob}</div>}
+        {error?.dob && <div className='py-px text-sm text-red-500'>{error.dob}</div>}
 
         <button type="submit" className="w-1/2 bg-slate-500 self-center">
           Sign Up

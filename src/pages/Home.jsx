@@ -10,7 +10,7 @@ import SearchBar from '../components/SearchBar';
 const Landing = () => {
     const navigate = useNavigate();
 
-    const { user, isLoading, logout} = useAuth();
+    const { user, isLoading, logout, error} = useAuth();
 
     const [page, setPage] = useState(1);
     const [posts, setPosts] = useState([]);
@@ -25,9 +25,9 @@ const Landing = () => {
         }
     },[isLoading, user])
 
-    useEffect(()=>{
-        fetchPosts();
-    }, []);
+    // useEffect(()=>{
+    //     fetchPosts();
+    // }, []);
 
     const fetchPosts = async() => {
         const res = await postAPI.getPosts(page);
