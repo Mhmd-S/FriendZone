@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../authentication/useAuth';
 import * as postAPI from '../api/postAPI';
 
-import PostForm from '../components/PostForm';
-import SearchBar from '../components/SearchBar';
+import PostForm from './PostForm';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -17,13 +16,13 @@ const Landing = () => {
 
     const [errors,setErrors] = useState(null);
 
-    useEffect(()=>{
-        // If the user is already logged in, redirect them to the home page.
-        if(!isLoading && !user) {
-            navigate('/login');
-            console.log('User is not logged in');
-        }
-    },[isLoading, user])
+    // useEffect(()=>{
+    //     // If the user is already logged in, redirect them to the home page.
+    //     if(!isLoading && !user) {
+    //         navigate('/login');
+    //         console.log('User is not logged in');
+    //     }
+    // },[isLoading, user])
 
     // useEffect(()=>{
     //     fetchPosts();
@@ -43,12 +42,10 @@ const Landing = () => {
 
     return (
         <div>
+            <h3>Home </h3>
             <div>
-                <SearchBar/>
-                <button onClick={logout}>Logout</button>
+                {user && <PostForm/>}
             </div>
-            
-            <PostForm />
         </div>
     );
 }

@@ -1,33 +1,65 @@
-import './styles/globals.css'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom"
-import useAuth, {AuthProvider} from './authentication/useAuth';
+import './styles/globals.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider, Route, useParams } from "react-router-dom";
+import useAuth, { AuthProvider } from './authentication/useAuth';
 
-import Login from './pages/Login.jsx'; 
-import Landing from './pages/Landing.jsx';
-import Home from './pages/Home.jsx';
-import Signup from './pages/Signup.jsx';
+// Pages
+import Root from './pages/Root';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import ErrorPage from './pages/error-page';
+
+// Components
+import Search from './components/Search';
+import Explore from './components/Explore';
+import Home from './components/Home';
+import UserProfile from './components/UserProfile';
+import Profile from './components/Profile';
+
+// Loaders
+import { loader as userLoader } from './components/UserProfile';
 
 const router = createBrowserRouter([
   {
-    path:'/',
-    element: <Landing />
+    path: '/',
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: 'home',
+        element: <Home />,
+      },
+      {
+        path: 'search',
+        element: <Search />
+      },
+      {
+        path: 'explore',
+        element: <Explore />
+      },
+      {
+        path: 'profile/:username', // Add the URL parameter ":username"
+        element: <UserProfile />,
+        loader:  userLoader,
+      },
+      {
+        path: 'profile',
+        element: <Profile />
+      }
+    ]
   },
   {
-    path:'/login',
+    path: '/login',
     element: <Login />
   },
   {
-    path:'/signup',
+    path: '/signup',
     element: <Signup />
-  },
-  {
-    path:'/home',
-    element: <Home />
   }
 ]);
 
@@ -35,6 +67,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
-    </AuthProvider>    
+    </AuthProvider>
   </React.StrictMode>
-)
+);
