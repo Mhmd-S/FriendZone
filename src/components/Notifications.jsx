@@ -36,17 +36,17 @@ const Notifications = () => {
     const handleAcceptFriendRequest = async (friendId) => {
         const res = await userAPI.acceptFriendRequest(friendId);
         if (res.status === 'success') {
-            let newFriendRequests = friendRequests.splice;
+            let newFriendRequests = friendRequests.slice();
             newFriendRequests.filter((request) => request._id !== friendId);
             setFriendRequests(newFriendRequests);
             console.log('Friend added!');
         }
     }
 
-    const handleDeclineFriendrequest = async (friendId) => {
+    const handleDeclineFriendrequest = async (friendId) => {        
         const res = await userAPI.declineFriendRequest(friendId);
         if (res.status === 'success') {
-            let newFriendRequests = friendRequests.splice;
+            let newFriendRequests = friendRequests.slice();
             newFriendRequests.filter((request) => request._id !== friendId);
             setFriendRequests(newFriendRequests);
             console.log('Friend request declined!');

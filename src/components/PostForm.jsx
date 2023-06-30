@@ -12,7 +12,7 @@ function PostForm() {
 
     const onSubmit = async(data) => {
       setLoading(true);
-      
+
       const formData = new URLSearchParams();
 
       formData.set('content', data.content);
@@ -34,8 +34,7 @@ function PostForm() {
         <label htmlFor="content">Post Text</label>
         <input type="text" placeholder='Share your thoughts!' {...register('content', { required: 'Post text is required', minLength: { value: 1, message: 'Post text must be at least 1 character long' }, maxLength: { value: 1000, message: 'Post text must be less than 1000 characters long' } })} />
         {errors?.content && <div className='py-px text-sm text-red-500'>{errors.content.message}</div>}
-
-        <button>Share</button>
+        <button type='submit'>Share</button>
     </form>
   )
 }

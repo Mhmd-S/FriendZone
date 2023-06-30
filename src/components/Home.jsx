@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../authentication/useAuth';
 import * as postAPI from '../api/postAPI';
 
+import Post from './Post';
 import PostForm from './PostForm';
+import { set } from 'react-hook-form';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -16,35 +18,31 @@ const Landing = () => {
 
     const [errors,setErrors] = useState(null);
 
-    // useEffect(()=>{
-    //     // If the user is already logged in, redirect them to the home page.
-    //     if(!isLoading && !user) {
-    //         navigate('/login');
-    //         console.log('User is not logged in');
-    //     }
-    // },[isLoading, user])
-
-    // useEffect(()=>{
-    //     fetchPosts();
-    // }, []);
+    useEffect(()=>{
+        fetchPosts();
+    }, []);
 
     const fetchPosts = async() => {
         const res = await postAPI.getPosts(page);
-
         if (res.status === 'success') {
-            setPosts(res.data);
+            const postEle = res.data.map((post) => {
+                return (<Post key={post._id} postInfo={post} />);
+            });
+            setPosts(postEle);
             setPage(page+1);
             return;
         }
-
         setErrors("Could not fetch posts");
     }
 
     return (
         <div>
-            <h3>Home </h3>
+            <h3>Home</h3>
             <div>
                 {user && <PostForm/>}
+            </div>
+            <div>
+                {posts ? posts : <div>No posts</div>}
             </div>
         </div>
     );

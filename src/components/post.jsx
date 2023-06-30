@@ -1,14 +1,13 @@
 import React from 'react'
 
-export default function Post({ postObj }) {
-  console.log(postObj)
+export default function Post({ postInfo }) {
   return (
     <div>
         <div>
-            <div>{postObj.author}</div>
-            <div>{postObj.createdAt}</div>
+            <div>{postInfo.author.username}</div>
+            <div>{postInfo.createdAt}</div>
         </div>
-        <div>{postObj.content}</div>
+        <div>{postInfo.content}</div>
         <div>Images</div>
         <div>
             <button>Like</button>

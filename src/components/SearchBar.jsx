@@ -13,6 +13,7 @@ const SearchBar = () => {
   };
 
   const fetchSearchResults = async (value) => {
+
     if (value === '') {
       setSearchResult([]);
       return;
@@ -24,7 +25,7 @@ const SearchBar = () => {
       const users = res.data.map((user) => {
         return (
           <div key={user.username}>
-            <Link to={`/profile/${user.username}`}>
+            <Link to={`/profile/${user.username}`} onClick={()=>setSearchInput('')} >
               {user.username}
             </Link>
           </div>
@@ -37,6 +38,9 @@ const SearchBar = () => {
         setSearchResult(users);
       }
     }
+
+    
+
   };
 
   return (

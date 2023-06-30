@@ -2,7 +2,7 @@
 export const getPosts = async(pageNum) => {
     try {
         const url = (
-            'http://127.0.0.1/post/posts?' +
+            'http://127.0.0.1:3000/post/posts?' +
             new URLSearchParams({ page : pageNum }).toString()
           );
           
@@ -13,6 +13,7 @@ export const getPosts = async(pageNum) => {
         });
         
         const res = await response.json();
+        console.log(res);
         return res;
     }catch(err) {
         console.log('Could not process your requrest at the moment. Please try again later.');

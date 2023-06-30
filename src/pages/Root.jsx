@@ -4,9 +4,9 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import useAuth from '../authentication/useAuth';
 
 import SearchBar from '../components/SearchBar';
-import UserProfile from '../components/UserProfile';
 import Notifications from '../components/Notifications';
 
+// Display the posts
 const Root = () => {
   const location = useLocation();
   const { login, logout, user, isLoading, error } = useAuth();
