@@ -54,8 +54,8 @@ const Notifications = () => {
     }
 
   return (
-    <div>
-          {user ? (
+    <div className=''>
+          {user && 
             <> {/* If logged in display this div */}
                 <div> {/* User profile */}
                   <p>img</p>
@@ -74,13 +74,7 @@ const Notifications = () => {
                   <Link>Friend 3</Link>
                 </ul>
             </>
-          ) : ( 
-            <div> {/* If not logged in display this div */}
-              <Link to='login'>Login</Link>
-              <p>OR</p>
-              <Link to='signup'>Signup</Link>
-            </div>
-          )}
+          }
         </div>
   )
 }
