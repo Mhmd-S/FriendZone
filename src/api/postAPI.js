@@ -84,20 +84,3 @@ export const unlikePost = async(postId) => {
     }
 }
 
-export const addComment = async(commentData, postId) => {
-    try {
-        const response = await fetch(`http://127.0.0.1:3000/post/comment/${postId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: commentData.toString(),
-            credentials: 'include',
-            mode: 'cors',
-        });
-        const res = await response.json();
-        return res;
-    } catch(err) {
-        console.log('Could not process your requrest at the moment. Please try again later.');  
-    }
-}
