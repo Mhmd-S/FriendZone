@@ -41,7 +41,7 @@ const Landing = () => {
     // Show post in home
 
     return (
-        <div className='h-full w-full overflow-y-scroll bg-[#282c37] scrollbar:bg-blue-500'>
+        <div className='h-full w-full overflow-y-scroll bg-[#282c37] scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
             {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/>
              :  
              <>

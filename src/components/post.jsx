@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PostSingle  from './PostSingle';
 import useAuth from '../authentication/useAuth';
 import * as postAPI from '../api/postAPI';
+import { Link } from 'react-router-dom';
 
 export default function Post({ postInfo, setShowPost }) {
 
@@ -67,15 +68,17 @@ export default function Post({ postInfo, setShowPost }) {
   }
 
   return (
-    <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col' onClick={()=>setShowPost(postInfo)} >
-        <div className='w-full flex justify-between items-center'>
-          <div>
+    <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col cursor-pointer' >
+        <div className='w-full flex justify-between items-center' onClick={()=>setShowPost(postInfo)}>
+          <Link  to={`/profile/${postInfo.author.username}`}>
             {/* <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> */}
             <div className='font-bold'>{postInfo.author.username}</div>
-          </div>
+          </Link>
             <div>{timeStamp(postInfo.createdAt)}</div>
         </div>
-        <div className='text-sm'>{postInfo.content}</div>
+        <div className='text-sm' onClick={()=>setShowPost(postInfo)}>
+          {postInfo.content}
+        </div>
         <div className='w-1/3 flex justify-between place-self-end'>
             <button className={'hover:bg-[#99acc633] p-1 rounded-md flex ' + (userLiked && 'bg-[#99acc6]') } onClick={userLiked ? handleUnlike  : handleLike } >
                 <span className='pr-2'>{postInfo.likes.length}</span>
