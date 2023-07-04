@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import useAuth from '../authentication/useAuth';
-import * as postAPI from '../api/postAPI';
+import * as commentAPI from '../api/commentAPI';
+import DefaultProfilePicure from './DefaultProfilePicure';
+import { Link } from 'react-router-dom';
 
 const Comment = ({ commentInfo, setShowcomment }) => {
 
@@ -41,7 +43,7 @@ const Comment = ({ commentInfo, setShowcomment }) => {
 
   const handleLike = () => {
     if (!userLiked && user) {
-      commentAPI.likecomment(commentInfo._id)
+      commentAPI.addLike(commentInfo._id)
         .then(result => {
           if (result.status === 'success') {
             setUserLiked(true);
@@ -54,7 +56,7 @@ const Comment = ({ commentInfo, setShowcomment }) => {
 
   const handleUnlike = () => {
     if (userLiked && user) {
-      commentAPI.unlikecomment(commentInfo._id)
+      commentAPI.deleteLike(commentInfo._id)
         .then(result => {
           if (result.status === 'success') {
             commentInfo.likes.splice(commentInfo.likes.indexOf(user._id), 1);
@@ -68,10 +70,10 @@ const Comment = ({ commentInfo, setShowcomment }) => {
   return (
     <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col' onClick={()=>setShowcomment(commentInfo)} >
         <div className='w-full flex justify-between items-center'>
-          <div>
-            {/* <img src={commentInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> */}
-            <div className='font-bold'>{commentInfo.author.username}</div>
-          </div>
+          <Link className='flex items-center' to={`/profile/${commentInfo.author.username}`}>
+            {commentInfo.author.profilePicture ? <img src={commentInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicure/>}
+            <div className='font-bold pl-3'>{commentInfo.author.username}</div>
+          </Link>
             <div>{timeStamp(commentInfo.createdAt)}</div>
         </div>
         <div className='text-sm p-4'>{commentInfo.content}</div>

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import * as postAPI from '../api/postAPI';
+import * as commentAPI from '../api/commentAPI';
 import useAuth from '../authentication/useAuth';
 import { useForm } from 'react-hook-form';
 import Comment from './Comment'
 import { Link } from 'react-router-dom';
+import DefaultProfilePicure from './DefaultProfilePicure';
 
 const PostSingle = ({ postInfo, setShowPost }) => {
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
@@ -17,9 +19,6 @@ const PostSingle = ({ postInfo, setShowPost }) => {
     const [ loading, setLoading ] = useState(false);
 
     useEffect(()=>{
-        
-
-        
         if (user && postInfo.likes.includes(user._id)) {
             setUserLiked(true);
           }
@@ -27,7 +26,7 @@ const PostSingle = ({ postInfo, setShowPost }) => {
     }, [])
 
     const fetchComments = async(pageOpt=page) => {
-        const res = await postAPI.getCommentsFromPost(pageOpt, postInfo._id);
+        const res = await commentAPI.getComments(pageOpt, postInfo._id);
         
         if(res.status === 'fail') {
             setError(res.data);
@@ -43,7 +42,6 @@ const PostSingle = ({ postInfo, setShowPost }) => {
             setCommentsEle([...commentsEle,...newCommentsEle]);
             setPage(pageOpt+1);
         }
-    
     }
 
     const handleLike = () => {
@@ -79,7 +77,7 @@ const PostSingle = ({ postInfo, setShowPost }) => {
   
         formData.set('content', data.content);
             
-          postAPI.addComment(formData, postInfo._id)
+          commentAPI.addComment(formData, postInfo._id)
             .then(res => {
               if (res.status === 'fail') {
                 setFormError(res.data.content);
@@ -116,13 +114,14 @@ const PostSingle = ({ postInfo, setShowPost }) => {
             </button>
         
             <div className='w-full bg-[#313543] p-4 border-b-[#464b5f]'>
+                <div className='w-full flex justify-between items-center'>
+                  <Link className='flex items-center' to={`/profile/${postInfo.author.username}`}>
+                    {postInfo.author.profilePicture ? <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicure/>}
+                    <div className='font-bold pl-3'>{postInfo.author.username}</div>
+                  </Link>
+                  <div>{dateFormat(postInfo.createdAt)}</div>
+                </div>
                 
-                <Link className='w-full flex justify-between items-center'  to={`/profile/${postInfo.author.username}`}>
-                    {/* <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> */}
-                    <div className='font-bold'>{postInfo.author.username}</div>
-                    <div>{dateFormat(postInfo.createdAt)}</div>
-                </Link>
-
                 <div className='text-sm p-2'>
                     {postInfo.content}
                 </div>

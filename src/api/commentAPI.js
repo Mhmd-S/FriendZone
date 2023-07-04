@@ -1,5 +1,5 @@
 
-
+// Test these! and modify the postAPI.js
 export const getComment = async(commentId) => {
     try {
         const url = `http://127.0.0.1:3000/comment/${commentId}`;
@@ -20,7 +20,7 @@ export const getComment = async(commentId) => {
 export const getComments = async(pageNum, postId) => {
     try {
         const url = (
-            'http://127.0.0.1/comment/' +
+            'http://127.0.0.1:3000/comment/post?' +
             new URLSearchParams({ id: postId, page : pageNum }).toString()
         )
 

@@ -38,24 +38,6 @@ export const createPost = async(postData) => {
     }
 }
 
-export const getCommentsFromPost = async(pageNum, postId) => {
-    try{
-        const url = (
-            'http://127.0.0.1:3000/post/comments?' +
-            new URLSearchParams({ page : pageNum, postId: postId }).toString()
-          );
-        const response = await fetch(url, {
-            method: 'GET',
-            credentials: 'include',
-            mode: 'cors',
-        });
-        const res = await response.json();
-        return res;
-    } catch(err) {
-        console.log(err);
-    }
-}
-
 export const likePost = async(postId) => {
     try {
         const response = await fetch(`http://127.0.0.1:3000/post/like/${postId}`, {
@@ -72,8 +54,8 @@ export const likePost = async(postId) => {
 
 export const unlikePost = async(postId) => {
     try {
-        const response = await fetch(`http://127.0.0.1:3000/post/unLike/${postId}`, {
-            method: 'PUT',
+        const response = await fetch(`http://127.0.0.1:3000/post/unlike/${postId}`, {
+            method: 'DELETE',
             credentials: 'include',
             mode: 'cors',
         });
