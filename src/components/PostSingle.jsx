@@ -5,7 +5,7 @@ import useAuth from '../authentication/useAuth';
 import { useForm } from 'react-hook-form';
 import Comment from './Comment'
 import { Link } from 'react-router-dom';
-import DefaultProfilePicure from './DefaultProfilePicure';
+import DefaultProfilePicture from './DefaultProfilePicture';
 
 const PostSingle = ({ postInfo, setShowPost }) => {
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
@@ -116,7 +116,7 @@ const PostSingle = ({ postInfo, setShowPost }) => {
             <div className='w-full bg-[#313543] p-4 border-b-[#464b5f]'>
                 <div className='w-full flex justify-between items-center'>
                   <Link className='flex items-center' to={`/profile/${postInfo.author.username}`}>
-                    {postInfo.author.profilePicture ? <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicure/>}
+                    {postInfo.author.profilePicture ? <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
                     <div className='font-bold pl-3'>{postInfo.author.username}</div>
                   </Link>
                   <div>{dateFormat(postInfo.createdAt)}</div>

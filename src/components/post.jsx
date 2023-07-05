@@ -3,7 +3,7 @@ import PostSingle  from './PostSingle';
 import useAuth from '../authentication/useAuth';
 import * as postAPI from '../api/postAPI';
 import { Link } from 'react-router-dom';
-import DefaultProfilePicure from './DefaultProfilePicure';
+import DefaultProfilePicture from './DefaultProfilePicture';
 
 export default function Post({ postInfo, setShowPost }) {
 
@@ -72,7 +72,7 @@ export default function Post({ postInfo, setShowPost }) {
     <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col cursor-pointer' >
         <div className='w-full flex justify-between items-center pb-4' onClick={()=>setShowPost(postInfo)}>
             <Link className='flex items-center' to={`/profile/${postInfo.author.username}`}>
-              {postInfo.author.profilePicture ? <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicure/>}
+              {postInfo.author.profilePicture ? <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
               <div className='font-bold pl-3'>{postInfo.author.username}</div>
             </Link>
             <div className='text-[#99acc633]'>{timeStamp(postInfo.createdAt)}</div>

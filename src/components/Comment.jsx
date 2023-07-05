@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useAuth from '../authentication/useAuth';
 import * as commentAPI from '../api/commentAPI';
-import DefaultProfilePicure from './DefaultProfilePicure';
+import DefaultProfilePicture from './DefaultProfilePicture';
 import { Link } from 'react-router-dom';
 
 const Comment = ({ commentInfo, setShowcomment }) => {
@@ -71,7 +71,7 @@ const Comment = ({ commentInfo, setShowcomment }) => {
     <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col' onClick={()=>setShowcomment(commentInfo)} >
         <div className='w-full flex justify-between items-center'>
           <Link className='flex items-center' to={`/profile/${commentInfo.author.username}`}>
-            {commentInfo.author.profilePicture ? <img src={commentInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicure/>}
+            {commentInfo.author.profilePicture ? <img src={commentInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
             <div className='font-bold pl-3'>{commentInfo.author.username}</div>
           </Link>
             <div>{timeStamp(commentInfo.createdAt)}</div>

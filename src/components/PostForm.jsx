@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom';
 import { createPost } from '../api/postAPI';
 import useAuth from '../authentication/useAuth';
-import DefaultProfilePicure from './DefaultProfilePicure';
+import DefaultProfilePicture from './DefaultProfilePicture';
 
 import Spinner from './Spinner';
 
@@ -45,7 +45,7 @@ function PostForm({ fetchPosts }) {
           
           <div className='flex'>
             <Link className='flex items-center' to={`/profile/${user.username}`}>
-              {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicure/>}
+              {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
             </Link>
 
             <label htmlFor="content" className='invisible'>Post</label>
