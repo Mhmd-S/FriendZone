@@ -1,19 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import * as userAPI from '../api/userAPI';
 
 const Search = () => {
 
   const [searchInput, setSearchInput] = useState('')
-  const [searchResult, setSearchResults] = useState([])
+  const [searchResult, setSearchResult] = useState([])
   const [category, setCategory] = useState(0); // 0 = users, 1 = posts
 
   const fetchSearchResults = async (value) => {
+    console.log(value)
     const res = await userAPI.searchUsers(value, 8);
 
     if (res.status === 'success') {
       const users = res.data.map((user) => {
         return (
           <div key={user.username}>
-            <Link onClick={()=>setSearchInput('')} >
+            <Link onClick={()=>setSearchInput('')} to={`/profile/${user.username}`}>
               {user.username}
             </Link>
           </div>
@@ -40,8 +43,11 @@ const Search = () => {
       </h3>
 
       <div className='w-full flex bg-[#313543] p-4 items-center justify-evenly'>
-        <input className='w-[80%] p-2 outline-0 overflow-x-hidden rounded-md' type="text" placeholder="Search" />
-        <button className='w-[15%] p-2 bg-[#787ad9] rounded-md text-white hover:bg-[#595aff]'>Search</button>
+        <input className='w-[80%] p-2 outline-0 overflow-x-hidden rounded-md' 
+                type="text" 
+                placeholder="Search" 
+                onChange={e=>setSearchInput(e.target.value)}/>
+        <button className='w-[15%] p-2 bg-[#787ad9] rounded-md text-white hover:bg-[#595aff]' onClick={()=>fetchSearchResults(searchInput)}>Search</button>
       </div>
 
       <ul className='w-full flex bg-[#1f232b]items-center justify-evenly text-[#8586f2] border-t-2 border-b-2 border-[#353a49] cursor-pointer font-semibold'>

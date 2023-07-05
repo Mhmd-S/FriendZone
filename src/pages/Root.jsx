@@ -5,6 +5,7 @@ import useAuth from '../authentication/useAuth';
 
 import SearchBar from '../components/SearchBar';
 import Notifications from '../components/Notifications';
+import Logo from '../components/Logo';
 
 // Display the posts
 const Root = () => {
@@ -15,9 +16,11 @@ const Root = () => {
     <div className='w-screen grid grid-cols-[20%_55%_25%] bg-[#191b22]'>
       <div className='w-full h-screen flex flex-col '> {/* Navigation bar */}
         <div className='w-full h-4/6 text-[#d9e1e8] flex flex-col'>
-          <h1 className='w-full text-center p-5'>FriendZone</h1>
+          <Link className='w-full p-5 flex justify-center items-center' to={'/home'}>
+            <Logo />
+          </Link>
           <hr className='border-t-px border-[#464b5f] w-[85%] self-center'/>
-          <ul className='w-3/4 text-lg flex flex-col items-start p-4'>
+          <ul className='w-3/4 text-md flex flex-col items-start p-4'>
             <li className='p-2'>
               <Link to='home' className='flex items-center w-full hover:text-[#595aff]' src='./icons/home.svg'>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
