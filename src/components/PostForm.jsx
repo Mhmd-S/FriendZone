@@ -37,9 +37,9 @@ function PostForm({ fetchPosts }) {
     }
 
     return (
-      <div className='w-full h-[40%] p-4 text-white border-b-[1px] border-b-[#464b5f] flex justify-center items-center'>
+      <div className='w-full h-[30%] text-white border-b-[1px] border-b-[#464b5f]'>
         {loading ? <Spinner size={10}/> : 
-        <form onSubmit={handleSubmit(onSubmit)} className='w-full h-full' >
+        <form onSubmit={handleSubmit(onSubmit)} className='w-full h-full p-4 flex flex-col justify-evenly' >
           
           {formError && <div className='py-px text-sm text-red-500'>{formError}</div>}
           
@@ -54,10 +54,9 @@ function PostForm({ fetchPosts }) {
             {errors?.content && <div className='py-px text-sm text-red-500'>{errors.content.message}</div>}
           </div>
           
-          <div className='flex items-center justify-between'>
+          <div className='flex items-center justify-between pt-2'>
             <input type='file'/>
             <button type='submit' className='bg-[#595aff] p-2 rounded-md'>Share</button>
-          
           </div>
       </form>
       }
