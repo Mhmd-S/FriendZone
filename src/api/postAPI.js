@@ -1,5 +1,5 @@
 
-export const getPosts = async(pageNum) => {
+export const getPosts = async(pageNum, explore) => {
     try {
         const url = (
             'http://127.0.0.1:3000/post/posts?' +
@@ -8,7 +8,7 @@ export const getPosts = async(pageNum) => {
           
         const response = await fetch(url, {
             method: 'GET',
-            credentials: 'include',
+            credentials: explore ?  'omit' : 'include',
             mode: 'cors',
         });
         

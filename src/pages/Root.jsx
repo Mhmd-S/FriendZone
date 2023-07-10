@@ -48,17 +48,7 @@ const Root = () => {
               </Link>
             </li>
             {user ?
-              <>
-                <li className='p-2'>
-                  <Link to='profile' className='flex items-center w-full hover:text-[#595aff]'>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                      <path fillRule="evenodd" d="M4.5 3.75a3 3 0 00-3 3v10.5a3 3 0 003 3h15a3 3 0 003-3V6.75a3 3 0 00-3-3h-15zm4.125 3a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zm-3.873 8.703a4.126 4.126 0 017.746 0 .75.75 0 01-.351.92 7.47 7.47 0 01-3.522.877 7.47 7.47 0 01-3.522-.877.75.75 0 01-.351-.92zM15 8.25a.75.75 0 000 1.5h3.75a.75.75 0 000-1.5H15zM14.25 12a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H15a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5h3.75a.75.75 0 000-1.5H15z" clipRule="evenodd" />
-                    </svg>
-                    <span className='pl-4'>Profile</span>
-                  </Link>
-                </li>
                 <li className='p-2'><button onClick={logout}>Log out</button></li>
-              </>
             : 
               <li className='w-full flex flex-col items-center mt-4 ml-[15%]'> {/* If not logged in display this div */}
                 <Link to='login' className='w-full bg-[#5053eb] p-2 text-center rounded-md hover:bg-[#3a3dd2] mb-4'>Login</Link>
@@ -73,12 +63,6 @@ const Root = () => {
       </div>
       <div className='w-full h-screen bg-[#191b22] relative'>
         {location.pathname !== '/search' && <SearchBar />}
-        {user && !user?.verified && (
-          <div>
-            <h4>Not Verified?</h4>
-            <button>Resend Verification Email</button>
-          </div>
-        )}
         <Notifications />
       </div>
     </div>
