@@ -52,8 +52,9 @@ const Landing = () => {
                     </svg>
                     <span className='text-xl text-white'>Home</span>
                 </h3>
-                {user && <PostForm fetchPosts={fetchPosts}/>}
+                
                 <div className=' flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+                    {user && <PostForm fetchPosts={fetchPosts}/>}
                     {posts ? posts : <div>No posts</div>}
                 </div>
             </>

@@ -47,21 +47,14 @@ const Root = () => {
                 <span className='pl-4'>Explore</span>
               </Link>
             </li>
-            {user ?
-                <li className='p-2'><button onClick={logout}>Log out</button></li>
-            : 
-              <li className='w-full flex flex-col items-center mt-4 ml-[15%]'> {/* If not logged in display this div */}
-                <Link to='login' className='w-full bg-[#5053eb] p-2 text-center rounded-md hover:bg-[#3a3dd2] mb-4'>Login</Link>
-                <Link to='signup' className='w-full border-2 border-[#595aff] p-2 text-center rounded-md text-[#595aff] hover:border-[#3232b3] hover:text-[#3232b3]'>Signup</Link>
-              </li>
-            }
+            {user && <li className='p-2'><button onClick={logout}>Log out</button></li>}
           </ul>
         </div>
       </div>
       <div className='w-full h-screen py-2 rounded-md'>
         <Outlet />
       </div>
-      <div className='w-full h-screen bg-[#191b22] relative'>
+      <div className='w-full h-screen bg-[#191b22] relative pt-2'>
         {location.pathname !== '/search' && <SearchBar />}
         <Notifications />
       </div>

@@ -44,18 +44,25 @@ function PostForm({ fetchPosts }) {
           {formError && <div className='py-px text-sm text-red-500'>{formError}</div>}
           
           <div className='flex'>
-            <Link className='flex items-center' to={`/profile/${user.username}`}>
+            <Link className='flex items-center self-start pt-2' to={`/profile/${user.username}`}>
               {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
             </Link>
 
             <label htmlFor="content" className='invisible'>Post</label>
 
-            <textarea className='w-[80%] bg-transparent outline-none text-xl py-4 w-full resize-none' placeholder='Share your thoughts!' {...register('content', { required: 'Post text is required', minLength: { value: 1, message: 'Post text must be at least 1 character long' }, maxLength: { value: 1000, message: 'Post text must be less than 1000 characters long' } })} />
+            <textarea className='bg-transparent outline-none text-xl py-4 w-full resize-none' placeholder='Share your thoughts!' {...register('content', { required: 'Post text is required', minLength: { value: 1, message: 'Post text must be at least 1 character long' }, maxLength: { value: 1000, message: 'Post text must be less than 1000 characters long' } })} />
             {errors?.content && <div className='py-px text-sm text-red-500'>{errors.content.message}</div>}
           </div>
           
           <div className='flex items-center justify-between pt-2'>
-            <input type='file'/>
+            <div className='p-2 h-fit w-fit relative flex justify-center items-center'>
+              <label className='h-fit w-fit'>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path fillRule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06l-3.22-3.22V16.5a.75.75 0 01-1.5 0V4.81L8.03 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zM3 15.75a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clipRule="evenodd" />
+                  </svg>
+              </label>
+              <input type='file' className='opacity-0 absolute w-full h-full'/>
+            </div>
             <button type='submit' className='bg-[#595aff] p-2 rounded-md'>Share</button>
           </div>
       </form>
