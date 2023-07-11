@@ -1,11 +1,11 @@
 
 export async function signUp (signUpCreds) {
     try {
-        const response = await fetch('http://127.0.0.1:3000/user/register', {
+        const response = await fetch('http://127.0.0.1:3000/user/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                },//add cookiiess
+                },
                 credentials: 'include',
                 mode: 'cors',
                 body: signUpCreds.toString(),

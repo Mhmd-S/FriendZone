@@ -53,7 +53,6 @@ const Root = () => {
       </div>
       <div className='w-full h-screen py-2 rounded-md'>
         <Outlet />
-      {/* Add here the comments, post and profile display. */}
       </div>
       <div className='w-full h-screen bg-[#191b22] relative pt-2'>
         {location.pathname !== '/search' && <SearchBar />}

@@ -4,23 +4,30 @@ import useAuth from '../authentication/useAuth';
 import * as userAPI from '../api/userAPI';
 import { useNavigate } from 'react-router-dom';
 import Post from '../components/Post';
+import DefaultProfilePicture from '../components/DefaultProfilePicture';
 
-const UserProfile = ({userId , setDisplayProfile}) => {
-  const navigate = useNavigate();
+export const loader = async({ params }) => {
+  const userInfo = await userAPI.getUser(params.username);
+
+  if (userInfo.status === 'fail') {
+      return { user: null };
+  }
+
+  const userProfile = userInfo.data;
+
+  return { userProfile };
+}
+
+const Profile = () => {
   const { user } = useAuth();
+  const { userProfile } = useLoaderData();  
 
-  const [userProfile, setUserProfile] = React.useState(null);
   const [friendStatus, setFriendStatus] = React.useState(0); // 0 - not friends, 1 - waiting for to decide friend, 2-wait for user, 3 - friends
 
   useEffect(()=>{
-
-    userAPI.getUserProfile(userId).then((res) => {
-      if (res.status === 'success') {
-        setUserProfile(res.data);
-      }else {
-        navigate('/404');
-      }
-    })
+    if (userProfile && user && userProfile.username === user.id) {
+      return;
+    }
     // Check if user if friend or there is a pending request between them
     if (userProfile && user) {
       
@@ -58,34 +65,45 @@ const UserProfile = ({userId , setDisplayProfile}) => {
   const displayFriendButtons = () => {
     return(
     <>
-      {(user && friendStatus === 0) && <button onClick={handleOnFriendClick}>Add as a friend</button>}
-      {(user && friendStatus === 1) && <div>Friend Request Sent!</div>}
-      {(user && friendStatus === 2) && <button onClick={handleOnFriendClick}>Accept friend request</button>}
-      {(user && friendStatus === 3) && <button onClick={handleOnFriendClick}>Remove friend</button>}
+      {(user && friendStatus === 0) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Add as a friend</button>}
+      {(user && friendStatus === 1) && <div className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'>Friend Request Sent!</div>}
+      {(user && friendStatus === 2) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Accept friend request</button>}
+      {(user && friendStatus === 3) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Remove friend</button>}
     </>)
   }
 
   return (
-    <div className='w-full h-full border-[#464b5f] border-b-[1px] text-white flex flex-col'>
+    <div className='h-full w-full bg-[#282c37] rounded-lg flex flex-col'>
       
-      <button className='w-full bg-[#282c37] p-3 flex items-center group' onClick={()=>setShowPost(null)}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-          <path fillRule="evenodd" d="M9.53 2.47a.75.75 0 010 1.06L4.81 8.25H15a6.75 6.75 0 010 13.5h-3a.75.75 0 010-1.5h3a5.25 5.25 0 100-10.5H4.81l4.72 4.72a.75.75 0 11-1.06 1.06l-6-6a.75.75 0 010-1.06l6-6a.75.75 0 011.06 0z" clipRule="evenodd" />
-        </svg>
-        <span className='ml-3 group-hover:underline decoration-[#595aff] underline-offset-4'>Back</span>
-      </button>
+      <div className='flex flex-col w-full h-[45%] border-b-[1px] border-b-[#464b5f] items-center bg-[#282c37] rounded-t-lg relative'>
+        <div className='w-full h-1/3 bg-[#373b45]'></div>
+        <div className='absolute left-4 top-10 w-fit h-fit rounded-full bg-[#595aff]'>
+          {userProfile.profilePicture ? <img src={userProfile.profilePicture} alt="Profile Picture" className='w-20 h-20 rounded-full'/> : <DefaultProfilePicture customSize={'20'}/>}
+        </div>
+        <div className='w-full h-2/3 flex'>
+          <div className='w-2/3 h-full pt-12 px-4 grid grid-cols-1'>
+            <span className='text-xl text-white pb-4'>{userProfile && userProfile.username}</span>
+            <span className='text-sm text-white'>{userProfile.bio}12345678</span>
+            <div className='flex self-end text-white text-sm pb-2'>
+              <span><span className='text-slate-400'>Friends:</span> {userProfile.friends.length}</span>
+              <span><span className='pl-3 text-slate-400'>Posts:</span> {userProfile.posts.length}</span>
+            </div>  
+          </div>
+          <div className='w-1/3 h-full flex flex-col justify-between items-center py-4'>
+            {(userProfile && user && userProfile.id !== user.id) ? displayFriendButtons() : <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'>Edit Profile</button>}
+          </div>
+        </div>
+      </div>
 
-      <div className='w-full bg-[#313543] p-4 border-b-[#464b5f]'>
-        {(userProfile && user && userProfile.username !== user.id) && displayFriendButtons()}
-        { userProfile && userProfile.posts.map((post) => { 
-          console.log(post)
+      <div className='flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+        { userProfile && userProfile.posts.length>0 ? userProfile.posts.map((post) => { 
           return (
-            <Post postObj={post} key={post.id}/>
+            <Post postInfo={post} key={post.id}/>
           )
-        })}
+        }) : <div className='text-white text-center w-full h-full flex justify-center items-center'>No posts yet!</div>}
       </div>
     </div>
   );
 };
 
-export default UserProfile;
+export default Profile;
