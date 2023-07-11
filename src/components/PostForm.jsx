@@ -37,7 +37,7 @@ function PostForm({ fetchPosts }) {
     }
 
     return (
-      <div className='w-full h-[30%] text-white border-b-[1px] border-b-[#464b5f]'>
+      <div className='w-full h-[30%] text-white border-b-[1px] border-b-[#464b5f] flex justify-center items-center'>
         {loading ? <Spinner size={10}/> : 
         <form onSubmit={handleSubmit(onSubmit)} className='w-full h-full p-4 flex flex-col justify-evenly' >
           

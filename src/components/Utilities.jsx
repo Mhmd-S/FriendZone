@@ -44,6 +44,8 @@ const Notifications = () => {
     //     }
     // }
 
+    
+
   return (
     <div className='w-full h-[30%] flex flex-col items-center'>
           {user ?

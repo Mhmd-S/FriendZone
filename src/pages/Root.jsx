@@ -4,7 +4,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import useAuth from '../authentication/useAuth';
 
 import SearchBar from '../components/SearchBar';
-import Notifications from '../components/Notifications';
+import Utilities from '../components/Utilities';
 import Logo from '../components/Logo';
 
 // Display the posts
@@ -53,10 +53,11 @@ const Root = () => {
       </div>
       <div className='w-full h-screen py-2 rounded-md'>
         <Outlet />
+      {/* Add here the comments, post and profile display. */}
       </div>
       <div className='w-full h-screen bg-[#191b22] relative pt-2'>
         {location.pathname !== '/search' && <SearchBar />}
-        <Notifications />
+        <Utilities />
       </div>
     </div>
   );

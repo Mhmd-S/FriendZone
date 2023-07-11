@@ -48,7 +48,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className='w-full h-[10%] relative flex flex-col items-center justify-center' >
+    <div className='w-full h-[10%] relative flex flex-col items-center justify-center mb-2' >
       <div className='w-[90%] h-[85%] pl-2 text-[#9298a5] bg-[#282c37] outline-0 flex items-center rounded-md'>
         <input className='w-[90%] h-[85%] pl-2 text-[#9298a5] bg-[#282c37] outline-0 overflow-x-hidden' type="text" placeholder="Search"  onChange={(e) => setSearchInput(e.target.value)} onBlur={()=>setFocused(false)} onFocus={()=>setFocused(true)} value={searchInput} />
           <svg xmlns="http://www.w3.org/2000/svg" onClick={()=>{setSearchInput(''); setSearchResult([])}}  viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 cursor-pointer">

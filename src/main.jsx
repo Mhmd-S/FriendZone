@@ -14,11 +14,7 @@ import ErrorPage from './pages/error-page';
 import Search from './components/Search';
 import Explore from './components/Explore';
 import Home from './components/Home';
-import UserProfile from './components/UserProfile';
-import Profile from './components/Profile';
 
-// Loaders
-import { loader as userLoader } from './components/UserProfile';
 
 const router = createBrowserRouter([
   {
@@ -42,15 +38,6 @@ const router = createBrowserRouter([
         path: 'explore',
         element: <Explore />
       },
-      {
-        path: 'profile/:username', // Add the URL parameter ":username"
-        element: <UserProfile />,
-        loader:  userLoader,
-      },
-      {
-        path: 'profile',
-        element: <Profile />
-      }
     ]
   },
   {
