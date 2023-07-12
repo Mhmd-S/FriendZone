@@ -112,7 +112,8 @@ const PostSingle = ({ postInfo, setShowPost }) => {
               </svg>
               <span className='ml-3 group-hover:underline decoration-[#595aff] underline-offset-4'>Back</span>
             </button>
-        
+
+          <div className=' flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
             <div className='w-full bg-[#313543] p-4 border-b-[#464b5f]'>
                 <div className='w-full flex justify-between items-center'>
                   <Link className='flex items-center' to={`/profile/${postInfo.author.username}`}>
@@ -164,6 +165,7 @@ const PostSingle = ({ postInfo, setShowPost }) => {
             
             <div className='w-full'>
                 {commentsEle.length > 0 ? commentsEle : <div>No comments</div>}
+            </div>
             </div>
         </div>
   )

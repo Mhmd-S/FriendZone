@@ -5,6 +5,8 @@ import * as userAPI from '../api/userAPI';
 import { useNavigate } from 'react-router-dom';
 import Post from '../components/Post';
 import DefaultProfilePicture from '../components/DefaultProfilePicture';
+import Settings from './Settings';
+import PostSingle from './PostSingle';
 
 export const loader = async({ params }) => {
   const userInfo = await userAPI.getUser(params.username);
@@ -21,6 +23,9 @@ export const loader = async({ params }) => {
 const Profile = () => {
   const { user } = useAuth();
   const { userProfile } = useLoaderData();  
+
+  const [showPost, setShowPost] = React.useState(null);
+  const [showSettings, setShowSettings] = React.useState(false);
 
   const [friendStatus, setFriendStatus] = React.useState(0); // 0 - not friends, 1 - waiting for to decide friend, 2-wait for user, 3 - friends
 
@@ -63,6 +68,10 @@ const Profile = () => {
   }
 
   const displayFriendButtons = () => {
+    if (user === null) return;
+
+    if (user._id ===userProfile._id) return (<button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1 ' onClick={()=>setShowSettings(true)}>Edit Profile</button> )
+
     return(
     <>
       {(user && friendStatus === 0) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Add as a friend</button>}
@@ -73,35 +82,38 @@ const Profile = () => {
   }
 
   return (
-    <div className='h-full w-full bg-[#282c37] rounded-lg flex flex-col'>
-      
-      <div className='flex flex-col w-full h-[45%] border-b-[1px] border-b-[#464b5f] items-center bg-[#282c37] rounded-t-lg relative'>
-        <div className='w-full h-1/3 bg-[#373b45]'></div>
-        <div className='absolute left-4 top-10 w-fit h-fit rounded-full bg-[#595aff]'>
+    <div className='h-full w-full bg-[#282c37] flex flex-col'>
+      {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/> : showSettings ? <Settings setShowSettings={setShowSettings}/> :
+      <div className='w-full h-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+      <div className='flex flex-col w-full h-[45%] border-b-[1px] border-b-[#464b5f] items-center bg-[#373b45] rounded-t-lg relative'>
+        <div className='w-full h-2/5 bg-[#2f323a]'></div>
+        <div className='absolute left-4 top-14 w-fit h-fit rounded-full bg-[#595aff]'>
           {userProfile.profilePicture ? <img src={userProfile.profilePicture} alt="Profile Picture" className='w-20 h-20 rounded-full'/> : <DefaultProfilePicture customSize={'20'}/>}
         </div>
         <div className='w-full h-2/3 flex'>
           <div className='w-2/3 h-full pt-12 px-4 grid grid-cols-1'>
             <span className='text-xl text-white pb-4'>{userProfile && userProfile.username}</span>
-            <span className='text-sm text-white'>{userProfile.bio}12345678</span>
+            <span className='text-sm text-white'>{userProfile.bio ? userProfile.bio : <span className='text-slate-400'>No bio found</span> }</span>
             <div className='flex self-end text-white text-sm pb-2'>
               <span><span className='text-slate-400'>Friends:</span> {userProfile.friends.length}</span>
               <span><span className='pl-3 text-slate-400'>Posts:</span> {userProfile.posts.length}</span>
             </div>  
           </div>
           <div className='w-1/3 h-full flex flex-col justify-between items-center py-4'>
-            {(userProfile && user && userProfile.id !== user.id) ? displayFriendButtons() : <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'>Edit Profile</button>}
+            {displayFriendButtons()}
           </div>
         </div>
       </div>
 
-      <div className='flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+      <div className='flex h-[60%] flex-col w-full'>
         { userProfile && userProfile.posts.length>0 ? userProfile.posts.map((post) => { 
           return (
-            <Post postInfo={post} key={post.id}/>
+            <Post postInfo={post} setShowPost={setShowPost} key={post.id}/>
           )
         }) : <div className='text-white text-center w-full h-full flex justify-center items-center'>No posts yet!</div>}
       </div>
+    </div>
+}
     </div>
   );
 };
