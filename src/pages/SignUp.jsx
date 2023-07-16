@@ -46,7 +46,7 @@ export default function Signup() {
       </Link>
       <h1 className='text-xl pt-2'>Sign Up to FriendZone</h1>
       {isLoading ? <div className='w-full h-full flex justify-center items-center'>
-        <Spinner/>
+        <Spinner size={20}/>
       </div> : 
       <form className="w-[80%] h-[80%] flex flex-col items-center justify-evenly relative" onSubmit={handleSubmit(onSubmit)}>
 

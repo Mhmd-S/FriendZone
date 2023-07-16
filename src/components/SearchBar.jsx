@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import DefaultProfilePicture from './DefaultProfilePicture';
+import Spinner from './Spinner';
 
 import * as userAPI from '../api/userAPI';
 
@@ -8,6 +10,7 @@ const SearchBar = () => {
   const [searchResult, setSearchResult] = useState(null);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const [focused, setFocused] = useState(false);
+  const [isLoading ,setIsLoading] = useState(false);
 
   useEffect(() => {
     if (debounceTimeout) {
@@ -15,7 +18,9 @@ const SearchBar = () => {
     }
     if (searchInput.trim() !== '') {
       const timeout = setTimeout(() => {
-        fetchSearchResults(searchInput);
+        setIsLoading(true);
+        fetchSearchResults(searchInput)
+          .then(()=> setIsLoading(false));
       }, 500); 
       setDebounceTimeout(timeout);
     } else {
@@ -29,9 +34,10 @@ const SearchBar = () => {
     if (res.status === 'success') {
       const users = res.data.map((user) => {
         return (
-          <div key={user.username}>
-            <Link onClick={()=>setSearchInput('')} >
-              {user.username}
+          <div key={user.username} className='w-[95%] h-[4rem] bg-slate-600 m-2 p-2 rounded-md '>
+            <Link onClick={()=>setSearchInput('')} className='w-full h-full flex items-center'>
+              {user.profiePicutre ? <img className='w-20 h-20' src={user.profilePicture} alt='Profie Picture'/> : <DefaultProfilePicture size={20}/>}
+              <p className='pl-2 text-white font-semibold'>{user.username}</p>
             </Link>
           </div>
         );
@@ -48,14 +54,14 @@ const SearchBar = () => {
   };
 
   return (
-    <div className='w-full h-[10%] relative flex flex-col items-center justify-center mb-2' >
+    <div className='w-full h-[10%] relative flex flex-col items-center justify-center mb-2 z-4' >
       <div className='w-[90%] h-[85%] pl-2 text-[#9298a5] bg-[#282c37] outline-0 flex items-center rounded-md'>
         <input className='w-[90%] h-[85%] pl-2 text-[#9298a5] bg-[#282c37] outline-0 overflow-x-hidden' type="text" placeholder="Search"  onChange={(e) => setSearchInput(e.target.value)} onBlur={()=>setFocused(false)} onFocus={()=>setFocused(true)} value={searchInput} />
           <svg xmlns="http://www.w3.org/2000/svg" onClick={()=>{setSearchInput(''); setSearchResult([])}}  viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 cursor-pointer">
           <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clipRule="evenodd" />
         </svg>
       </div>
-      {(searchResult && focused) && <div className='w-[90%] absolute top-[80%] bg-[#2d313c] rounded-b-md px-2'>{searchResult}</div>}
+      {(searchResult && focused) && <div className='w-[90%] absolute top-[80%] bg-[#2d313c] rounded-b-md px-2flex flex-col flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>{isLoading ? <Spinner size={20} /> : searchResult}</div>}
     </div>
   );
 };

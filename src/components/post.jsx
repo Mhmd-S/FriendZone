@@ -67,7 +67,7 @@ export default function Post({ postInfo, setShowPost }) {
         .catch(err => console.log(err))
     }
   }
-  console.log(decodeURI(postInfo.content));
+
   return (
     <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col cursor-pointer' >
         <div className='w-full flex justify-between items-center pb-4' onClick={()=>setShowPost(postInfo)}>
