@@ -39,8 +39,8 @@ export default function Login() {
       </Link>
       <h1 className='text-xl pt-2'>Login to FriendZone</h1>
       {isLoading ? 
-      <div className='w-full h-full flex justify-center items-center'>
-        <Spinner/>
+      <div className='w-full h-[80$] flex justify-center items-center'>
+        <Spinner size={10} />
       </div> : 
       <form className="w-[80%] h-[50%] flex flex-col items-center justify-evenly relative" onSubmit={signIn}>
         

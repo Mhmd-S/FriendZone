@@ -28,7 +28,6 @@ const Explore = () => {
             const postEle = res.data.map((post) => {
                 return (<Post key={post._id} postInfo={post} setShowPost={setShowPost} />);
             });
-            postEle.reverse();
             setPosts(postEle);
             setPage(pageOpt+1);
             return;

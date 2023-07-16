@@ -67,7 +67,7 @@ export default function Post({ postInfo, setShowPost }) {
         .catch(err => console.log(err))
     }
   }
-  console.log(postInfo)
+  console.log(decodeURI(postInfo.content));
   return (
     <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col cursor-pointer' >
         <div className='w-full flex justify-between items-center pb-4' onClick={()=>setShowPost(postInfo)}>
@@ -78,7 +78,7 @@ export default function Post({ postInfo, setShowPost }) {
             <div className='text-[#99acc633]'>{timeStamp(postInfo.createdAt)}</div>
         </div>
         <div className='text-sm pb-4' onClick={()=>setShowPost(postInfo)}>
-          {postInfo.content}
+          {decodeURI(postInfo.content)}
         </div>
         <div className='w-1/3 flex justify-between place-self-end'>
             <button className={'hover:bg-[#99acc633] p-1 rounded-md flex ' + (userLiked && 'bg-[#99acc6]') } onClick={userLiked ? handleUnlike  : handleLike } >

@@ -1,11 +1,17 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
+import * as userAPI from '../api/userAPI';
 
 const Settings = ({setShowSettings}) => {
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
 
     const onSubmit = data => { 
-        console.log(data);
+        const formData = new FormData();
+        formData.append('bio', data.bio);
+        console.log(data)
+        formData.append('headerPicture', data.headerPicture[0]);
+        formData.append('profilePicture', data.profilePicture[0]);
+        userAPI.updateProfile(formData);
     };
 
 
@@ -28,22 +34,22 @@ const Settings = ({setShowSettings}) => {
                     <span>Bio</span>
                     <span className='text-sm text-slate-400'>Desribe yourself!</span>
                 </label>
-                <textarea type='text' className='w-full h-1/5 p-3 bg-[#282c37] border-[#464b5f] border-[1px] rounded-xl outline-none resize-none' {...register('content', { required: 'Post text is required', minLength: { value: 1, message: 'Post text must be at least 1 character long' }, maxLength: { value: 160, message: 'Post text must be less than 160 characters long'}})}/>
+                <textarea type='text' className='w-full h-1/5 p-3 bg-[#282c37] border-[#464b5f] border-[1px] rounded-xl outline-none resize-none' {...register('bio', { minLength: { value: 1, message: 'Bio must be at least 1 character long' }, maxLength: { value: 160, message: 'Bio must be less than 160 characters long'}})}/>
+                {errors.bio && <span className='text-red-500 text-sm'>{errors.bio.message}</span>}
 
-                <label className='w-full flex flex-col pl-2'>
+                <label className='w-full flex flex-col pl-2' htmlFor='profilePicture'>
                     <span>Profile Picture</span>
                     <span className='text-sm text-slate-400'>2MB max size.</span>
                 </label>
-                  <input type='file' className='w-full pl-3' />
+                  <input type='file' className='w-full pl-3' {...register('profilePicture')} name='profilePicture' />
 
-                <label className='w-full flex flex-col pl-2'>
+                <label className='w-full flex flex-col pl-2' htmlFor='headerPicture'>
                     <span>Profile Header</span>
                     <span className='text-sm text-slate-400'>2MB max size</span>
                 </label>
-                <input type='file' className='w-full pl-3' />
+                <input type='file' className='w-full pl-3' {...register('headerPicture')} name='headerPicture' />
 
                 <button className='w-1/2 py-2 bg-[#595aff] rounded-lg'>Save changes</button>
-
               </form>
 
 

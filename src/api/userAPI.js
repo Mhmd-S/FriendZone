@@ -159,7 +159,7 @@ export async function acceptFriendRequest(userId) {
             'http://127.0.0.1:3000/user/friend-accept?' +
             new URLSearchParams({ userId: userId }).toString()
         )
-
+            console.log(url, userId)
         const response = await fetch(url, {
             method: 'PUT',
             credentials: 'include',
@@ -184,6 +184,46 @@ export async function declineFriendRequest(userId) {
             method: 'DELETE',
             credentials: 'include',
             mode: 'cors'
+        })
+
+        const res = await response.json()
+        return res;
+    } catch(err) {
+        console.log('Could not proccess your request at the moment. Please try again later.')
+    }
+}
+
+export async function removeFriend(userId) {
+    try{
+        const url = (
+            'http://127.0.0.1:3000/user/friend-remove?' +
+            new URLSearchParams({ userId: userId }).toString()
+        )
+
+        const response = await fetch(url, {
+            method: 'DELETE',
+            credentials: 'include',
+            mode: 'cors'
+        })
+
+        const res = await response.json()
+        return res;
+    } catch(err) {
+        console.log('Could not proccess your request at the moment. Please try again later.')
+    }
+}
+
+export async function updateProfile (formData) {
+    try{
+        const url = (
+            'http://127.0.0.1:3000/user/update-info'
+        )
+
+        const response = await fetch(url, {
+            method: 'PUT',
+            credentials: 'include',
+            mode: 'cors',
+            body: formData
         })
 
         const res = await response.json()

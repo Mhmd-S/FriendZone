@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import useAuth from '../authentication/useAuth';
 import * as userAPI from '../api/userAPI';
-import { useNavigate } from 'react-router-dom';
 import Post from '../components/Post';
 import DefaultProfilePicture from '../components/DefaultProfilePicture';
 import Settings from './Settings';
@@ -11,8 +10,8 @@ import PostSingle from './PostSingle';
 export const loader = async({ params }) => {
   const userInfo = await userAPI.getUser(params.username);
 
-  if (userInfo.status === 'fail') {
-      return { user: null };
+  if (!userInfo || userInfo.status === 'fail') {
+      return {userProfile: null };
   }
 
   const userProfile = userInfo.data;
@@ -23,13 +22,17 @@ export const loader = async({ params }) => {
 const Profile = () => {
   const { user } = useAuth();
   const { userProfile } = useLoaderData();  
-
+  const [ profilePicture, setProfilePicture ] = React.useState(null);
   const [showPost, setShowPost] = React.useState(null);
   const [showSettings, setShowSettings] = React.useState(false);
 
   const [friendStatus, setFriendStatus] = React.useState(0); // 0 - not friends, 1 - waiting for to decide friend, 2-wait for user, 3 - friends
 
   useEffect(()=>{
+    if(!userProfile) {
+      return;
+    }
+
     if (userProfile && user && userProfile.username === user.id) {
       return;
     }
@@ -61,9 +64,29 @@ const Profile = () => {
 
   const handleOnFriendClick = async () => {
     const res = await userAPI.sendFriendRequest(userProfile._id);
-
     if (res.status === 'success') {
-      console.log('Friend added!');
+      setFriendStatus(1);
+    }
+  }
+
+  const handleAcceptFriendRequest = async () => {
+    const res = await userAPI.acceptFriendRequest(userProfile._id);
+    if (res.status === 'success') {
+        setFriendStatus(3);
+    }
+  }
+
+  const handleDeclineFriendrequest = async () => {        
+      const res = await userAPI.declineFriendRequest(userProfile._id);
+      if (res.status === 'success') {
+          setFriendStatus(0);
+      }
+  }
+
+  const handleRemoveFriend = async () => {        
+    const res = await userAPI.removeFriend(userProfile._id);
+    if (res.status === 'success') {
+        setFriendStatus(0);
     }
   }
 
@@ -74,21 +97,26 @@ const Profile = () => {
 
     return(
     <>
-      {(user && friendStatus === 0) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Add as a friend</button>}
-      {(user && friendStatus === 1) && <div className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'>Friend Request Sent!</div>}
-      {(user && friendStatus === 2) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Accept friend request</button>}
-      {(user && friendStatus === 3) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Remove friend</button>}
+      {(user && friendStatus === 0) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Add Friend</button>}
+      {(user && friendStatus === 1) && <div className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'>Request Sent!</div>}
+      {(user && friendStatus === 2) && <div><button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleAcceptFriendRequest}>Accept Request</button><button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleDeclineFriendrequest  }>Decline Request</button> </div>}
+      {(user && friendStatus === 3) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleRemoveFriend}>Remove Friend</button>}
+      
     </>)
   }
-
+  
   return (
     <div className='h-full w-full bg-[#282c37] flex flex-col'>
-      {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/> : showSettings ? <Settings setShowSettings={setShowSettings}/> :
+      {!userProfile ? <div className='w-full h-full flex justify-center items-center'><h1 className='text-3xl text-slate-400 underline'>Profile Not Found</h1></div> :
+      (showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/> : showSettings ? <Settings setShowSettings={setShowSettings}/> :
       <div className='w-full h-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
       <div className='flex flex-col w-full h-[45%] border-b-[1px] border-b-[#464b5f] items-center bg-[#373b45] rounded-t-lg relative'>
         <div className='w-full h-2/5 bg-[#2f323a]'></div>
         <div className='absolute left-4 top-14 w-fit h-fit rounded-full bg-[#595aff]'>
-          {userProfile.profilePicture ? <img src={userProfile.profilePicture} alt="Profile Picture" className='w-20 h-20 rounded-full'/> : <DefaultProfilePicture customSize={'20'}/>}
+          {userProfile.profilePicture ? <object
+            ></object> 
+            : 
+            <DefaultProfilePicture customSize={'20'}/>}
         </div>
         <div className='w-full h-2/3 flex'>
           <div className='w-2/3 h-full pt-12 px-4 grid grid-cols-1'>
@@ -113,7 +141,9 @@ const Profile = () => {
         }) : <div className='text-white text-center w-full h-full flex justify-center items-center'>No posts yet!</div>}
       </div>
     </div>
+      )
 }
+
     </div>
   );
 };
