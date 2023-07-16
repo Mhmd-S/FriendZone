@@ -110,16 +110,18 @@ const Profile = () => {
       {!userProfile ? <div className='w-full h-full flex justify-center items-center'><h1 className='text-3xl text-slate-400 underline'>Profile Not Found</h1></div> :
       (showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/> : showSettings ? <Settings setShowSettings={setShowSettings}/> :
       <div className='w-full h-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
-      <div className='flex flex-col w-full h-[45%] border-b-[1px] border-b-[#464b5f] items-center bg-[#373b45] rounded-t-lg relative'>
-        <div className='w-full h-2/5 bg-[#2f323a]'></div>
-        <div className='absolute left-4 top-14 w-fit h-fit rounded-full bg-[#595aff]'>
-          {userProfile.profilePicture ? <object
-            ></object> 
-            : 
-            <DefaultProfilePicture customSize={'20'}/>}
+      <div className='flex flex-col w-full h-[65%] border-b-[1px] border-b-[#464b5f] items-center bg-[#373b45] rounded-t-lg relative'>
+        <div className='w-full h-2/5 bg-[#2f323a]'>
+          {userProfile.profileHeader && <img src={userProfile.profileHeader} alt='Header Picture' className='w-full h-full object-cover rounded-t-lg'></img>}
         </div>
-        <div className='w-full h-2/3 flex'>
-          <div className='w-2/3 h-full pt-12 px-4 grid grid-cols-1'>
+        <div className='absolute left-[5%] top-[25%] h-fit rounded-full bg-[#595aff]'>
+          {userProfile.profilePicture ? 
+            <img src={userProfile.profilePicture} alt='Profile Picture' className='w-24 rounded-full aspect-square'></img>
+            : 
+            <DefaultProfilePicture customSize={'24'}/>}
+        </div>
+        <div className='w-full h-3/5 flex'>
+          <div className='w-2/3 h-full pt-16 px-4 grid grid-cols-1'>
             <span className='text-xl text-white pb-4'>{userProfile && userProfile.username}</span>
             <span className='text-sm text-white'>{userProfile.bio ? userProfile.bio : <span className='text-slate-400'>No bio found</span> }</span>
             <div className='flex self-end text-white text-sm pb-2'>
