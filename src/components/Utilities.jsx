@@ -51,7 +51,7 @@ const Notifications = () => {
           {user ?
               <>
                 <div className='w-[90%] h-full'>
-                  <Link to='profile' className='flex items-center w-full hover:bg-[#424858] bg-[#282c37] rounded-lg p-2 text-[#d9e1e8]'>
+                  <Link to={'profile/' + user.username} className='flex items-center w-full hover:bg-[#424858] bg-[#282c37] rounded-lg p-2 text-[#d9e1e8]'>
                     <div className='flex items-center h-full'>
                         <span>
                             {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
