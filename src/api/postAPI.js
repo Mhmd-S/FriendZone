@@ -44,10 +44,7 @@ export const createPost = async(postData) => {
     try {
         const response = await fetch('http://127.0.0.1:3000/post/create-post', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: postData.toString(),
+            body: postData,
             credentials: 'include',
             mode: 'cors',
         });

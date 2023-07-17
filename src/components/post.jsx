@@ -78,7 +78,8 @@ export default function Post({ postInfo, setShowPost }) {
             <div className='text-[#99acc633]'>{timeStamp(postInfo.createdAt)}</div>
         </div>
         <div className='text-sm pb-4' onClick={()=>setShowPost(postInfo)}>
-          {decodeURI(postInfo.content)}
+          <p>{decodeURI(postInfo.content)}</p>
+          {postInfo.image && <img src={postInfo.image} alt='Post Images'/>}
         </div>
         <div className='w-1/3 flex justify-between place-self-end'>
             <button className={'hover:bg-[#99acc633] p-1 rounded-md flex ' + (userLiked && 'bg-[#99acc6]') } onClick={userLiked ? handleUnlike  : handleLike } >

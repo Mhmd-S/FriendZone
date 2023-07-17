@@ -138,7 +138,7 @@ const Profile = () => {
       <div className='flex h-[60%] flex-col w-full'>
         { userProfile && userProfile.posts.length>0 ? userProfile.posts.map((post) => { 
           return (
-            <Post postInfo={post} setShowPost={setShowPost} key={post.id}/>
+            <Post postInfo={post} setShowPost={setShowPost} key={post._id}/>
           )
         }) : <div className='text-white text-center w-full h-full flex justify-center items-center'>No posts yet!</div>}
       </div>

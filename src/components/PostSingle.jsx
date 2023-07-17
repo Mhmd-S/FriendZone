@@ -123,13 +123,15 @@ const PostSingle = ({ postInfo, setShowPost }) => {
                   <div>{dateFormat(postInfo.createdAt)}</div>
                 </div>
                 
-                <div className='text-sm p-2'>
+                <div className='text-sm py-2 px-4'>
                     {postInfo.content}
                 </div>
 
-                <div>Images</div>
+                <div className='w-full'>
+                  {postInfo.image && <img src={postInfo.image} alt='Post Image' />}
+                </div>
 
-                <div className='w-full flex justify-end place-self-end'>
+                <div className='w-full flex justify-end place-self-end pt-4'>
                     <button className={'hover:bg-[#99acc633] p-1 rounded-md flex mr-6 ' + (userLiked && 'bg-[#99acc6]') } onClick={userLiked ? handleUnlike  : handleLike } >
                         <span className='pr-2 text-[#606984]'>{postInfo.likes.length}</span>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#787ad9" className="w-5 h-5">
