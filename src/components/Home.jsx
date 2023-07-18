@@ -30,14 +30,12 @@ const Landing = () => {
             const postEle = res.data.map((post) => {
                 return (<Post key={post._id} postInfo={post} setShowPost={setShowPost} />);
             });
-            setPosts(postEle);
+            setPosts(postEle.reverse());
             setPage(pageOpt+1);
             return;
         }
         setErrors("Could not fetch posts");
     }
-
-    // Show post in home
 
     return (
         <div className='h-full w-full bg-[#282c37] rounded-lg flex flex-col'>

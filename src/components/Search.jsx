@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as userAPI from '../api/userAPI';
 import * as postAPI from '../api/postAPI';
@@ -25,7 +25,7 @@ const Search = () => {
         const users = res.data.map((user) => {
           return (
             <div key={user.username} className='w-full h-[15%] bg-[#313543] text-white border-b-[#464b5f] border-b-[1px]'>
-              <Link onClick={()=>setSearchInput('')} to={`/profile/${user.username}`} className='w-full h-full flex items-center'>
+              <Link to={`/profile/${user.username}`} className='w-full h-full flex items-center'>
                   {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
                   <div className='w-full h-full flex items-center pl-4'>
                     <span>{user.username}</span>
@@ -39,7 +39,7 @@ const Search = () => {
         if (users.length === 0) {
           setSearchResult(["Couldn't find any user with that name"]);
         }else {
-          setSearchResult([...users, <div key={'lt'} className='w-full overflow-x-clip'>Search more of {searchInput}</div>]);
+          setSearchResult([...users, <div key={'SearchMore'} className='w-full overflow-x-clip'>Search more of {searchInput}</div>]);
         } 
       } else {
         setSearchResult([]);
@@ -76,13 +76,13 @@ const Search = () => {
           <span className='text-xl text-white'>Search</span>
         </h3>
 
-        <div className='w-full h-[12%] flex bg-[#313543] p-4 items-center justify-evenly'>
+        <form onSubmit={e=>{ e.preventDefault(); fetchSearchResults(searchInput)}}  className='w-full h-[12%] flex bg-[#313543] p-4 items-center justify-evenly'>
           <input className='w-[80%] p-2 outline-0 overflow-x-hidden rounded-md' 
                   type="text" 
                   placeholder="Search" 
                   onChange={e=>setSearchInput(e.target.value)}/>
-          <button className='w-[15%] p-2 bg-[#787ad9] rounded-md text-white hover:bg-[#595aff]' onClick={()=>fetchSearchResults(searchInput)}>Search</button>
-        </div>
+          <button type='submit' className='w-[15%] p-2 bg-[#787ad9] rounded-md text-white hover:bg-[#595aff]'>Search</button>
+        </form>
 
         <ul className='w-full h-[8%] flex bg-[#1f232b]items-center justify-evenly text-[#8586f2] border-t-2 border-b-2 border-[#353a49] cursor-pointer font-semibold'>
           <li className={'w-1/2 p-2 h-full text-center ' + (category === 0 && 'bg-[#595aff] text-white' )} onClick={()=>setCategory(0)}>

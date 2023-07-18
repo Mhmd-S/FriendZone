@@ -99,7 +99,7 @@ const Profile = () => {
     <>
       {(user && friendStatus === 0) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Add Friend</button>}
       {(user && friendStatus === 1) && <div className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'>Request Sent!</div>}
-      {(user && friendStatus === 2) && <div><button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleAcceptFriendRequest}>Accept Request</button><button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleDeclineFriendrequest  }>Decline Request</button> </div>}
+      {(user && friendStatus === 2) && <div className='w-full flex'><button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleAcceptFriendRequest}>Accept Request</button><button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleDeclineFriendrequest  }>Decline Request</button> </div>}
       {(user && friendStatus === 3) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleRemoveFriend}>Remove Friend</button>}
       
     </>)
@@ -114,7 +114,7 @@ const Profile = () => {
         <div className='w-full h-2/5 bg-[#2f323a]'>
           {userProfile.profileHeader && <img src={userProfile.profileHeader} alt='Header Picture' className='w-full h-full object-cover rounded-t-lg'></img>}
         </div>
-        <div className='absolute left-[5%] top-[25%] h-fit rounded-full bg-[#595aff]'>
+        <div className='absolute w-24 left-[5%] top-[25%] h-fit rounded-full bg-[#595aff]'>
           {userProfile.profilePicture ? 
             <img src={userProfile.profilePicture} alt='Profile Picture' className='w-24 rounded-full aspect-square'></img>
             : 
