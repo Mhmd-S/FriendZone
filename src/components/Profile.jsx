@@ -22,7 +22,6 @@ export const loader = async({ params }) => {
 const Profile = () => {
   const { user } = useAuth();
   const { userProfile } = useLoaderData();  
-  const [ profilePicture, setProfilePicture ] = React.useState(null);
   const [showPost, setShowPost] = React.useState(null);
   const [showSettings, setShowSettings] = React.useState(false);
 
@@ -114,11 +113,11 @@ const Profile = () => {
         <div className='w-full h-2/5 bg-[#2f323a]'>
           {userProfile.profileHeader && <img src={userProfile.profileHeader} alt='Header Picture' className='w-full h-full object-cover rounded-t-lg'></img>}
         </div>
-        <div className='absolute w-24 left-[5%] top-[25%] h-fit rounded-full bg-[#595aff]'>
+        <div className='absolute left-[5%] top-[25%] rounded-full'>
           {userProfile.profilePicture ? 
             <img src={userProfile.profilePicture} alt='Profile Picture' className='w-24 rounded-full aspect-square'></img>
             : 
-            <DefaultProfilePicture customSize={'24'}/>}
+            <DefaultProfilePicture size={24}/>}
         </div>
         <div className='w-full h-3/5 flex'>
           <div className='w-2/3 h-full pt-16 px-4 grid grid-cols-1'>
@@ -144,9 +143,8 @@ const Profile = () => {
       </div>
     </div>
       )
-}
-
-    </div>
+    }
+  </div>
   );
 };
 

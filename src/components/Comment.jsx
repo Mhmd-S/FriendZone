@@ -71,7 +71,7 @@ const Comment = ({ commentInfo }) => {
     <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col' >
         <div className='w-full flex justify-between items-center'>
           <Link className='flex items-center' to={`/profile/${commentInfo.author.username}`}>
-            {commentInfo.author.profilePicture ? <img src={commentInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
+            {commentInfo.author.profilePicture ? <img src={commentInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture size={10}/>}
             <div className='font-bold pl-3'>{commentInfo.author.username}</div>
           </Link>
             <div>{timeStamp(commentInfo.createdAt)}</div>

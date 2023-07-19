@@ -71,7 +71,7 @@ const Search = () => {
     let res; 
     
     if (category === 0) {
-      res = await userAPI.searchUsers(searchInput, page, 10);
+      res = await userAPI.searchUsers(searchInput, page, 5);
     }  else {
       res = await postAPI.searchPosts(searchInput, page, 10);
     }
@@ -97,12 +97,20 @@ const Search = () => {
       if (category === 0) {
         results = res.data.map((user) => {
           return (
-            <div key={user.username} className='w-full h-[15%] bg-[#313543] text-white border-b-[#464b5f] border-b-[1px]'>
-              <Link to={`/profile/${user.username}`} className='w-full h-full flex items-center'>
-                  {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
-                  <div className='w-full h-full flex items-center pl-4'>
+            <div key={user.username} className='w-full h-[25%] p-2  text-white'>
+              <Link to={`/profile/${user.username}`} className='w-full h-full p-2 flex items-center bg-[#313543]'>
+                  {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture size={10}/>}
+                  <div className='w-full h-full flex justify-between items-center pl-4'>
                     <span>{user.username}</span>
                     <span>{user.bio}</span>
+                    <div className='w-1/2 flex flex-col items-end text-sm'>
+                      <span>
+                        <span className='text-[#606984]'>Friends:</span> {user.friendsCount}
+                      </span>
+                      <span>
+                        <span className='text-[#606984]'>Posts:</span> {user.postsCount}
+                      </span>
+                    </div>
                   </div>           
               </Link>
             </div>
@@ -123,7 +131,7 @@ const Search = () => {
   }
 
   return (
-    <div className='h-full w-full overflow-y-auto flex flex-col bg-[#282c37] scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+    <div className='h-full w-full overflow-y-auto flex flex-col bg-[#282c37]'>
       {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/> 
       :
       <>
@@ -151,13 +159,13 @@ const Search = () => {
           </li>
         </ul>
 
-        <div className='w-full h-[70%] grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+        <div className='flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
               {(searchResult.length <= 0 && searchInput.trim().length <= 0) && 
               <div className='w-full h-full flex justify-center items-center text-[#ffffff3f] text-2xl'>
                 {category === 0 ? "Insert the name of a user to search" : "Search for posts with a certain keyword"}
               </div>}
               {searchResult.length > 1 && 
-              < >
+              <>
                 {searchResult}
                 {isLoading ? 
                   <Spinner size={12} /> 

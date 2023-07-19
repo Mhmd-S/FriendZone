@@ -117,7 +117,7 @@ const PostSingle = ({ postInfo, setShowPost }) => {
             <div className='w-full bg-[#313543] p-4 border-b-[#464b5f]'>
                 <div className='w-full flex justify-between items-center'>
                   <Link className='flex items-center' to={`/profile/${postInfo.author.username}`}>
-                    {postInfo.author.profilePicture ? <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture/>}
+                    {postInfo.author.profilePicture ? <img src={postInfo.author.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture size={10}/>}
                     <div className='font-bold pl-3'>{postInfo.author.username}</div>
                   </Link>
                   <div>{dateFormat(postInfo.createdAt)}</div>
