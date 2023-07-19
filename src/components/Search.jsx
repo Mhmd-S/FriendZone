@@ -1,28 +1,101 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import * as userAPI from '../api/userAPI';
 import * as postAPI from '../api/postAPI';
 import DefaultProfilePicture from './DefaultProfilePicture';
 import Post from './Post';
 import PostSingle from './PostSingle';
+import Spinner from './Spinner';
 
 const Search = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [searchInput, setSearchInput] = useState('')
   const [searchResult, setSearchResult] = useState([])
   const [category, setCategory] = useState(0); // 0 = users, 1 = posts
-
+  const [page, setPage] = useState(1);
   const [showPost, setShowPost] = useState(false);
+  const [stopFetching, setStopFetching] = useState(false);
 
-  useEffect(()=> {
+  const containerRef = useRef(null);
+
+  useEffect(()=>{
     setSearchResult([]);
-  }, [category])
+    setPage(1);
+    setStopFetching(false);
+  }, [category, searchInput])
+  
+  useEffect(() => {
+    
+    const container = containerRef.current;
 
-  const fetchSearchResults = async (value) => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1,
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        console.log(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsLoading(true);
+          fetchSearchResults()
+            .finally(() => setIsLoading(false));
+        }
+      },
+      options
+    );
+
+    if (container) {
+      observer.observe(container);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [searchResult]);
+
+
+  const fetchSearchResults = async() => {
+    if (stopFetching) {
+      return;
+    }
+    setIsLoading(true);
+
+    if (searchInput.trim() === '') {
+      setSearchResult([]);
+      setIsLoading(false);
+      return;
+    }
+
+    let res; 
+    
     if (category === 0) {
-      const res = await userAPI.searchUsers(value, 8);
+      res = await userAPI.searchUsers(searchInput, page, 10);
+    }  else {
+      res = await postAPI.searchPosts(searchInput, page, 10);
+    }
+    if (res.status === 'error') {
+      setSearchResult([<div key={'problemEcnounterdKey'}>A problem was encounterd. Try again later</div>]);
+      setIsLoading(false);
+      return;
+    }
 
-      if (res.status === 'success') {
-        const users = res.data.map((user) => {
+    if (res.data.length === 0 && page === 1) {
+      setIsLoading(false);
+      return;
+    }
+
+    if (res.data.length === 0 && page > 1) {
+      setIsLoading(false);
+      setStopFetching(true);
+      return;
+    }
+
+    let results;
+    if (res.status === 'success') {
+      if (category === 0) {
+        results = res.data.map((user) => {
           return (
             <div key={user.username} className='w-full h-[15%] bg-[#313543] text-white border-b-[#464b5f] border-b-[1px]'>
               <Link to={`/profile/${user.username}`} className='w-full h-full flex items-center'>
@@ -35,35 +108,20 @@ const Search = () => {
             </div>
           );
         });
-
-        if (users.length === 0) {
-          setSearchResult(["Couldn't find any user with that name"]);
-        }else {
-          setSearchResult([...users, <div key={'SearchMore'} className='w-full overflow-x-clip'>Search more of {searchInput}</div>]);
-        } 
       } else {
-        setSearchResult([]);
+        results = res.data.map((post) => {
+          return (
+            <Post postInfo={post} setShowPost={setShowPost} key={post._id}/>
+          );
+        });
       }
-    } else {
-        const res = await postAPI.searchPosts(value, 1);
-  
-        if (res.status === 'success') {
-          const posts = res.data.map((post) => {
-            return (
-              <Post postInfo={post} setShowPost={setShowPost} key={post._id}/>
-            );
-          });
-  
-          if (posts.length === 0 || searchInput === '') {
-            setSearchResult(["Couldn't find any post with that keyword"]);
-          } else {
-            setSearchResult([...posts, <div key={'lt'} className='w-full overflow-x-clip'>Search more {searchInput}</div>]);
-          } 
-        } else {
-          setSearchResult([]);
-        }
+
+      setPage(page + 1)
+      setSearchResult([...searchResult,...results]); 
+      setIsLoading(false); 
     }
-    }
+  }
+
   return (
     <div className='h-full w-full overflow-y-auto flex flex-col bg-[#282c37] scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
       {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/> 
@@ -76,7 +134,7 @@ const Search = () => {
           <span className='text-xl text-white'>Search</span>
         </h3>
 
-        <form onSubmit={e=>{ e.preventDefault(); fetchSearchResults(searchInput)}}  className='w-full h-[12%] flex bg-[#313543] p-4 items-center justify-evenly'>
+        <form onSubmit={e=>{ e.preventDefault(); fetchSearchResults();}}  className='w-full h-[12%] flex bg-[#313543] p-4 items-center justify-evenly'>
           <input className='w-[80%] p-2 outline-0 overflow-x-hidden rounded-md' 
                   type="text" 
                   placeholder="Search" 
@@ -94,10 +152,20 @@ const Search = () => {
         </ul>
 
         <div className='w-full h-[70%] grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
-          {(searchResult.length <= 0 && searchInput.trim().length <= 0) && <div className='w-full h-full flex justify-center items-center text-[#ffffff3f] text-2xl'>
-              {category === 0 ? "Insert the name of a user to search" : "Search for posts with a certain keyword"}
-            </div>}
-          {searchResult && searchResult}
+              {(searchResult.length <= 0 && searchInput.trim().length <= 0) && 
+              <div className='w-full h-full flex justify-center items-center text-[#ffffff3f] text-2xl'>
+                {category === 0 ? "Insert the name of a user to search" : "Search for posts with a certain keyword"}
+              </div>}
+              {searchResult.length > 1 && 
+              < >
+                {searchResult}
+                {isLoading ? 
+                  <Spinner size={12} /> 
+                :
+                  <div ref={containerRef} className='border-[1px] border-transparent'></div>
+                }
+              </>
+              }
         </div>
       </>  
       }

@@ -20,11 +20,11 @@ export const getPosts = async(pageNum, explore) => {
     }
 }
 
-export const searchPosts = async(searchQuery, pageNum) => {
+export const searchPosts = async(searchQuery, limit, page) => {
     try {
         const url = (
             'http://127.0.0.1:3000/post/search?' +
-            new URLSearchParams({ keywords: searchQuery, page : pageNum }).toString()
+            new URLSearchParams({ keywords: searchQuery, limit: limit, page : page }).toString()
           );
           
         const response = await fetch(url, {
