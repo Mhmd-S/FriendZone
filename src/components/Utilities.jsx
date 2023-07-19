@@ -4,48 +4,13 @@ import { Link } from 'react-router-dom';
 import * as userAPI from '../api/userAPI';
 import DefaultProfilePicture from './DefaultProfilePicture';
 import MiniForm from './MiniForm';
+import Notifications from './Notifications';
 
-const Notifications = () => {
+const Utilities = () => {
 
-    const { user, logout } = useAuth();
-
-    // const fetchFriends = async() => {
-    //     const userFriendsAndRequests = await userAPI.getUserFriends();
-    //     if (userFriendsAndRequests.data.pendingFriends.length > 0) {
-    //         const requestEle = userFriendsAndRequests.data.pendingFriends.map((request) => {
-    //             return(
-    //                 <li key={request._id}>
-    //                     <Link to={`/profile/${request.username}`}>{request.username}</Link>
-    //                     <button onClick={()=>handleAcceptFriendRequest(request._id)}>Accept</button>
-    //                     <button onClick={()=>handleDeclineFriendrequest(request._id)}>Decline</button>
-    //                 </li>)
-    //         })
-    //         setFriendRequests(requestEle)
-    //     }        
-    // }
-
-    // const handleAcceptFriendRequest = async (friendId) => {
-    //     const res = await userAPI.acceptFriendRequest(friendId);
-    //     if (res.status === 'success') {
-    //         let newFriendRequests = friendRequests.slice();
-    //         newFriendRequests.filter((request) => request._id !== friendId);
-    //         setFriendRequests(newFriendRequests);
-    //         console.log('Friend added!');
-    //     }
-    // }
-
-    // const handleDeclineFriendrequest = async (friendId) => {        
-    //     const res = await userAPI.declineFriendRequest(friendId);
-    //     if (res.status === 'success') {
-    //         let newFriendRequests = friendRequests.slice();
-    //         newFriendRequests.filter((request) => request._id !== friendId);
-    //         setFriendRequests(newFriendRequests);
-    //         console.log('Friend request declined!');
-    //     }
-    // }
+    const { user } = useAuth();
 
     
-
   return (
     <div className='w-full h-[30%] flex flex-col items-center'>
           {user ?
@@ -66,6 +31,7 @@ const Notifications = () => {
                     </div>
                   </Link>
                   <MiniForm/>
+                  <Notifications/>
                 </div>
               </>
             : 
@@ -78,4 +44,4 @@ const Notifications = () => {
   )
 }
 
-export default Notifications
+export default Utilities;

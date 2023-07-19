@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import * as userAPI from '../api/userAPI';
 import * as postAPI from '../api/postAPI';
-import DefaultProfilePicture from './DefaultProfilePicture';
+import MiniUser from './MiniUser';
 import Post from './Post';
 import PostSingle from './PostSingle';
 import Spinner from './Spinner';
@@ -20,6 +20,7 @@ const Search = () => {
 
   useEffect(()=>{
     setSearchResult([]);
+    console.log("23")
     setPage(1);
     setStopFetching(false);
   }, [category, searchInput])
@@ -77,6 +78,7 @@ const Search = () => {
     }
     if (res.status === 'error') {
       setSearchResult([<div key={'problemEcnounterdKey'}>A problem was encounterd. Try again later</div>]);
+      console.log('80')
       setIsLoading(false);
       return;
     }
@@ -97,23 +99,7 @@ const Search = () => {
       if (category === 0) {
         results = res.data.map((user) => {
           return (
-            <div key={user.username} className='w-full h-[25%] p-2  text-white'>
-              <Link to={`/profile/${user.username}`} className='w-full h-full p-2 flex items-center bg-[#313543]'>
-                  {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture size={10}/>}
-                  <div className='w-full h-full flex justify-between items-center pl-4'>
-                    <span>{user.username}</span>
-                    <span>{user.bio}</span>
-                    <div className='w-1/2 flex flex-col items-end text-sm'>
-                      <span>
-                        <span className='text-[#606984]'>Friends:</span> {user.friendsCount}
-                      </span>
-                      <span>
-                        <span className='text-[#606984]'>Posts:</span> {user.postsCount}
-                      </span>
-                    </div>
-                  </div>           
-              </Link>
-            </div>
+           <MiniUser userInfo={user} key={user.username} />
           );
         });
       } else {
@@ -131,7 +117,7 @@ const Search = () => {
   }
 
   return (
-    <div className='h-full w-full overflow-y-auto flex flex-col bg-[#282c37]'>
+    <div className='h-full w-full flex flex-col bg-[#282c37]'>
       {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/> 
       :
       <>
@@ -159,12 +145,12 @@ const Search = () => {
           </li>
         </ul>
 
-        <div className='flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+        <div className='w-full h-[70%] flex flex-col overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
               {(searchResult.length <= 0 && searchInput.trim().length <= 0) && 
               <div className='w-full h-full flex justify-center items-center text-[#ffffff3f] text-2xl'>
                 {category === 0 ? "Insert the name of a user to search" : "Search for posts with a certain keyword"}
               </div>}
-              {searchResult.length > 1 && 
+              {searchResult.length > 0 && 
               <>
                 {searchResult}
                 {isLoading ? 

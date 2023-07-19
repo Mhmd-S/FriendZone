@@ -32,7 +32,7 @@ const SearchBar = () => {
 
   const fetchSearchResults = async (value) => {
     
-    const res = await userAPI.searchUsers(value, 5);
+    const res = await userAPI.searchUsers(value, 1,5);
 
     if (res.status === 'success') {
 
