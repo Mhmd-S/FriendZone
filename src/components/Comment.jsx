@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import useAuth from '../authentication/useAuth';
-import * as commentAPI from '../api/commentAPI';
 import DefaultProfilePicture from './DefaultProfilePicture';
 import { Link } from 'react-router-dom';
+import * as commentAPI from '../api/commentAPI';
+
 
 const Comment = ({ commentInfo }) => {
 
@@ -66,7 +67,7 @@ const Comment = ({ commentInfo }) => {
         .catch(err => console.log(err))
     }
   }
-
+console.log(commentInfo);
   return (
     <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col' >
         <div className='w-full flex justify-between items-center'>

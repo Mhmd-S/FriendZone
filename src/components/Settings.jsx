@@ -30,7 +30,7 @@ const Settings = ({setShowSettings}) => {
 
     return (
       <div className='w-full h-full border-[#464b5f] border-b-[1px] text-white flex flex-col justify-center items-center'>
-          {isLoading ? <Spinner size={20}/>
+          {isLoading ? <Spinner size={'[4rem]'}/>
           :<>
           <button className='w-full bg-[#282c37] p-3 flex items-center group' onClick={()=>setShowSettings(false)}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -44,7 +44,7 @@ const Settings = ({setShowSettings}) => {
           <div className=' flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
 
             <form className='flex flex-col justify-evenly items-center w-full h-full  px-3' onSubmit={handleSubmit(onSubmit)}>
-                <h3 className='border-[1px] p-2 bg-[#8586f2]'>{message}</h3>
+                {message  && <h3 className='border-[1px] p-2 bg-[#8586f2]'>{message}</h3>}
                 <label className='w-full flex flex-col pl-2'>
                     <span>Bio</span>
                     <span className='text-sm text-slate-400'>Desribe yourself!</span>

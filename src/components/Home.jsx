@@ -53,11 +53,10 @@ const Landing = () => {
       }, [posts]);
 
     const fetchPosts = async() => {
-        
         if (stopFetching) {
             return;
         }
-
+        setIsLoading(true);
         const res = await postAPI.getPosts(page);
         if (res.status === 'success') {
             if (res.data.length === 0) {
@@ -70,9 +69,11 @@ const Landing = () => {
             });
             setPosts([...posts, ...postEle]);
             setPage(page+1);
+            setIsLoading(false);
             return;
         }
         setErrors("Could not fetch posts");
+        setIsLoading(false);
     }
 
     return (
