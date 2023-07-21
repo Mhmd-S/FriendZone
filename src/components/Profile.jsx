@@ -90,19 +90,66 @@ const Profile = () => {
   }
 
   const displayFriendButtons = () => {
-    if (user === null) return;
-
-    if (user._id ===userProfile._id) return (<button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1 ' onClick={()=>setShowSettings(true)}>Edit Profile</button> )
-
-    return(
-    <>
-      {(user && friendStatus === 0) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleOnFriendClick}>Add Friend</button>}
-      {(user && friendStatus === 1) && <div className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'>Request Sent!</div>}
-      {(user && friendStatus === 2) && <div className='w-full flex'><button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleAcceptFriendRequest}>Accept Request</button><button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleDeclineFriendrequest  }>Decline Request</button> </div>}
-      {(user && friendStatus === 3) && <button className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1' onClick={handleRemoveFriend}>Remove Friend</button>}
-      
-    </>)
-  }
+    if (user === null) return null;
+  
+    if (user._id === userProfile._id) {
+      return (
+        <button
+          className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'
+          onClick={() => setShowSettings(true)}
+        >
+          Edit Profile
+        </button>
+      );
+    }
+  
+    switch (friendStatus) {
+      case 0:
+        return (
+          <button
+            className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1 text-center'
+            onClick={handleOnFriendClick}
+          >
+            Add Friend
+          </button>
+        );
+      case 1:
+        return (
+          <div className='bg-[#787ad9] hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1 text-center'>
+            Request Sent!
+          </div>
+        );
+      case 2:
+        return (
+          <div className='w-full flex justify-evenly text-center text-sm'>
+            <button
+              className='bg-[#787ad9] hover:bg-[##494aa1] text-center text-white rounded-md p-1'
+              onClick={handleAcceptFriendRequest}
+            >
+              Accept Request
+            </button>
+            <button
+              className='border-2 border-[#595aff] text-[#595aff] hover:bg-[#7072d838] rounded-md  p-1'
+              onClick={handleDeclineFriendrequest}
+            >
+              Decline Request
+            </button>
+          </div>
+        );
+      case 3:
+        return (
+          <button
+            className='bg-[#787ad9] text-center hover:bg-[##494aa1] text-white rounded-md w-2/3 py-1'
+            onClick={handleRemoveFriend}
+          >
+            Remove Friend
+          </button>
+        );
+      default:
+        return null;
+    }
+};
+  
   
   return (
     <div className='h-full w-full bg-[#282c37] flex flex-col'>
@@ -128,7 +175,7 @@ const Profile = () => {
               <span><span className='pl-3 text-slate-400'>Posts:</span> {userProfile.posts.length}</span>
             </div>  
           </div>
-          <div className='w-1/3 h-full flex flex-col justify-between items-center py-4'>
+          <div className='h-full w-1/2 flex flex-col justify-between items-center py-4'>
             {displayFriendButtons()}
           </div>
         </div>

@@ -14,7 +14,7 @@ const Root = () => {
   console.log(location)
 
   return (
-    <div className='w-screen grid grid-cols-[25%_50%_25%] bg-[#191b22]'>
+    <div className='w-screen h-screen grid grid-cols-[25%_50%_25%] bg-[#191b22]'>
       <div className='w-full h-screen flex flex-col '> {/* Navigation bar */}
         <div className='w-full h-4/6 text-[#d9e1e8] flex flex-col'>
           <Link className='w-full p-5 flex justify-center items-center' to={'/home'}>

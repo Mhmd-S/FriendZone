@@ -213,12 +213,12 @@ const PostSingle = ({ postInfo, setShowPost }) => {
 
             <h4 className='border-b-[1px] border-b-[#464b5f] text-lg p-2'>Comments</h4>
               {user &&
-              <form className='w-full flex justify-center items-center p-2 border-[#464b5f] border-[1px]' onSubmit={handleSubmit(onSubmit)}>
+              <form className='w-full flex justify-center items-center p-2 bg-[#313543] border-[#464b5f] border-[1px]' onSubmit={handleSubmit(onSubmit)}>
                 {isLoading ? <Spinner size={12} /> :
                   <>
-                    <textarea type="text" placeholder='Right your comment here!' className='rounded-md bg-transparent resize-none w-full outline-none p-1' {...register('content', { required: 'Comment text is required', minLength: { value: 1, message: 'Comment text must be at least 1 character long' }, maxLength: { value: 1000, message: 'Comment text must be less than 1000 characters long' } })}/>
+                    <textarea type="text" placeholder='Right your comment here!' className='rounded-md bg-transparent resize-none w-full outline-none p-1' {...register('content', { required: 'Comment text is required', minLength: { value: 1, message: 'Comment text must be at least 1 character long' }, maxLength: { value: 1000, message: 'Comment text must be less than 400 characters long' } })}/>
                     <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 p-1 hover:bg-[#99acc633]">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 p-2 hover:bg-[#99acc633] rounded-md">
                             <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                         </svg>
                     </button>
@@ -238,7 +238,7 @@ const PostSingle = ({ postInfo, setShowPost }) => {
                     }
                     </> 
                   : 
-                  <div className='text-[#606984]'>
+                  <div className='text-[#606984] py-4 text-xl'>
                     No comments
                   </div>}
               </div>

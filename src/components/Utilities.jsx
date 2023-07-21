@@ -12,7 +12,7 @@ const Utilities = () => {
 
     
   return (
-    <div className='w-full h-[30%] flex flex-col items-center'>
+    <div className='w-full h-[35%] flex flex-col items-center'>
           {user ?
               <>
                 <div className='w-[90%] h-full'>

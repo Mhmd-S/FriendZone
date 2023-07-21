@@ -54,14 +54,15 @@ const PostForm = ({ fetchPosts }) => {
           {formError && <div className='py-px text-sm text-red-500'>{formError}</div>}
           
           <div className='flex'>
+          
             <Link className='flex items-center self-start pt-2' to={`/profile/${user.username}`}>
               {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture size={10}/>}
             </Link>
 
             <label htmlFor="content" className='invisible'>Post</label>
-
             <textarea className='bg-transparent outline-none text-xl py-4 my-2 w-full resize-none' placeholder='Share your thoughts!' {...register('content', { required: 'Post text is required', minLength: { value: 1, message: 'Post text must be at least 1 character long' }, maxLength: { value: 1000, message: 'Post text must be less than 1000 characters long' } })} />
             {errors?.content && <div className='py-px text-sm text-red-500'>{errors.content.message}</div>}
+          
           </div>
           
           {imageFile && 
