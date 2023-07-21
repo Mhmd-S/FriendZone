@@ -176,7 +176,7 @@ export async function acceptFriendRequest(userId) {
 export async function declineFriendRequest(userId) {
     try{
         const url = (
-            'http://127.0.0.1:3000/user/friend-accept?' +
+            'http://127.0.0.1:3000/user/friend-reject?' +
             new URLSearchParams({ userId: userId }).toString()
         )
 
