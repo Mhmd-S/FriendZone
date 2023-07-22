@@ -10,6 +10,7 @@ function MiniForm() {
   const { user } = useAuth();
 
   const [formError, setFormError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
 
@@ -31,10 +32,13 @@ function MiniForm() {
     createPost(formData)
       .then(res => {
         if (res.status === 'fail') {
-          setFormError(res.data.content);
+          setFormError(res.data?.content || res.data);
         } else {
           reset();
+          resetField('postImage');
           setFormError(null);
+          setSuccess('Post created successfully');
+          setTimeout(() => {setSuccess(null)}, 3000);
         }
       })
       .catch(err => setFormError('Could not process your request. Try again later.'))
@@ -60,6 +64,7 @@ function MiniForm() {
             />
 
             {errors?.content && <div className='py-px text-sm text-red-500'>{errors?.content.message}</div>}
+            {success && <div className='py-px text-sm text-green-500'>{success}</div>}
 
             {imageFile && 
               <div className='w-[80%] relative self-center'>

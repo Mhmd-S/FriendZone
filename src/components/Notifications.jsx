@@ -3,6 +3,7 @@ import useAuth from '../authentication/useAuth';
 import * as userAPI from '../api/userAPI';
 import { Link } from 'react-router-dom';
 import DefaultProfilePicture from './DefaultProfilePicture';
+import Spinner from './Spinner';
 
 
 const Notifications = () => {
@@ -21,7 +22,7 @@ const Notifications = () => {
     }, [user])
 
     const fetchFriends = async() => {
-        setIsLoading
+        setIsLoading(true);
         const userFriendsAndRequests = await userAPI.getUserFriends();
         if (userFriendsAndRequests.data.pendingFriends.length > 0) {
             const requestEle = userFriendsAndRequests.data.pendingFriends.map((request) => {
@@ -51,6 +52,8 @@ const Notifications = () => {
             })
             setFriendRequests(requestEle)
         }        
+        setTimeout(() => {setIsLoading(false);},3000);
+        
     }
 
     const handleAcceptFriendRequest = async (friendId) => {
@@ -75,8 +78,10 @@ const Notifications = () => {
   return (
     <div className='w-full h-full flex flex-col justify-between  bg-white text-black rounded-lg mt-4'>
         <h1 className='w-full p-2 rounded-t-lg bg-[#e7e9ec] text-[#606984]'>Notifications</h1>
-        <ul className='flex flex-col w-full flex-grow p-2 overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
-            {friendRequests.length > 0 ? friendRequests : <div className='w-full h-full text-[#606984] flex justify-center items-center'>No notifications</div>}
+        <ul className='flex flex-col justify-center items-center w-full flex-grow p-2 overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+            {isLoading ? <Spinner size={12} /> :
+                (friendRequests.length > 0 ? friendRequests : <div className='w-full h-full text-[#606984] flex justify-center items-center'>No notifications</div>)
+            }
         </ul>
     </div>
   )

@@ -15,6 +15,7 @@ const PostForm = ({ fetchPosts }) => {
     const [formError, setFormError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     const handleFileChange = (event) => {
       setImageFile(event.target.files[0]);
@@ -40,6 +41,9 @@ const PostForm = ({ fetchPosts }) => {
             resetField('postImage');
             fetchPosts(1);
             setFormError(null);
+            setSuccess('Post created successfully');
+            setTimeout(() => {setSuccess(null)}, 3000);
+            
           }
         })
         .catch(err => setFormError('Could not proccess your request. Try again later.'))
@@ -52,6 +56,7 @@ const PostForm = ({ fetchPosts }) => {
         <form onSubmit={handleSubmit(onSubmit)} className='w-full h-full p-4 flex flex-col justify-evenly' >
           
           {formError && <div className='py-px text-sm text-red-500'>{formError}</div>}
+          {success && <div className='py-px text-sm text-green-500'>{success}</div>}
           
           <div className='flex'>
           

@@ -83,3 +83,17 @@ export const unlikePost = async(postId) => {
     }
 }
 
+
+export const deletePost = async(postId) => {
+    try {
+        const response = await fetch(`http://127.0.0.1:3000/post/${postId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+            mode: 'cors',
+        });
+        const res = await response.json();
+        return res;
+    } catch(err) {
+        console.log('Could not process your request at the moment. Please try again later.');
+    }
+}
