@@ -48,16 +48,7 @@ export default function Signup() {
       {isLoading ? <div className='w-full h-full flex justify-center items-center'>
         <Spinner size={20}/>
       </div> : 
-      <form className="w-[80%] h-[80%] flex flex-col items-center justify-evenly relative" onSubmit={handleSubmit(onSubmit)}>
-
-      <div className='w-1/3 h-1/3 p-4 absolute bg-[#14161bda] text-white -right-16 -top-16 border-[#787ad9] border-2'>
-        <p className="text-md">
-          Welcome to FriendZone! We're so excited to have you here.
-          Please fill out the form to get started.
-          Also, please keep in mind that this is a demo site, so if you find any bugs, please let us know!
-          &#10084;&#65039;
-        </p>
-      </div>
+      <form className="w-full h-full flex flex-col items-center justify-evenly" onSubmit={handleSubmit(onSubmit)}>  
 
         <label htmlFor="email" className='hidden'>Email</label>
         <input
@@ -115,38 +106,6 @@ export default function Signup() {
         {errors?.confirmPassword && <div className='py-px text-sm text-red-500'>{errors.confirmPassword.message}</div>}
         {error?.confirmPassword && <div className='py-px text-sm text-red-500'>{error.confirmPassword}</div>}
 
-        {/* <label htmlFor="firstName" className='hidden'>First Name</label>
-        <input
-          type="text"
-          placeholder='First Name'
-          {...register('firstName', {
-            required: 'First Name can only contain letters and between 1 and 50 characters',
-            pattern: {
-              value: /^[a-zA-Z]{1,50}$/,
-              message: 'First Name can only contain letters and between 1 and 50 characters',
-            },
-          })}
-          className={"w-2/5 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.firstName || error?.firstName ? 'border-red-500' : '')}
-        />
-        {errors?.firstName && <div className='py-px text-sm text-red-500'>{errors.firstName.message}</div>}
-        {error?.firstName && <div className='py-px text-sm text-red-500'>{error.firstName}</div>}
-
-        <label htmlFor="lastName" className='hidden'>Last Name</label>
-        <input
-          type="text"
-          placeholder='Last Name'
-          {...register('lastName', {
-            required: 'Last Name can only contain letters and between 1 and 50 characters',
-            pattern: {
-              value: /^[a-zA-Z]{1,50}$/,
-              message: 'Last Name can only contain letters and between 1 and 50 characters',
-            },
-          })}
-          className={"w-2/5 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.lastName || error?.lastName ? 'border-red-500' : '')}
-        /> 
-        {errors?.lastName && <div className='py-px text-sm text-red-500'>{errors.lastName?.message}</div>}
-        {error?.lastName && <div className='py-px text-sm text-red-500'>{error.lastName}</div>} */}
-
          <label htmlFor="dob" className='hidden'>Date of Birth</label>
           <input
             type="date"
@@ -172,6 +131,16 @@ export default function Signup() {
           <Link to={'/login'} className='text-md text-slate-500 underline'>
             Login
           </Link>
+
+          <div className='w-1/3 h-1/3 p-4 bg-[#14161bda] text-white border-[#787ad9] border-2'>
+            <p className="text-md">
+              Welcome to FriendZone! We're so excited to have you here.
+              Please fill out the form to get started.
+              Also, please keep in mind that this is a demo site, so if you find any bugs, please let us know!
+              &#10084;&#65039;
+            </p>
+          </div>
+
         </form>
         }
       </div>

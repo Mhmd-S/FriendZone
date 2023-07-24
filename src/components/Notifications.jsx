@@ -76,7 +76,7 @@ const Notifications = () => {
     }
 
   return (
-    <div className='w-full h-full flex flex-col justify-between  bg-white text-black rounded-lg mt-4'>
+    <div className='w-full h-2/5 flex flex-col justify-between  bg-white text-black rounded-lg mt-4'>
         <h1 className='w-full p-2 rounded-t-lg bg-[#e7e9ec] text-[#606984]'>Notifications</h1>
         <ul className='flex flex-col justify-center items-center w-full flex-grow p-2 overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
             {isLoading ? <Spinner size={12} /> :

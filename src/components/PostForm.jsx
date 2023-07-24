@@ -39,11 +39,13 @@ const PostForm = ({ fetchPosts }) => {
           } else {
             resetField('content');
             resetField('postImage');
-            fetchPosts(1);
-            setFormError(null);
-            setSuccess('Post created successfully');
-            setTimeout(() => {setSuccess(null)}, 3000);
-            
+            fetchPosts(1)
+              .then(()=>{            
+                setFormError(null);
+                setImageFile(null);
+                setSuccess('Post created successfully');
+                setTimeout(() => {setSuccess(null)}, 3000);
+              });
           }
         })
         .catch(err => setFormError('Could not proccess your request. Try again later.'))
