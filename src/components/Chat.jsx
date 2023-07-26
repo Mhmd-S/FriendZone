@@ -5,17 +5,22 @@ import useAuth from '../authentication/useAuth';
 import * as chatAPI from '../api/chatAPI';
 import Spinner from './Spinner';
 import SearchBar from './SearchBar';
-
-
+import DefaultProfilePicture from './DefaultProfilePicture';
+import { Link } from 'react-router-dom';
 
 const Chat = () => {
+
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
-  const [recipientId, setRecipientId] = useState(null); 
+  const [recipient, setRecipient] = useState(null); 
   const [chats, setChats] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [stopFetching, setStopFetching] = useState(false);
+
+  const [chatPage, setChatPage] = useState(1);
+  const [stopChatFetching ,setStopChatFetching] = useState(false);
+  const [isNew, setIsNew] = useState(false); // new chat
 
   const socket = io('http://localhost:3000', {autoConnect: false});
 
@@ -72,6 +77,45 @@ const Chat = () => {
     };
   }, [chats]);
 
+  useEffect(()=>{
+    fetchChat();
+  }, [recipient])
+
+  const fetchChat = async() => {
+    if (stopChatFetching) {
+      return;
+    }
+    
+    setIsLoading(true);
+    const res = await chatAPI.getChat(recipient._id, chatPage);
+
+    if (res.status === 'error') {
+      setChats([<div key={'problemEcnounterdKey'}>A problem was encounterd. Try again later</div>]);
+      setIsLoading(false);
+      return;
+    }
+
+    if (res.data.length === 0 && page === 1) {
+      setIsLoading(false);
+      setStopChatFetching(true);
+      setIsNew(true);
+      return;
+    }
+
+    if (res.data.length === 0 && page > 1) {
+      setIsLoading(false);
+      stopChatFetching(true);
+      return;
+    }
+    
+    if (res.status === 'success') {
+      setMessages(res.data, ...messages.reverse());
+      setChatPage(page + 1);
+      setIsLoading(false); 
+      }
+  }
+
+
   const fetchChats = async() => {
     
     if (stopFetching) {
@@ -112,12 +156,12 @@ const Chat = () => {
       setChats([...chats,...results]); 
       setIsLoading(false); 
       }
-    }
+    };
 
-    const sendMessage = () => {
+  const sendMessage = () => {
       // Send the message to the server
       socket.emit('message', {
-        recipientId: 'userIdOfRecipient', // Replace with the recipient's user ID
+        recipientId: recipient._id, 
         message: messageInput,
       });
   
@@ -133,7 +177,7 @@ const Chat = () => {
   
 
   return (
-    <div className='w-full h-full text-white'>
+    <div className='w-full h-full text-white relative'>
       <div className='w-full h-full'>
         
         <h3 className='flex w-full h-[10%] sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'>
@@ -143,7 +187,7 @@ const Chat = () => {
           <span className='text-xl text-white'>Chat</span>
         </h3>
         
-        <SearchBar />
+        <SearchBar chatMode={true} setRecipient={setRecipient} />
 
         <div className='w-full h-[80%] bg-[#282c37] flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
           {chats.length <= 0 ? <div className='text-center h-full flex flex-col justify-center items-center'>No chats found</div>
@@ -159,20 +203,27 @@ const Chat = () => {
           }
         </div>
       </div>
-      {recipientId && (
-        <div className='w-full h-full'>
-          <h2 className='text-3xl p-2'>Chat with {recipientId}</h2>
-          <div className='w-full h-full  bg-[#282c37] flex flex-col overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
-            <MessageList messages={messages}/>
+      {recipient && (
+        <div className='w-full h-full absolute left-0 top-0 bg-[#282c37]'>
+          
+          <Link to={'/profile/' + recipient.username} className='w-full h-[10%] bg-[#60698459] my-2 px-2 rounded-md flex items-center'>
+            {recipient.profilePicture ? <img className='w-12 h-12 rounded-full' src={recipient.profilePicture} alt='Profile Picture' /> : <DefaultProfilePicture size={12} />} 
+            <p className='pl-2 text-white'>{recipient.username}</p>
+          </Link>
+          
+          <div className='w-full h-[80%] flex flex-col overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+            {<MessageList messages={messages}/>}
           </div>
-          <div className='w-full h-full'>
-            <input
-              type="text"
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-            />
-            <button onClick={sendMessage}>Send</button>
+          
+          <div className='w-full h-[10%] flex items-center'>
+            <input type="text" placeholder='Type your message' value={messageInput} onChange={(e) => setMessageInput(e.target.value)} className='rounded-md bg-transparent resize-none w-[90%] outline-none p-1'/>
+              <button onClick={sendMessage} className='w-[10%]'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 p-2 hover:bg-[#99acc633] rounded-md">
+                  <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                </svg>
+              </button>
           </div>
+        
         </div>
       )
       }

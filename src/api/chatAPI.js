@@ -1,8 +1,8 @@
 
 // Test these! and modify the postAPI.js
-export const getChat = async(chatId) => {
+export const getChat = async(recipientId, pageNum) => {
     try {
-        const url = `http://127.0.0.1:3000/chat/${chatId}`;
+        const url = `http://127.0.0.1:3000/chat?` + new URLSearchParams({ recipientId: recipientId, page : pageNum }).toString()
 
         const response = await fetch(url, {
             mode: 'cors',

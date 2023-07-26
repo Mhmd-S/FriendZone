@@ -5,7 +5,7 @@ import Spinner from './Spinner';
 
 import * as userAPI from '../api/userAPI';
 
-const SearchBar = () => {
+const SearchBar = ({ chatMode, setRecipient }) => {
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
@@ -40,15 +40,27 @@ const SearchBar = () => {
         setSearchResult([<div className='w-full text-center text-white p-1' key={'messageNoUsersFound'}>No Users Found</div>, <div className='w-full truncate text-center text-white cursor-pointer hover:underline p-1' key={"searchPostsKeyword"}>Search Posts with {searchInput}</div>]);
         return;
       }
+      
+      let users;
 
-      const users = res.data.map((user) => {
-        return (
-          <Link to={'/profile/' + user.username} className='w-[95%] h-[4rem] bg-[#60698459] my-2 p-2 rounded-md flex items-center' key={user.username}>
-            {user.profilePicture ? <img className='w-12 h-12 rounded-full' src={user.profilePicture} alt='Profile Picture' /> : <DefaultProfilePicture size={12} />} 
-            <p className='pl-2 text-white'>{user.username}</p>
-          </Link>
-        );
-      });
+      chatMode ? 
+        users = res.data.map((user) => {
+          return (
+            <div onClick={()=>setRecipient(user)} className='w-[95%] h-[4rem] bg-[#60698459] my-2 p-2 rounded-md flex items-center' key={user.username}>
+              {user.profilePicture ? <img className='w-12 h-12 rounded-full' src={user.profilePicture} alt='Profile Picture' /> : <DefaultProfilePicture size={12} />} 
+              <p className='pl-2 text-white'>{user.username}</p>
+            </div>
+          );
+        })
+      :
+        users = res.data.map((user) => {
+          return (
+            <Link to={'/profile/' + user.username} className='w-[95%] h-[4rem] bg-[#60698459] my-2 p-2 rounded-md flex items-center' key={user.username}>
+              {user.profilePicture ? <img className='w-12 h-12 rounded-full' src={user.profilePicture} alt='Profile Picture' /> : <DefaultProfilePicture size={12} />} 
+              <p className='pl-2 text-white'>{user.username}</p>
+            </Link>
+          );
+        });
 
       setSearchResult([...users, <div className='w-full p-1 text-center text-white cursor-pointer hover:underline' key={'searchMoreKeyword'}>Search for more users</div>, <div className='w-full p-1 text-center text-ellipsis text-white cursor-pointer hover:underline' key={"searchPostsKeyword"}>Search Posts with {searchInput}</div>]);
     }

@@ -88,7 +88,7 @@ const Root = () => {
             </svg>
           </button>
           
-          {location.pathname !== '/search' && <SearchBar />}
+          {location.pathname !== '/search' && <SearchBar chatMode={false} />}
           <Utilities />
         </div>
 
