@@ -182,8 +182,8 @@ const PostSingle = ({ postInfo, setShowPost }) => {
                 {postInfo.content}
               </div>
 
-              <div className='w-full'>
-                {postInfo.image && <img src={postInfo.image} alt='Post Image' />}
+              <div className='w-full flex justify-center items-center'>
+                {postInfo.image && <img src={postInfo.image} className='rounded-md' alt='Post Image' />}
               </div>
 
               <div className='w-full flex justify-end place-self-end pt-4'>

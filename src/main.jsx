@@ -15,6 +15,7 @@ import Search from './components/Search';
 import Explore from './components/Explore';
 import Home from './components/Home';
 import Profile from './components/Profile';
+import Chat from './components/Chat';
 
 // Loaders
 import { loader as userLoader } from './components/Profile';
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: 'explore',
         element: <Explore />
+      },
+      {
+        path: 'chat',
+        element: <Chat />
       },
       {
         path: 'profile/:username', // Add the URL parameter ":username"

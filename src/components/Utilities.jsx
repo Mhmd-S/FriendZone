@@ -35,9 +35,9 @@ const Utilities = () => {
                 </div>
               </>
             : 
-              <div className='w-full h-full items-center flex flex-col'> {/* If not logged in display this div */}
-                <Link to='login' className='w-full bg-[#5053eb] p-2 text-center rounded-md hover:bg-[#3a3dd2] mb-4'>Login</Link>
-                <Link to='signup' className='w-full border-2 border-[#595aff] p-2 text-center rounded-md text-[#595aff] hover:border-[#3232b3] hover:text-[#3232b3]'>Signup</Link>
+              <div className='w-full h-full items-center flex flex-col mt-[50%] lg:mt-0'> {/* If not logged in display this div */}
+                <Link to='login' className='w-1/3 bg-[#5053eb] p-2 text-center rounded-md hover:bg-[#3a3dd2] mb-4 lg:w-full'>Login</Link>
+                <Link to='signup' className='w-1/3 border-2 border-[#595aff] p-2 text-center rounded-md text-[#595aff] hover:border-[#3232b3] hover:text-[#3232b3] lg:w-full'>Signup</Link>
               </div>
             }
         </div>
