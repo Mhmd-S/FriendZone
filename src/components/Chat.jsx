@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
+import { useState, useEffect, useRef } from 'react';
 import MessageList from './ChatList';
 import useAuth from '../authentication/useAuth';
 import * as chatAPI from '../api/chatAPI';
@@ -7,6 +6,7 @@ import Spinner from './Spinner';
 import SearchBar from './SearchBar';
 import DefaultProfilePicture from './DefaultProfilePicture';
 import { Link } from 'react-router-dom';
+import { socket } from '../api/socket';
 
 const Chat = () => {
 
@@ -22,29 +22,33 @@ const Chat = () => {
   const [stopChatFetching ,setStopChatFetching] = useState(false);
   const [isNew, setIsNew] = useState(false); // new chat
 
-  const socket = io('http://localhost:3000', {autoConnect: false});
-
   const { user } = useAuth();
 
   let containerRef = useRef(null);
 
-  useEffect(() => {
-    socket.connect();
-
-    socket.on('error', (err) => {
-      console.log(err);
-    });
-
-
-    // Listen for incoming messages from the server
-    socket.on('message', (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-  }, []);
-
   useEffect(()=>{
     fetchChats();
   }, [])
+
+  useEffect(() => {
+    socket.connect();
+
+    const onDisconnect= () => {
+      console.log('Disconnected');
+    }
+
+    const onMessage = (data) => {
+      setMessages((prevMessages) => [...prevMessages, data]);
+    }
+
+    socket.on('disconnect', onDisconnect);
+    socket.on('message', onMessage);
+
+    return () => {
+      socket.off('disconnect', onDisconnect);
+      socket.off('message', onMessage);
+    };
+  }, []);
 
   useEffect(() => {
     
@@ -78,8 +82,10 @@ const Chat = () => {
   }, [chats]);
 
   useEffect(()=>{
-    fetchChat();
-  }, [recipient])
+    if (recipient){
+      fetchChat();
+    }
+  }, [recipient]);
 
   const fetchChat = async() => {
     if (stopChatFetching) {
@@ -158,11 +164,12 @@ const Chat = () => {
       }
     };
 
-  const sendMessage = () => {
+    const sendMessage = () => {
       // Send the message to the server
       socket.emit('message', {
         recipientId: recipient._id, 
         message: messageInput,
+        newChat: isNew,
       });
   
       // Add the sent message to the local state
@@ -173,8 +180,7 @@ const Chat = () => {
   
       // Clear the message input
       setMessageInput('');
-    };
-  
+    }
 
   return (
     <div className='w-full h-full text-white relative'>
