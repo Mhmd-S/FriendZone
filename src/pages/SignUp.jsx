@@ -132,15 +132,6 @@ export default function Signup() {
             Login
           </Link>
 
-          <div className='w-1/3 h-1/3 p-4 bg-[#14161bda] text-white border-[#787ad9] border-2'>
-            <p className="text-md">
-              Welcome to FriendZone! We're so excited to have you here.
-              Please fill out the form to get started.
-              Also, please keep in mind that this is a demo site, so if you find any bugs, please let us know!
-              &#10084;&#65039;
-            </p>
-          </div>
-
         </form>
         }
       </div>

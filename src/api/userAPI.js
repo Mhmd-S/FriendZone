@@ -20,20 +20,23 @@ export async function signUp (signUpCreds) {
 
 export async function login(loginCreds) {
     try {
+        // Convert the loginCreds object to URL-encoded string
+        const body = new URLSearchParams(loginCreds).toString();
+
         const response = await fetch('http://127.0.0.1:3000/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              credentials: 'include',
-              mode: 'cors',
-              body: loginCreds.toString(),
+            },
+            credentials: 'include',
+            mode: 'cors',
+            body: body, // Pass the URL-encoded string here
         });
-        
+
         const res = await response.json();
         return res;
-    }catch(err) {
-        console.log('Could not process your requrest at the moment. Please try again later.');
+    } catch (err) {
+        console.log('Could not process your request at the moment. Please try again later.');
     }
 }
 
@@ -61,7 +64,7 @@ export async function checkIfAuthenticated() {
         const response = await fetch('http://127.0.0.1:3000/user/auth', {
             method: 'GET',
             credentials: 'include',
-            mode: 'cors',
+
         });
         
         const res = await response.json();
