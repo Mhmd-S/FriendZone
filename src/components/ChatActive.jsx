@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import * as chatAPI from '../api/chatAPI';
 import DefaultProfilePicture from './DefaultProfilePicture';
 import useAuth from '../authentication/useAuth';
@@ -15,12 +15,44 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
   const [stopFetching, setStopFetching] = useState(false);
 
   const containerRef = useRef(null);
+  const bottomRef = useRef(null);
 
   const { user } = useAuth();
 
   useEffect( ()=> {
     fetchChat();
   }, [recipient, chatId])
+
+  useEffect(()=>{
+    socket.on('receive-message', (data) => {
+
+        const { chatId, sender, recipient, message, timestamp } = data;
+        console.log(data);
+        const newMessage = {
+          _id: generateUUID(),
+          content: message,
+          sender: {
+            _id: sender._id,
+          },
+          createdAt: timestamp,
+        }
+
+        setMessages([newMessage, ...messages])
+
+    })
+
+    return () => {
+        socket.off('message');
+    }
+}, [])
+
+  useLayoutEffect(() => {
+    if (page - 1 === 1) {
+      bottomRef.current?.scrollIntoView({ behavior: "instant" });
+      return;
+    }
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
         
@@ -48,7 +80,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     return () => {
         observer.disconnect();
     };
-}, [messages]);
+  }, [messages]);
 
   const fetchChat = async() => {
     if (stopFetching || !recipient || !chatId) {
@@ -56,6 +88,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     }
     
     setIsLoading(true);
+
     const res = await chatAPI.getChat(recipient._id, page);
 
     if (res.status === 'error') {
@@ -64,21 +97,20 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
       return;
     }
 
-    if (res.data.length === 0 && page === 1) {
-      setIsLoading(false);
-      setStopFetching(true);
-      return;
-    }
-
-    if (res.data.length === 0 && page > 1) {
-      setIsLoading(false);
-      stopFetching(true);
-      return;
-    }
-    
     if (res.status === 'success') {
-      console.log(res.data)
-      setMessages([...res.data.messages, ...messages.reverse()]);
+      
+      if (res.data.messages.length === 0)  {
+        setIsLoading(false);
+        setStopFetching(true);
+        return;
+      }
+
+      if (res.data.messages.length < 50) {
+        setIsLoading(false);
+        setStopFetching(true);
+      }
+
+      setMessages([...messages, ...res.data.messages]);
       setPage(page + 1);
       setIsLoading(false); 
       }
@@ -107,7 +139,11 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     const now = new Date(); // Get the current date and time
 
     let dateStr;
-    let timeStr;
+    let timeStr = dateObj.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+  });
 
     // Check if the date is today, then display the time
     if (
@@ -116,28 +152,30 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
         dateObj.getFullYear() === now.getFullYear()
     ) {
         dateStr = '';
-        timeStr = dateObj.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true
-        });
     } else if (Math.abs(now - dateObj) < 7 * 24 * 60 * 60 * 1000) {
         // Check if the date is within the last 7 days (604800000 milliseconds)
-        dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
-        timeStr = '';
+        dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
     } else {
         dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        timeStr = '';
     }
-
     return `${dateStr} ${timeStr}`.trim();
-};
+  };
+
+  function generateUUID() {
+    const pattern = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+    return pattern.replace(/[xy]/g, (c) => {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
 
   return (
     <>
       {chatId || recipient ? 
       
-      <div className='w-full h-full grid grid-rows-[10%_80%_10%] grid-cols-1'>
+      <div className='w-full h-[100%] grid grid-rows-[10%_80%_10%] grid-cols-1'>
+
         <div className='w-full  bg-[#60698459] flex items-center'>
           <button className='w-fit h-full p-3 flex items-center group' onClick={ ()=> { setRecipient(null); setChatId(null) } }>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -152,9 +190,10 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
         </div>
         
         {isLoading ? 
-        <div className='w-full'><Spinner size={12} /></div> 
+        <div className='w-full h-full flex justify-center items-center'><Spinner size={12} /></div> 
         :
         <ul className=' bg-[#282c37] pl-2 max-w-full flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+          {/* <div ref={containerRef}></div> */}
           {(messages.length > 0 )&& messages.map((message) => {
             if (message.senderId === user._id) {
               return (
@@ -172,17 +211,19 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
               );
             }
             })}
+
+            <div ref={bottomRef}></div>
         </ul>
         }
 
-        <div className='w-full  bg-[#60698459] flex justify-evenly items-center px-2'>
+        <form className='w-full h-full  bg-[#60698459] flex justify-evenly items-center px-2' method='#' onSubmit={(e)=>e.preventDefault()}>
           <input type="text" placeholder='Type your message' value={messageInput} onChange={(e) => setMessageInput(e.target.value)} className='h-3/5 bg-[#282c37] rounded-3xl resize-none w-[85%] outline-none px-2'/>
           <button onClick={sendMessage} className='w-[10%]'>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 p-2 hover:bg-[#99acc633] rounded-md">
               <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
             </svg>
           </button>
-        </div>
+        </form>
       </div> 
     : 
       <div className='hidden w-full h-full lg:flex justify-center items-center'>
@@ -194,3 +235,5 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
 };
 
 export default ChatActive;
+
+

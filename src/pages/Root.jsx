@@ -64,7 +64,7 @@ const Root = () => {
         </div>
       </div>
 
-      <div className='w-full order-2 py-2 rounded-md lg:h-screen'>
+      <div className='w-full order-2 rounded-md lg:h-screen'>
         <Outlet />
       </div>
       

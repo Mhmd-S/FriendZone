@@ -41,7 +41,7 @@ const Chat = () => {
         </svg>
         <span className='text-xl text-white'>Chat</span>
       </h3>
-      <div className='w-full h-[90%] text-white md:grid md:grid-cols-[40%_60%]'>
+      <div className='w-full h-full text-white md:grid md:h-[90%] md:grid-cols-[40%_60%]'>
         <Contacts 
           setRecipient={setRecipient} 
           setChatId={setChatId} 
