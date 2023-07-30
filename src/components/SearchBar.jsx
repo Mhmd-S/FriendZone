@@ -6,6 +6,7 @@ import Spinner from './Spinner';
 import * as userAPI from '../api/userAPI';
 
 const SearchBar = ({ chatMode, setRecipient }) => {
+  
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);

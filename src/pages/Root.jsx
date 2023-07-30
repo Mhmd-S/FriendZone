@@ -16,7 +16,7 @@ const Root = () => {
   const { login, logout, user, isLoading, error } = useAuth();
   
   return (
-    <div className='w-screen h-screen grid grid-rows-[7.5%_85%_7.5%] lg:grid lg:grid-cols-[20%_57.5%_22.5%] bg-[#191b22]'>
+    <div className='w-screen h-screen grid grid-rows-[7.5%_85%_7.5%] lg:grid lg:grid-cols-[15%_62.5%_22.5%] bg-[#191b22]'>
       
       <div className='w-full justify-self-end order-3 lg:h-screen flex justify-between items-center lg:order-1 lg:flex-col'> {/* Navigation bar */}
         <div className='w-full h-full text-[#d9e1e8] flex items-center lg:flex-col lg:h-2/5'>

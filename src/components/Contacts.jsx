@@ -6,7 +6,7 @@ import SearchBar from './SearchBar';
 import Spinner from './Spinner';
 import { socket } from '../api/socket';
 
-const Contacts = ({ setChatId, setRecipient }) => {
+const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
     const [chats, setChats] = useState([]);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
@@ -22,51 +22,43 @@ const Contacts = ({ setChatId, setRecipient }) => {
 
     useEffect(()=>{
         socket.on('receive-message', (data) => {
-            const { chatId, sender, message, timestamp } = data;
 
-            let chatsTemp = chats;
-            let newChat;
+            const { chatId, sender, recipient, message, timestamp } = data;
+            console.log('Message recieved')
+
+            let chatsTemp = [...chats];
+            let chatFound;
             let ind; 
 
-            newChat = chats.find((chat, index)=>{
-                if (chat.id === chatId) {
+            chatFound = chats.find((chat, index)=>{
+                if (chat._id === chatId) {
                     ind = index;
                     return true;
                 }
             })
 
-            
-            chatsTemp.splice(ind, 1);
-            chatsTemp.unshift(newChat);
+            console.log(data);
+            if (chatFound) {
+                console.log('Contact found')
+                chatFound.lastMessage = message;
+                chatFound.updatedAt = timestamp;
+                
+                chatsTemp.splice(ind, 1);
+                chatsTemp.unshift(chatFound);
+                
+                setChats(chatsTemp);
 
-            if (newChat) {
-                setChats(newChat);
             } else {
-                console.log('Working fine')
-                newChat = (
-                    <div
-                    key={chatId}
-                    className='w-full'
-                    onClick={() => {
-                        setRecipient(sender);
-                        setChatId(chatId);
-                    }}>
-                        <>
-                            {sender.profilePicture ? (
-                                <img
-                                    src={sender.profilePicture}
-                                    alt='Profile'
-                                    className='w-12 h-12 rounded-full'
-                                />
-                            ) : (
-                                <DefaultProfilePicture />
-                            )}
-                        </>
-                        <div>{sender.username}</div>
-                        <div>{message}</div>
-                        <div>{timestamp}</div>
-                    </div>
-                )
+                console.log('Contact not found')
+                const newChat = {
+                    _id: chatId,
+                    participants: [sender, recipient],
+                    lastMessage: {
+                        content: message,
+                        updatedAt: timestamp,
+                    },
+                };
+               
                 setChats([newChat, ...chats]);
             }
         })
@@ -89,10 +81,8 @@ const Contacts = ({ setChatId, setRecipient }) => {
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                console.log(entry.isIntersecting);
                 if (entry.isIntersecting) {
-                    setIsLoading(true);
-                    fetchChats().finally(() => setIsLoading(false));
+                    fetchChats()
                 }
             },
             options
@@ -136,63 +126,92 @@ const Contacts = ({ setChatId, setRecipient }) => {
         }
 
         if (res.status === 'success') {
-            const results = res.data.map((chat) => {
+            setPage(page + 1);
+            setChats([...chats,...res.data]);
+            setIsLoading(false);
+        }
+    };
+
+    const populateChats = () => {
+         const chatsEle = chats.map((chat) => {
                 const contactInfo = chat.participants[0]._id === user._id ? chat.participants[1] : chat.participants[0];
+                
 
                 return (
                     <div
                         key={chat._id}
-                        className='w-full'
+                        className='w-full h-[15%] grid grid-cols-[17.5%_67.5%_15%] items-center justify-between border-b-2 border-b-[#464b5f] cursor-pointer hover:bg-[#464b5f] hover:bg-opacity-10'
                         onClick={() => {
                             setRecipient(contactInfo);
                             setChatId(chat._id);
                         }}
                     >
-                        <>
-                            {contactInfo.profilePicture ? (
-                                <img
-                                    src={contactInfo.profilePicture}
-                                    alt='Profile'
-                                    className='w-12 h-12 rounded-full'
-                                />
-                            ) : (
-                                <DefaultProfilePicture />
-                            )}
-                        </>
-                        <div>{contactInfo.username}</div>
-                        <div>{chat.lastMessage.content}</div>
-                        <div>{chat.lastMessage.createdAt}</div>
+                        <div className='w-full h-full flex justify-center items-center'>
+                        {contactInfo.profilePicture ? (
+                            <img
+                                src={contactInfo.profilePicture}
+                                alt='Profile'
+                                className='w-12 h-12 rounded-full'
+                            />
+                        ) : (
+                            <DefaultProfilePicture size={10}/>
+                        )}
+                        </div>
+                        <div className='h-full w-full  grid grid-rows-[40%_60%] pt-2 px-1'>
+                            <div className='w-full overflow-hidden'>{contactInfo.username}</div>
+                            <div className='text-[#71768b] w-full overflow-hidden md:text-sm'>
+                                {chat.lastMessage.content}
+                            </div>
+                            
+                        </div>
+                        <div className='text-[0.85rem] h-full pt-2 md:text-[0.7rem]'>{convertDate(chat.lastMessage.updatedAt)}</div>
                     </div>
                 );
             });
+            return chatsEle;
+    }
 
-            setPage(page + 1);
-            setChats([...chats, ...results]);
-            setIsLoading(false);
+    const convertDate = (date) => {
+        const dateObj = new Date(date);
+        const now = new Date(); // Get the current date and time
+    
+        let dateStr;
+        let timeStr;
+    
+        // Check if the date is today, then display the time
+        if (
+            dateObj.getDate() === now.getDate() &&
+            dateObj.getMonth() === now.getMonth() &&
+            dateObj.getFullYear() === now.getFullYear()
+        ) {
+            dateStr = '';
+            timeStr = dateObj.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+            });
+        } else if (Math.abs(now - dateObj) < 7 * 24 * 60 * 60 * 1000) {
+            // Check if the date is within the last 7 days (604800000 milliseconds)
+            dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
+            timeStr = '';
+        } else {
+            dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            timeStr = '';
         }
+    
+        return `${dateStr} ${timeStr}`.trim();
     };
+    
 
     return (
-        <div className='w-full h-full'>
-            <h3 className='flex w-full h-[10%] sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'>
-                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='#787ad9' className='w-8 h-8 pr-2'>
-                    <path
-                        fillRule='evenodd'
-                        d='M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z'
-                        clipRule='evenodd'
-                    />
-                </svg>
-                <span className='text-xl text-white'>Chat</span>
-            </h3>
-
+        <div className={(chatId && recipient) && 'hidden ' + 'w-full h-full'}>
             <SearchBar chatMode={true} setRecipient={setRecipient} />
-
             <div className='w-full h-[80%] bg-[#282c37] flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
                 {chats.length <= 0 ? (
                     <div className='text-center h-full flex flex-col justify-center items-center'>No chats found</div>
                 ) : (
                     <>
-                        {chats}
+                        {populateChats()}
                         {isLoading ? (
                             <Spinner size={12} />
                         ) : (
