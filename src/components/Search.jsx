@@ -20,7 +20,6 @@ const Search = () => {
 
   useEffect(()=>{
     setSearchResult([]);
-    console.log("23")
     setPage(1);
     setStopFetching(false);
   }, [category, searchInput])
@@ -37,7 +36,6 @@ const Search = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        console.log(entry.isIntersecting);
         if (entry.isIntersecting) {
           setIsLoading(true);
           fetchSearchResults()
@@ -78,7 +76,6 @@ const Search = () => {
     }
     if (res.status === 'error') {
       setSearchResult([<div key={'problemEcnounterdKey'}>A problem was encounterd. Try again later</div>]);
-      console.log('80')
       setIsLoading(false);
       return;
     }
@@ -117,18 +114,18 @@ const Search = () => {
   }
 
   return (
-    <div className='h-full w-full bg-[#282c37] rounded-lg flex flex-col'>
+    <div className='h-full w-full bg-[#282c37] rounded-lg flex flex-col md:grid md:grid-rows-[10%_12%_8%_90%] md:grid-cols-1'>
       {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/> 
       :
       <>
-        <h3 className='flex w-full h-[7.5%] sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'>
+        <h3 className='flex w-full sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#787ad9"  className="w-8 h-8  pr-2">
             <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clipRule="evenodd" />
           </svg>
           <span className='text-xl text-white'>Search</span>
         </h3>
 
-        <form onSubmit={e=>{ e.preventDefault(); fetchSearchResults();}}  className='w-full h-[12%] flex bg-[#313543] p-4 items-center justify-evenly'>
+        <form onSubmit={e=>{ e.preventDefault(); fetchSearchResults();}}  className='w-full flex bg-[#313543] p-4 items-center justify-evenly'>
           <input className='w-[75%] p-2 outline-0 overflow-x-hidden rounded-md' 
                   type="text" 
                   placeholder="Search" 
@@ -136,7 +133,7 @@ const Search = () => {
           <button type='submit' className='w-[20%] p-2 bg-[#787ad9] rounded-md text-white hover:bg-[#595aff]'>Search</button>
         </form>
 
-        <ul className='w-full h-[8%] flex bg-[#1f232b]items-center justify-evenly text-[#8586f2] border-t-2 border-b-2 border-[#353a49] cursor-pointer font-semibold'>
+        <ul className='w-full flex bg-[#1f232b]items-center justify-evenly text-[#8586f2] border-t-2 border-b-2 border-[#353a49] cursor-pointer font-semibold'>
           <li className={'w-1/2 p-2 h-full flex justify-center items-center ' + (category === 0 && 'bg-[#595aff] text-white' )} onClick={()=>setCategory(0)}>
             Users
           </li>

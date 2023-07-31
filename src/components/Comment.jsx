@@ -7,7 +7,7 @@ import * as commentAPI from '../api/commentAPI';
 
 const Comment = ({ commentInfo }) => {
 
-  const { user } = useAuth();
+  const { user, setGeneralError } = useAuth();
   
   const [ userLiked, setUserLiked ] = useState(false);
   
@@ -51,7 +51,10 @@ const Comment = ({ commentInfo }) => {
             commentInfo.likes.push(user._id);
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          setGeneralError("Couldn't like post");
+          setTimeout(()=>setGeneralError(null), 4000);
+        })
       }
   }
 
@@ -64,10 +67,13 @@ const Comment = ({ commentInfo }) => {
             setUserLiked(false);
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          setGeneralError("Couldn't unlike post");
+          setTimeout(()=>setGeneralError(null), 4000);
+        })
     }
   }
-console.log(commentInfo);
+
   return (
     <div className='w-full p-4 border-[#464b5f] border-b-[1px] text-white flex flex-col' >
         <div className='w-full flex justify-between items-center'>

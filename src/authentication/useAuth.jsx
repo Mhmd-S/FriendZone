@@ -4,11 +4,12 @@ import * as userAPI from '../api/userAPI';
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => { // I also included general error handling here hehehe
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [ generalError, setGeneralError ] = useState(null);
 
   // Check if user already has a session, if so, set the user state and finaly set the initail loading to false.
   useEffect(()=>{
@@ -61,6 +62,8 @@ export const AuthProvider = ({ children }) => {
     user,
     isLoading,
     error,
+    generalError,
+    setGeneralError,
     login,
     signUp,
     logout

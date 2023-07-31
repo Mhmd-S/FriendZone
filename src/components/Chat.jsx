@@ -30,8 +30,8 @@ const Chat = () => {
   }, []);
 
   return (
-    <div className='h-full w-full bg-[#282c37] rounded-lg flex flex-col'>
-      <h3 className={(chatId && recipient) ? 'hidden ' : 'flex ' + 'w-full h-[10%] sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'}>
+    <div className='h-full w-full bg-[#282c37] rounded-lg grid grid-rows-[10%_90%]'>
+      <h3 className={((chatId && recipient) ? 'hidden md:flex ' : 'flex ') + 'w-full sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'}>
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='#787ad9' className='w-8 h-8 pr-2'>
             <path
                 fillRule='evenodd'
@@ -41,7 +41,7 @@ const Chat = () => {
         </svg>
         <span className='text-xl text-white'>Chat</span>
       </h3>
-      <div className='w-full h-full text-white md:grid md:h-[90%] md:grid-cols-[40%_60%]'>
+      <div className='w-full text-white md:grid md:grid-cols-[40%_60%] md:grid-rows-1'>
         <Contacts 
           setRecipient={setRecipient} 
           setChatId={setChatId} 

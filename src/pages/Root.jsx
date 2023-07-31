@@ -13,7 +13,7 @@ const Root = () => {
   
   const [displayMenu, setDisplayMenu] = useState(false); // Only for mobile
   
-  const { login, logout, user, isLoading, error } = useAuth();
+  const { logout, user, generalError } = useAuth();
   
   return (
     <div className='w-screen h-screen grid grid-rows-[7.5%_85%_7.5%] lg:grid lg:grid-cols-[15%_62.5%_22.5%] bg-[#191b22]'>
@@ -64,8 +64,9 @@ const Root = () => {
         </div>
       </div>
 
-      <div className='w-full order-2 rounded-md lg:h-screen'>
+      <div className='w-full order-2 rounded-md lg:h-screen md:py-3 relative'>
         <Outlet />
+          {generalError && <div className='w-[60%] text-center md:w-20% text-white break-word p-4 bg-red-600 border-2 border-red-700 top-[5%] right-[7.5%] md:hidden absolute opacity-90'>{generalError}</div>}
       </div>
       
       <div className='w-full h-full flex justify-between px-3 order-1 lg:order-3 lg:flex-col lg:h-screen'>
@@ -90,6 +91,7 @@ const Root = () => {
           
           {location.pathname !== '/search' && <SearchBar chatMode={false} />}
           <Utilities />
+          {generalError && <div className='hidden text-center h-fit break-words w-full md:block md:absolute text-white p-4 bg-red-600 border-2 border-red-700 opacity-90 md:bottom-[10%]'>{generalError}</div>}
         </div>
 
       </div>

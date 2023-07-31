@@ -14,7 +14,6 @@ export default function Login() {
         // If the user is already logged in, redirect them to the home page.
         if(!isLoading && user) {
             navigate('/home');
-            console.log('User is already logged in');
         }
     },[isLoading, user])
 

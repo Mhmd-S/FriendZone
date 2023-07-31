@@ -10,11 +10,10 @@ import Spinner from './Spinner';
 
 const PostSingle = ({ postInfo, setShowPost }) => {
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
-    const { user } = useAuth(); 
+    const { user, setGeneralError } = useAuth(); 
 
     const [page, setPage] = useState(1);
     const [commentsEle, setCommentsEle] = useState([]);
-    const [ error, setError ] = useState(null);
     const [ userLiked, setUserLiked ] = useState(false);
     const [fromError, setFormError ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(false);
@@ -40,7 +39,6 @@ const PostSingle = ({ postInfo, setShowPost }) => {
   
       const observer = new IntersectionObserver(
         ([entry]) => {
-          console.log(entry.isIntersecting);
           if (entry.isIntersecting) {
             setIsLoading(true);
             fetchComments(page)
@@ -68,7 +66,7 @@ const PostSingle = ({ postInfo, setShowPost }) => {
       const res = await commentAPI.getComments(pageNum, postInfo._id);
       
       if(res.status === 'fail') {
-          setError(res.data);
+          setGeneralError("Couldn't fetch comments");
       }
 
       if (res.status === 'success') {
@@ -103,7 +101,10 @@ const PostSingle = ({ postInfo, setShowPost }) => {
                 postInfo.likes.push(user._id);
               }
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+              setGeneralError("Couldn't like post");
+              setTimeout(()=>setGeneralError(null), 4000);
+            })
           }
       }
     
@@ -116,7 +117,10 @@ const PostSingle = ({ postInfo, setShowPost }) => {
                 setUserLiked(false);
               }
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+              setGeneralError("Couldn't unlike post");
+              setTimeout(()=>setGeneralError(null), 4000);
+            })
         }
       }
 

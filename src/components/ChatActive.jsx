@@ -13,6 +13,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [stopFetching, setStopFetching] = useState(false);
+  const [error, setError] = useState(null);
 
   const containerRef = useRef(null);
   const bottomRef = useRef(null);
@@ -25,9 +26,8 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
 
   useEffect(()=>{
     socket.on('receive-message', (data) => {
-
         const { chatId, sender, recipient, message, timestamp } = data;
-        console.log(data);
+
         const newMessage = {
           _id: generateUUID(),
           content: message,
@@ -37,8 +37,8 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
           createdAt: timestamp,
         }
 
-        setMessages([newMessage, ...messages])
-
+        // Set the new message in the messages
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
     })
 
     return () => {
@@ -92,13 +92,13 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     const res = await chatAPI.getChat(recipient._id, page);
 
     if (res.status === 'error') {
-      setMessages([<div key={'problemEcnounterdKey'}>A problem was encounterd. Try again later</div>]);
+      setError(<div className='p-2 text-center h-full flex flex-col justify-center items-center'>A problem was encounterd. Try again later</div>);
       setIsLoading(false);
       return;
     }
 
     if (res.status === 'success') {
-      
+      setError(null);
       if (res.data.messages.length === 0)  {
         setIsLoading(false);
         setStopFetching(true);
@@ -110,7 +110,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
         setStopFetching(true);
       }
 
-      setMessages([...messages, ...res.data.messages]);
+      setMessages([ ...messages, ...res.data.messages.reverse() ]);
       setPage(page + 1);
       setIsLoading(false); 
       }
@@ -127,8 +127,8 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     // Add the sent message to the local state
     setMessages((prevMessages) => [
       ...prevMessages,
-      { sender: user._id, message: messageInput },
-    ]);
+      { senderId: user._id, content: messageInput, createdAt: new Date(), chatId: chatId },
+    ]); 
 
     // Clear the message input
     setMessageInput('');
@@ -170,49 +170,57 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     });
   }
 
+  const populateMessages = () => {
+    const messagesEle = (messages.length > 0 ) && 
+      messages.map((message) => {
+      if (message.senderId === user._id) {
+        return (
+          <div key={message._id} className='bg-[#99acc6] max-w-[90%] my-1 self-end rounded-lg p-2'>
+            <div className='max-w-full break-words'>{message.content}</div>
+            <div>{convertDate(message.createdAt)}</div>
+          </div>
+        );
+      } else {
+        return (
+          <div key={message._id} className='bg-[#787ad9] flex flex-col max-w-[90%]  my-1 self-start rounded-lg p-2'>
+            <div className='max-w-full break-words'>{message.content}</div>
+            <div>{convertDate(message.createdAt)}</div>
+          </div>
+        );
+      }
+      })
+      return messagesEle
+  }
+
   return (
     <>
       {chatId || recipient ? 
       
-      <div className='w-full h-[100%] grid grid-rows-[10%_80%_10%] grid-cols-1'>
+      <div className='w-full h-full grid grid-rows-[10%_80%_10%] grid-cols-1'>
 
         <div className='w-full  bg-[#60698459] flex items-center'>
-          <button className='w-fit h-full p-3 flex items-center group' onClick={ ()=> { setRecipient(null); setChatId(null) } }>
+
+          <button className='w-fit h-full p-3 flex items-center group md:hidden' onClick={ ()=> { setRecipient(null); setChatId(null) } }>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
               <path fillRule="evenodd" d="M9.53 2.47a.75.75 0 010 1.06L4.81 8.25H15a6.75 6.75 0 010 13.5h-3a.75.75 0 010-1.5h3a5.25 5.25 0 100-10.5H4.81l4.72 4.72a.75.75 0 11-1.06 1.06l-6-6a.75.75 0 010-1.06l6-6a.75.75 0 011.06 0z" clipRule="evenodd" />
             </svg>
             <span className='ml-3 group-hover:underline decoration-[#595aff] underline-offset-4 lg-hidden'>Back</span>
           </button>
+          
           <Link to={'/profile/' + recipient.username} className='w-full h-full my-2 px-2 rounded-md flex items-center'>
-            {recipient.profilePicture ? <img className='w-12 h-12 rounded-full' src={recipient.profilePicture} alt='Profile Picture' /> : <DefaultProfilePicture size={12} />} 
+            {recipient.profilePicture ? <img className='w-12 h-12 rounded-full md:h-10 md:w-10' src={recipient.profilePicture} alt='Profile Picture' /> : <DefaultProfilePicture size={10} />} 
             <p className='pl-2 text-white'>{recipient.username}</p>
           </Link>
+        
         </div>
         
         {isLoading ? 
         <div className='w-full h-full flex justify-center items-center'><Spinner size={12} /></div> 
         :
-        <ul className=' bg-[#282c37] pl-2 max-w-full flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
-          {/* <div ref={containerRef}></div> */}
-          {(messages.length > 0 )&& messages.map((message) => {
-            if (message.senderId === user._id) {
-              return (
-                <div key={message._id} className='bg-[#99acc6] max-w-[90%] my-1 self-end rounded-lg p-2'>
-                  <div className='max-w-full break-words'>{message.content}</div>
-                  <div>{convertDate(message.createdAt)}</div>
-                </div>
-              );
-            } else {
-              return (
-                <div key={message._id} className='bg-[#787ad9] flex flex-col max-w-[90%]  my-1 self-start rounded-lg p-2'>
-                  <div className='max-w-full break-words'>{message.content}</div>
-                  <div>{convertDate(message.createdAt)}</div>
-                </div>
-              );
-            }
-            })}
-
-            <div ref={bottomRef}></div>
+        <ul className=' bg-[#282c37] pl-2 w-full flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+            <li ref={containerRef}></li>
+            {error ? error : populateMessages()}
+            <li ref={bottomRef}></li>
         </ul>
         }
 

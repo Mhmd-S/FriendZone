@@ -21,7 +21,6 @@ export default function Signup() {
         // If the user is already logged in, redirect them to the home page.
         if(!isLoading && user) {
             navigate('/home');
-            console.log('User is already logged in');
         }
     },[isLoading, user])
 
@@ -48,13 +47,13 @@ export default function Signup() {
       {isLoading ? <div className='w-full h-full flex justify-center items-center'>
         <Spinner size={20}/>
       </div> : 
-      <form className="w-full h-full flex flex-col items-center justify-evenly" onSubmit={handleSubmit(onSubmit)}>  
+      <form className="w-full h-3/4 md:h-full flex flex-col items-center justify-evenly" onSubmit={handleSubmit(onSubmit)}>  
 
         <label htmlFor="email" className='hidden'>Email</label>
         <input
           type="email"
           placeholder='Email'
-          className={"w-2/5 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.email || error?.email ? 'border-red-500 focus:border-red-500' : '')}
+          className={"w-3/5 md:w-2 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.email || error?.email ? 'border-red-500 focus:border-red-500' : '')}
           {...register('email', { required: 'Email must be a valid email address', pattern: { value: /^\S+@\S+$/i, message: 'Email must be a valid email address'}, })}
         />
         {errors?.email && <div className='py-px text-sm text-red-500'>{errors.email.message}</div>} {/* Client Validation */}
@@ -71,7 +70,7 @@ export default function Signup() {
               message: 'Username must be 4-15 characters long and can only contain letters, numbers, and underscores',
             },
           })}
-          className={"w-2/5 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[#787ad9] outline-none " + (errors?.username || error?.username ? 'border-red-500 focus:border-red-500' : '')}
+          className={"w-3/5 md:w-2 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[#787ad9] outline-none " + (errors?.username || error?.username ? 'border-red-500 focus:border-red-500' : '')}
         />
        {errors?.username && <div className='py-px text-sm text-red-500'>{errors.username.message}</div>}
         {error?.username && <div className='py-px text-sm text-red-500'>{error.username}</div>}
@@ -87,7 +86,7 @@ export default function Signup() {
               message: 'Password must be 8-15 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character',
             },
           })}
-          className={"w-2/5 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.password || error?.password ? 'border-red-500 focus:border-red-500' : '')}
+          className={"w-3/5 md:w-2 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.password || error?.password ? 'border-red-500 focus:border-red-500' : '')}
         />
         {errors?.password && <div className='py-px text-sm text-red-500'>{errors.password.message}</div>}
         {error?.password && <div className='py-px text-sm text-red-500'>{error.password}</div>}
@@ -101,7 +100,7 @@ export default function Signup() {
             validate: (value) =>
               value !== watchPassword.current || 'Passwords do not match',
           })}
-          className={"w-2/5 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.confirmPassword || error?.confirmPassword ? 'border-red-500 focus:border-red-500' : '')}
+          className={"w-3/5 md:w-2 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.confirmPassword || error?.confirmPassword ? 'border-red-500 focus:border-red-500' : '')}
         />
         {errors?.confirmPassword && <div className='py-px text-sm text-red-500'>{errors.confirmPassword.message}</div>}
         {error?.confirmPassword && <div className='py-px text-sm text-red-500'>{error.confirmPassword}</div>}
@@ -120,7 +119,7 @@ export default function Signup() {
                 message: 'Date of Birth must be before 2023-01-01',
               },
             })}
-            className={"w-2/5 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.dob || error?.dob ? 'border-red-500 focus:border-red-500' : '')}
+            className={"w-3/5 md:w-2 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.dob || error?.dob ? 'border-red-500 focus:border-red-500' : '')}
           />
           {errors?.dob && <div className='py-px text-sm text-red-500'>{errors.dob.message}</div>}
           {error?.dob && <div className='py-px text-sm text-red-500'>{error.dob}</div>}

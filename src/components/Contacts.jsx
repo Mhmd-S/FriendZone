@@ -11,6 +11,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [stopFetching, setStopFetching] = useState(false);
+    const [error, setError ] = useState(null);
 
     const {user} = useAuth();
 
@@ -24,7 +25,6 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
         socket.on('receive-message', (data) => {
 
             const { chatId, sender, recipient, message, timestamp } = data;
-            console.log('Message recieved')
 
             let chatsTemp = [...chats];
             let chatFound;
@@ -37,9 +37,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
                 }
             })
 
-            console.log(data);
             if (chatFound) {
-                console.log('Contact found')
                 chatFound.lastMessage = message;
                 chatFound.updatedAt = timestamp;
                 
@@ -49,7 +47,6 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
                 setChats(chatsTemp);
 
             } else {
-                console.log('Contact not found')
                 const newChat = {
                     _id: chatId,
                     participants: [sender, recipient],
@@ -106,26 +103,25 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
         const res = await chatAPI.getChats(page);
 
         if (res.status === 'error') {
-            setChats([
-                <div key={'problemEncounteredKey'}>A problem was encountered. Try again later</div>,
-            ]);
-            console.log('80');
+            setError(
+                <div className='p-2 text-center h-full flex flex-col justify-center items-center'>A problem was encountered. Try again later</div>,
+            );
             setIsLoading(false);
-            return;
-        }
-
-        if (res.data.length === 0 && page === 1) {
-            setIsLoading(false);
-            return;
-        }
-
-        if (res.data.length === 0 && page > 1) {
-            setIsLoading(false);
-            setStopFetching(true);
             return;
         }
 
         if (res.status === 'success') {
+            setError(null);
+            if (res.data.length === 0 && page === 1) {
+                setIsLoading(false);
+                return;
+            }
+    
+            if (res.data.length === 0 && page > 1) {
+                setIsLoading(false);
+                setStopFetching(true);
+                return;
+            }
             setPage(page + 1);
             setChats([...chats,...res.data]);
             setIsLoading(false);
@@ -140,7 +136,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
                 return (
                     <div
                         key={chat._id}
-                        className='w-full h-[15%] grid grid-cols-[17.5%_67.5%_15%] items-center justify-between border-b-2 border-b-[#464b5f] cursor-pointer hover:bg-[#464b5f] hover:bg-opacity-10'
+                        className='w-full h-[15%] grid grid-cols-[17.5%_65%_17.5%] items-center justify-between border-b-2 border-b-[#464b5f] cursor-pointer hover:bg-[#464b5f] hover:bg-opacity-10'
                         onClick={() => {
                             setRecipient(contactInfo);
                             setChatId(chat._id);
@@ -158,7 +154,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
                         )}
                         </div>
                         <div className='h-full w-full  grid grid-rows-[40%_60%] pt-2 px-1'>
-                            <div className='w-full overflow-hidden'>{contactInfo.username}</div>
+                            <div className='w-full overflow-hidden truncate'>{contactInfo.username}</div>
                             <div className='text-[#71768b] w-full overflow-hidden md:text-sm'>
                                 {chat.lastMessage.content}
                             </div>
@@ -204,14 +200,14 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
     
 
     return (
-        <div className={(chatId && recipient) && 'hidden ' + 'w-full h-full'}>
+        <div className={((chatId && recipient) ? 'hidden ' : 'flex flex-col ') + 'w-full h-full md:flex md:flex-col md:border-r-2 md:border-[#464b5f] pt-2'}>
             <SearchBar chatMode={true} setRecipient={setRecipient} />
-            <div className='w-full h-[80%] bg-[#282c37] flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+            <div className='w-full h-[80%] bg-[#282c37] flex flex-col items-center overflow-y-scroll  md:border-t-2 md:border-[#464b5f] scrollbar:bg-blue-500 scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
                 {chats.length <= 0 ? (
-                    <div className='text-center h-full flex flex-col justify-center items-center'>No chats found</div>
+                    <div className='p-2 text-center h-full flex flex-col justify-center items-center'>No chats found. Serach foar a user to start messaging</div>
                 ) : (
                     <>
-                        {populateChats()}
+                        {error ? error : populateChats()}
                         {isLoading ? (
                             <Spinner size={12} />
                         ) : (

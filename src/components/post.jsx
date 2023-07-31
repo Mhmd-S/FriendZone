@@ -8,7 +8,7 @@ import Spinner from './Spinner';
 
 export default function Post({ postInfo, setShowPost }) {
 
-  const { user } = useAuth();
+  const { user, setGeneralError } = useAuth();
   
   const [ userLiked, setUserLiked ] = useState(false);
   const [isLoading , setIsLoading ] = useState(false);
@@ -54,7 +54,11 @@ export default function Post({ postInfo, setShowPost }) {
             postInfo.likes.push(user._id);
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          //Display error message using general error for 4  seconds
+          setGeneralError("Couldn't like post");
+          setTimeout(()=>setGeneralError(null), 4000);
+        })
       }
   }
 
@@ -67,19 +71,24 @@ export default function Post({ postInfo, setShowPost }) {
             setUserLiked(false);
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          setGeneralError("Couldn't unlike post");
+          setTimeout(()=>setGeneralError(null), 4000);
+        })
     }
   }
 
   const handleDelete = () => {
     postAPI.deletePost(postInfo._id)
       .then(result => {
-        if (result.status === 'success') {
-         console.log('delete'); 
+        if (result.status === 'success') { 
           setDeleted(true);
         }
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+          setGeneralError(err.message);
+          setTimeout(()=>setGeneralError(null), 4000);
+      })
   }
 
   return (
