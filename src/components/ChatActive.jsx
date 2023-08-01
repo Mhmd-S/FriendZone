@@ -175,14 +175,14 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
       messages.map((message) => {
       if (message.senderId === user._id) {
         return (
-          <div key={message._id} className='bg-[#99acc6] max-w-[90%] my-1 self-end rounded-lg p-2'>
+          <div key={message._id} className='bg-[#99acc6] max-w-[90%] my-1 px-3 py-1 self-end rounded-3xl'>
             <div className='max-w-full break-words'>{message.content}</div>
-            <div>{convertDate(message.createdAt)}</div>
+            <div className='text-[0.7rem]'>{convertDate(message.createdAt)}</div>
           </div>
         );
       } else {
         return (
-          <div key={message._id} className='bg-[#787ad9] flex flex-col max-w-[90%]  my-1 self-start rounded-lg p-2'>
+          <div key={message._id} className='bg-[#787ad9] flex flex-col max-w-[90%]  my-1 px-3 py-1 self-start rounded-3xl'>
             <div className='max-w-full break-words'>{message.content}</div>
             <div>{convertDate(message.createdAt)}</div>
           </div>
@@ -196,7 +196,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     <>
       {chatId || recipient ? 
       
-      <div className='w-full h-full grid grid-rows-[10%_80%_10%] grid-cols-1'>
+      <div className='w-full h-full grid md:grid-rows-[13%_75%_12%] grid-rows-[10%_80%_10%] grid-cols-1'>
 
         <div className='w-full  bg-[#60698459] flex items-center'>
 
@@ -217,7 +217,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
         {isLoading ? 
         <div className='w-full h-full flex justify-center items-center'><Spinner size={12} /></div> 
         :
-        <ul className=' bg-[#282c37] pl-2 w-full flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+        <ul className=' bg-[#282c37] p-2 text-sm w-full flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
             <li ref={containerRef}></li>
             {error ? error : populateMessages()}
             <li ref={bottomRef}></li>
@@ -225,13 +225,14 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
         }
 
         <form className='w-full h-full  bg-[#60698459] flex justify-evenly items-center px-2' method='#' onSubmit={(e)=>e.preventDefault()}>
-          <input type="text" placeholder='Type your message' value={messageInput} onChange={(e) => setMessageInput(e.target.value)} className='h-3/5 bg-[#282c37] rounded-3xl resize-none w-[85%] outline-none px-2'/>
+          <textarea type="text" placeholder='Type your message' value={messageInput} onChange={(e) => setMessageInput(e.target.value)} className='h-4/5 bg-[#282c37] rounded-xl resize-none w-[85%] outline-none p-2 text-sm overflow-y-auto'/>
           <button onClick={sendMessage} className='w-[10%]'>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 p-2 hover:bg-[#99acc633] rounded-md">
               <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
             </svg>
           </button>
         </form>
+
       </div> 
     : 
       <div className='hidden w-full h-full lg:flex justify-center items-center'>

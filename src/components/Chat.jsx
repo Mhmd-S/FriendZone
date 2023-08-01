@@ -35,8 +35,9 @@ const Chat = () => {
   }, []);
 
   return (
-    <div className='h-full w-full bg-[#282c37] rounded-lg grid grid-rows-[10%_90%]'>
-      <h3 className={((chatId && recipient) ? 'hidden md:flex ' : 'flex ') + 'w-full sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'}>
+    <div className={((chatId || recipient) ? 'flex md:grid md:grid-rows-[10%_90%] md:grid-cols-1' : 'grid grid-rows-[10%_90%] grid-cols-1') +' h-full w-full bg-[#282c37] rounded-lg'}>
+      
+      <h3 className={((chatId || recipient) ? 'hidden md:flex ' : 'flex ') + 'w-full sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'}>
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='#787ad9' className='w-8 h-8 pr-2'>
             <path
                 fillRule='evenodd'
@@ -46,29 +47,29 @@ const Chat = () => {
         </svg>
         <span className='text-xl text-white'>Chat</span>
       </h3>
-      <div className='w-full text-white md:grid md:grid-cols-[40%_60%] md:grid-rows-1'>
-        { 
+      
+      { 
         user ?
-          <>
-            <Contacts 
-              setRecipient={setRecipient} 
-              setChatId={setChatId} 
-              chatId={chatId}
-              recipient={recipient
-              }/>
-            <ChatActive
-              chatId={chatId}
-              recipient={recipient}
-              setRecipient={setRecipient}
-              setChatId={setChatId}
-            />
-          </>
+          <div className=' text-white flex flex-col md:grid md:grid-cols-[40%_60%] md:grid-rows-1'>
+              <Contacts 
+                setRecipient={setRecipient} 
+                setChatId={setChatId} 
+                chatId={chatId}
+                recipient={recipient
+                }/>
+              <ChatActive
+                chatId={chatId}
+                recipient={recipient}
+                setRecipient={setRecipient}
+                setChatId={setChatId}
+              />
+            </div>
         : 
           <div className='flex justify-center items-center w-full h-full'>
               <span className='text-2xl text-[#ffffff3f]'>Please login to chat</span>
-          </div>  
-        }
-      </div>
+          </div>
+          }
+      
     </div>
   );
 };

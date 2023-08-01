@@ -136,7 +136,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
                 return (
                     <div
                         key={chat._id}
-                        className='w-full h-[15%] grid grid-cols-[17.5%_65%_17.5%] items-center justify-between border-b-2 border-b-[#464b5f] cursor-pointer hover:bg-[#464b5f] hover:bg-opacity-10'
+                        className='w-full h-[20%] grid grid-cols-[17.5%_65%_17.5%] items-center justify-between border-b-2 border-b-[#464b5f] cursor-pointer hover:bg-[#464b5f] hover:bg-opacity-10'
                         onClick={() => {
                             setRecipient(contactInfo);
                             setChatId(chat._id);
@@ -147,7 +147,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
                             <img
                                 src={contactInfo.profilePicture}
                                 alt='Profile'
-                                className='w-12 h-12 rounded-full'
+                                className='w-10 h-10 rounded-full'
                             />
                         ) : (
                             <DefaultProfilePicture size={10}/>

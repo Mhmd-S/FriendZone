@@ -6,20 +6,20 @@ import DefaultProfilePicture from './DefaultProfilePicture';
 import MiniForm from './MiniForm';
 import Notifications from './Notifications';
 
-const Utilities = ({ setDisplayMenu }) => {
+const Utilities = ({ displayMenu, setDisplayMenu }) => {
 
-    const { user } = useAuth();
-
+    const { user, logout } = useAuth();
     
   return (
-    <div className='w-full h-[35%] flex flex-col items-center lg:h-full'>
+    <div className={'w-full h-[90%] flex flex-col items-center md:h-full'} >
           {user ?
               <>
-                <div className='w-full h-full'>
+                <div className='w-full h-full flex flex-col justify-between items-center'>
+
                   <Link to={'profile/' + user.username} className='flex items-center w-full hover:bg-[#424858] bg-[#282c37] rounded-lg p-2 text-[#d9e1e8]'>
                     <div onClick={()=>setDisplayMenu(false)} className='flex items-center w-full h-full'>
                         <span className='w-1/5'>
-                            {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture size={10}/>}
+                            {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture size={8}/>}
                         </span>
                         <span className='text-clip flex w-4/5 justify-between items-center'> 
                           <p>{user.username}</p>
@@ -30,12 +30,18 @@ const Utilities = ({ setDisplayMenu }) => {
                         </span>
                     </div>
                   </Link>
+                  
                   <MiniForm/>
+                  
                   <Notifications/>
+
+                {/* Button to log out */}
+                <button onClick={logout} className='w-3/5 bg-[#5053eb] p-2 text-center rounded-md hover:bg-[#3a3dd2] justify-self-end'>Logout</button>
+
                 </div>
               </>
             : 
-              <div className='w-full h-full items-center flex flex-col mt-[50%] lg:mt-0'> {/* If not logged in display this div */}
+              <div className='w-full h-full items-center flex flex-col mt-12 lg:mt-0'> {/* If not logged in display this div */}
                 <Link to='login' className='w-1/3 bg-[#5053eb] p-2 text-center rounded-md hover:bg-[#3a3dd2] mb-4 lg:w-full'>Login</Link>
                 <Link to='signup' className='w-1/3 border-2 border-[#595aff] p-2 text-center rounded-md text-[#595aff] hover:border-[#3232b3] hover:text-[#3232b3] lg:w-full'>Signup</Link>
               </div>

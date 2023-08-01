@@ -47,7 +47,7 @@ function MiniForm() {
   };
 
   return (
-    <div className='w-full h-2/5 text-white border-b-[1px] border-b-[#464b5f] mt-3 flex justify-center items-center'>
+    <div className='w-full h-2/6 text-white border-b-[1px] border-b-[#464b5f] mt-3 flex justify-center items-center'>
       {isLoading ? <Spinner size={10}/> : 
       <form onSubmit={handleSubmit(onSubmit)} className='w-full h-full p-4 flex flex-col justify-between bg-white text-black rounded-lg' >
           <div className='w-full h-full overflow-y-auto'>

@@ -29,10 +29,13 @@ const Root = () => {
       
       <div className='w-full justify-self-end order-3 lg:h-screen flex justify-between items-center lg:order-1 lg:flex-col'> {/* Navigation bar */}
         <div className='w-full h-full text-[#d9e1e8] flex items-center lg:flex-col lg:h-2/5'>
-          <Link className='hidden w-full p-5 lg:flex justify-center items-center' to={'/home'}>
-            <Logo />
+
+          <Link className='hidden w-full pt-4 lg:flex justify-center items-center' to={'/home'}>
+            <Logo/>
           </Link>
+          
           <hr className='hidden border-t-px border-[#464b5f] w-[85%] self-center'/>
+
           <ul className='w-full h-full text-md flex justify-evenly items-center p-4 lg:flex-col lg:items-start'>
             <li className='p-2'>
               <Link to='home' className={'flex items-center w-full hover:text-[#595aff] ' + (location.pathname === '/home' ? ' text-[#595aff]' : '')} src='./icons/home.svg'>
@@ -69,6 +72,7 @@ const Root = () => {
               </Link>
             </li>
           </ul>
+          
           {user && <button onClick={logout} className='hidden w-3/4 py-2 self-center border-2 border-[#595aff] text-[#595aff] rounded-md'>Log out</button>}
         </div>
       </div>
@@ -90,7 +94,7 @@ const Root = () => {
           </svg>
         </button>
 
-        <div className={`${displayMenu ? 'flex' : 'hidden'} flex-col items-center w-full h-screen absolute top-0 left-0 bg-[#191b22] p-4 lg:flex lg:h-full lg:w-full lg:relative lg:top-auto lg:left-auto`}>
+        <div className={`${displayMenu ? 'flex' : 'hidden'} flex-col items-center w-full h-screen absolute top-0 left-0 bg-[#191b22] p-4 lg:flex lg:h-full lg:w-full lg:relative lg:top-auto lg:left-auto z-10 md:z-0`}>
           
           <button onClick={()=>setDisplayMenu(false)} className='w-full flex justify-end lg:hidden'>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#595aff" className="w-8 h-8">
@@ -99,7 +103,7 @@ const Root = () => {
           </button>
           
           {location.pathname !== '/search' && <SearchBar chatMode={false} />}
-          <Utilities setDisplayMenu={setDisplayMenu} />
+          <Utilities setDisplayMenu={setDisplayMenu} displayMenu={displayMenu} />
           {generalError && <div className='hidden text-center h-fit break-words w-full md:block md:absolute text-white p-4 bg-red-600 border-2 border-red-700 opacity-90 md:bottom-[10%]'>{generalError}</div>}
         </div>
 

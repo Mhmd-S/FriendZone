@@ -56,14 +56,14 @@ const SearchBar = ({ chatMode, setRecipient }) => {
       :
         users = res.data.map((user) => {
           return (
-            <Link to={'/profile/' + user.username} className='w-[95%] h-[4rem] bg-[#60698459] my-2 p-2 rounded-md flex items-center' key={user.username}>
-              {user.profilePicture ? <img className='w-12 h-12 rounded-full' src={user.profilePicture} alt='Profile Picture' /> : <DefaultProfilePicture size={12} />} 
+            <Link to={'/profile/' + user.username} className='w-[90%] h-[4rem] bg-[#60698459] my-2 p-1 rounded-md flex items-center' key={user.username}>
+              {user.profilePicture ? <img className='w-6 h-6 rounded-full' src={user.profilePicture} alt='Profile Picture' /> : <DefaultProfilePicture size={6} />} 
               <p className='pl-2 text-white'>{user.username}</p>
             </Link>
           );
         });
 
-      setSearchResult([...users, <div className='w-full p-1 text-center text-white cursor-pointer hover:underline' key={'searchMoreKeyword'}>Search for more users</div>, <div className='w-full p-1 text-center text-ellipsis text-white cursor-pointer hover:underline' key={"searchPostsKeyword"}>Search Posts with {searchInput}</div>]);
+      setSearchResult([...users]);
     }
   };
 
