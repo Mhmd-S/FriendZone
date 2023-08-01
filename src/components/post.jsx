@@ -117,7 +117,7 @@ export default function Post({ postInfo, setShowPost }) {
             </svg>
           </button>
           
-          <div className='h-full w-full flex place-self-end  justify-between items-center pr-4'>
+          <div className='h-full w-full md:w-3/5 flex place-self-end  justify-between items-center pr-4'>
 
             <button className={'hover:bg-[#99acc633] p-1 rounded-md flex ' + (userLiked && 'bg-[#99acc63d]') } onClick={userLiked ? handleUnlike  : handleLike } >
               <span className='pr-2 text-[#606984]'>{postInfo.likes.length}</span>

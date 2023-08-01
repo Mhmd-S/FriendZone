@@ -235,7 +235,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
       </div> 
     : 
       <div className='hidden w-full h-full lg:flex justify-center items-center'>
-        <p className='text-2xl text-white'>Select a chat to start messaging</p>
+        <p className='text-2xl text-[#ffffff3f]'>Select a chat to start messaging</p>
       </div>
     }
   </>

@@ -50,32 +50,35 @@ const Landing = () => {
       }, [posts]);
 
     const fetchPosts = async() => {
-        if (stopFetching) {
-            return;
-        }
-        setIsLoading(true);
-        const res = await postAPI.getPosts(page);
-        if (res.status === 'success') {
-            if (res.data.length === 0) {
-                setStopFetching(true);
-                return;
-            }
+        
+      if (stopFetching) {
+        return;
+      }
 
-            const postEle = res.data.map((post) => {
-                return (<Post key={post._id} postInfo={post} setShowPost={setShowPost} />);
-            });
-
-            setPosts((prevPosts) => prevPosts.concat(postEle));
-            setPage((prevPage) => prevPage + 1);
+      setIsLoading(true);
+      const res = await postAPI.getPosts(page);
+      if (res.status === 'success') {
+        if (res.data.length === 0) {
+            setStopFetching(true);
             setIsLoading(false);
             return;
-        }
-        setErrors("Could not fetch posts");
+          }
+        
+        const postEle = res.data.map((post) => {
+            return (<Post key={post._id} postInfo={post} setShowPost={setShowPost} />);
+        })  
+        setPosts((prevPosts) => prevPosts.concat(postEle));
+        setPage((prevPage) => prevPage + 1);
         setIsLoading(false);
+        return;
+      }
+      
+      setErrors("Could not fetch posts");
+      setIsLoading(false);
     }
 
     return (
-        <div className='h-full w-full bg-[#282c37] rounded-lg flex flex-col md:grid md:grid-rows-[10%_90%] md:grid-cols-1'>
+        <div className={`h-full w-full bg-[#282c37] rounded-lg flex flex-col md:grid md:grid-rows-${showPost ? '1' : '[10%_90%]'} md:grid-cols-1`}>
             {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/>
              :  
              <>

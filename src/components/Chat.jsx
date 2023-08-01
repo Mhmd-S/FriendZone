@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Spinner from './Spinner';
+import useAuth from '../authentication/useAuth';
 import { socket } from '../api/socket';
 import Contacts from './Contacts';
 import ChatActive from './ChatActive';
@@ -8,7 +8,12 @@ const Chat = () => {
   const [chatId, setChatId] = useState(null);
   const [recipient, setRecipient] = useState(null);
 
+  const { user } = useAuth();
+
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     socket.connect();
 
     const onDisconnect = () => {
@@ -42,18 +47,27 @@ const Chat = () => {
         <span className='text-xl text-white'>Chat</span>
       </h3>
       <div className='w-full text-white md:grid md:grid-cols-[40%_60%] md:grid-rows-1'>
-        <Contacts 
-          setRecipient={setRecipient} 
-          setChatId={setChatId} 
-          chatId={chatId}
-          recipient={recipient
-          }/>
-        <ChatActive
-          chatId={chatId}
-          recipient={recipient}
-          setRecipient={setRecipient}
-          setChatId={setChatId}
-        />
+        { 
+        user ?
+          <>
+            <Contacts 
+              setRecipient={setRecipient} 
+              setChatId={setChatId} 
+              chatId={chatId}
+              recipient={recipient
+              }/>
+            <ChatActive
+              chatId={chatId}
+              recipient={recipient}
+              setRecipient={setRecipient}
+              setChatId={setChatId}
+            />
+          </>
+        : 
+          <div className='flex justify-center items-center w-full h-full'>
+              <span className='text-2xl text-[#ffffff3f]'>Please login to chat</span>
+          </div>  
+        }
       </div>
     </div>
   );

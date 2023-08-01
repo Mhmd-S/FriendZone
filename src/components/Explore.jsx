@@ -73,7 +73,7 @@ const Explore = () => {
     // Show post in home
 
     return (
-        <div className='h-full w-full bg-[#282c37] rounded-lg flex flex-col md:grid md:grid-rows-[10%_90%] md:grid-cols-1'>
+        <div className={`h-full w-full bg-[#282c37] rounded-lg flex flex-col md:grid md:grid-rows-${showPost ? '1' : '[10%_90%]'} md:grid-cols-1`}>
             {showPost ? <PostSingle postInfo={showPost} setShowPost={setShowPost}/>
              :  
              <>
