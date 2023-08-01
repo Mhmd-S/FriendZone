@@ -6,7 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
     
-    const { login, isLoading, error, user } = useAuth();
+    const { login, isLoading, error, user, generalSuccess} = useAuth();
 
     const navigate = useNavigate(); 
 
@@ -55,8 +55,12 @@ export default function Login() {
           <button type="submit" className="w-1/3 py-2 bg-[#595aff] rounded-lg mt-2 self-center">Sign In</button>
           {/* <button>Reset Password</button> */}
           <div>No Account? <Link to={'/signup'} className='text-md text-slate-500 underline' >Sign Up!</Link></div>
+
       </form>
       }
+    
+      {generalSuccess && <div className='text-center h-fit break-words absolute text-white p-4 bg-green-600 border-2 border-green-700 opacity-90 right-[10%] top-[10%]'>{generalSuccess}</div>}
+
     </div>
   )
 }

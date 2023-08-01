@@ -13,7 +13,16 @@ const Root = () => {
   
   const [displayMenu, setDisplayMenu] = useState(false); // Only for mobile
   
-  const { logout, user, generalError } = useAuth();
+  const { logout, user, generalError, setGeneralError } = useAuth();
+
+  // remove error when user navigates between routes
+  useEffect(() => {
+    if (generalError) {
+      setTimeout(() => setGeneralError(null), 4000);
+    }
+
+  }, [location.pathname]);
+
   
   return (
     <div className='w-screen h-screen grid grid-rows-[7.5%_85%_7.5%] lg:grid lg:grid-cols-[15%_62.5%_22.5%] bg-[#191b22]'>
@@ -90,7 +99,7 @@ const Root = () => {
           </button>
           
           {location.pathname !== '/search' && <SearchBar chatMode={false} />}
-          <Utilities />
+          <Utilities setDisplayMenu={setDisplayMenu} />
           {generalError && <div className='hidden text-center h-fit break-words w-full md:block md:absolute text-white p-4 bg-red-600 border-2 border-red-700 opacity-90 md:bottom-[10%]'>{generalError}</div>}
         </div>
 

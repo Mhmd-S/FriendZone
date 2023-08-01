@@ -3,11 +3,12 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom';
 import { createPost } from '../api/postAPI';
 import useAuth from '../authentication/useAuth';
+import Post from './Post';
 import DefaultProfilePicture from './DefaultProfilePicture';
 
 import Spinner from './Spinner';
 
-const PostForm = ({ fetchPosts }) => {
+const PostForm = ({ setPosts, setShowPost }) => {
     const { register, handleSubmit, watch, formState: { errors }, reset, resetField } = useForm();
 
     const { user } = useAuth();
@@ -38,14 +39,14 @@ const PostForm = ({ fetchPosts }) => {
             setFormError(res.data.content);
           } else {
             resetField('content');
-            resetField('postImage');
-            fetchPosts(1)
-              .then(()=>{            
-                setFormError(null);
-                setImageFile(null);
-                setSuccess('Post created successfully');
-                setTimeout(() => {setSuccess(null)}, 3000);
-              });
+            resetField('postImage');           
+            setFormError(null);
+            setImageFile(null);
+            setSuccess('Post created successfully');
+            setTimeout(() => {setSuccess(null)}, 3000);
+            res.data.author = user;
+            setPosts(prevPosts => [ < Post key={res.data._id} postInfo={res.data} setShowPost={setShowPost} />, ...prevPosts]);
+
           }
         })
         .catch(err => setFormError('Could not proccess your request. Try again later.'))

@@ -8,15 +8,14 @@ export const AuthProvider = ({ children }) => { // I also included general error
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
   const [ generalError, setGeneralError ] = useState(null);
+  const [ generalSuccess, setGeneralSuccess ] = useState(null);
 
   // Check if user already has a session, if so, set the user state and finaly set the initail loading to false.
   useEffect(()=>{
     userAPI.checkIfAuthenticated()
       .then(data => setUser(data.user))
       .catch(err => {}) // Do nothing because there is no user session
-      .finally(()=>setInitialLoading(false))
     },[])
 
   const login = (loginCreds) => {
@@ -41,14 +40,16 @@ export const AuthProvider = ({ children }) => { // I also included general error
     
     userAPI.signUp(signUpCreds)
       .then((res)=> {
-        if (res.status !== 'success') {
+        if (res.status == 'fail') {
           setError(res.data);
           setIsLoading(false);
-          return;
         }
       })
-      .catch(err => setError(err))
-      .finally(()=> setIsLoading(false));    
+      .catch(err => setError(err.data))
+      .finally(()=> setIsLoading(false));  
+      
+      setGeneralSuccess('Account created successfully!')
+      setTimeout(()=>setGeneralSuccess(null), 5000);
   };
 
   // Make a request to the API to log the user out and then set the user state to null.
@@ -63,6 +64,8 @@ export const AuthProvider = ({ children }) => { // I also included general error
     isLoading,
     error,
     generalError,
+    generalSuccess,
+    setGeneralSuccess,
     setGeneralError,
     login,
     signUp,

@@ -34,9 +34,7 @@ const Landing = () => {
         const observer = new IntersectionObserver(
           ([entry]) => {
             if (entry.isIntersecting) {
-              setIsLoading(true);
               fetchPosts()
-                .finally(() => setIsLoading(false));
             }
           },
           options
@@ -66,8 +64,9 @@ const Landing = () => {
             const postEle = res.data.map((post) => {
                 return (<Post key={post._id} postInfo={post} setShowPost={setShowPost} />);
             });
-            setPosts([...posts, ...postEle]);
-            setPage(page+1);
+
+            setPosts((prevPosts) => prevPosts.concat(postEle));
+            setPage((prevPage) => prevPage + 1);
             setIsLoading(false);
             return;
         }
@@ -89,7 +88,7 @@ const Landing = () => {
                 </h3>
                 
                 <div className=' flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
-                    {user && <PostForm fetchPosts={fetchPosts}/>}
+                    {user && <PostForm setPosts={setPosts} setShowPost={setShowPost}/>}
                     {errors && <div className='text-red-500 text-center'>{errors}</div>}
                     {posts && posts.length === 0 && <div className='text-center text-white'>No posts</div>}
                     {posts.length > 0 && 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import * as postAPI from '../api/postAPI';
 import * as commentAPI from '../api/commentAPI';
 import useAuth from '../authentication/useAuth';
@@ -40,9 +40,10 @@ const PostSingle = ({ postInfo, setShowPost }) => {
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            setIsLoading(true);
+            if (stopFetching) {
+              return;
+            }
             fetchComments(page)
-              .finally(() => setIsLoading(false));
           }
         },
         options
@@ -138,12 +139,12 @@ const PostSingle = ({ postInfo, setShowPost }) => {
               } else {
                 if (stopFetching) setStopFetching(false);
                 reset();
-                setPage(1);
-                fetchComments(1)
-                  .then(()=>setFormError(null))
+                setCommentsEle((prevComments) => [
+                  <Comment key={res.data._id} commentInfo={{author: user, content: data.content, createdAt: new Date(), likes:[] }}/>,
+                  ...prevComments
+                ]);
               }
             })
-            .catch(err => setFormError('Could not proccess your request. Try again later.'))
             .finally(()=> setIsLoading(false));
       }
 
@@ -220,6 +221,7 @@ const PostSingle = ({ postInfo, setShowPost }) => {
               <form className='w-full flex justify-center items-center p-2 bg-[#313543] border-[#464b5f] border-[1px]' onSubmit={handleSubmit(onSubmit)}>
                 {isLoading ? <Spinner size={12} /> :
                   <>
+                    {fromError && <p className='text-red-500 text-sm'>{fromError}</p>}
                     <textarea type="text" placeholder='Write your comment here!' className='rounded-md bg-transparent resize-none w-full outline-none p-1' {...register('content', { required: 'Comment text is required', minLength: { value: 1, message: 'Comment text must be at least 1 character long' }, maxLength: { value: 1000, message: 'Comment text must be less than 400 characters long' } })}/>
                     <button>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 p-2 hover:bg-[#99acc633] rounded-md">
