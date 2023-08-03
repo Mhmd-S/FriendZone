@@ -6,7 +6,7 @@ import SearchBar from './SearchBar';
 import Spinner from './Spinner';
 import { socket } from '../api/socket';
 
-const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
+const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
     const [chats, setChats] = useState([]);
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,9 +17,9 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
 
     const containerRef = useRef(null);
 
-    useEffect(() => {
+    useEffect(()=>{
         fetchChats();
-    }, []);
+    })
 
     useEffect(()=>{
         socket.on('receive-message', (data) => {
@@ -92,7 +92,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
         return () => {
             observer.disconnect();
         };
-    }, [chats]);
+    }, []);
 
     const fetchChats = async () => {
         if (stopFetching) {
@@ -130,6 +130,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
 
     const populateChats = () => {
          const chatsEle = chats.map((chat) => {
+            console.log(chat)
                 const contactInfo = chat.participants[0]._id === user._id ? chat.participants[1] : chat.participants[0];
                 
 
@@ -138,7 +139,7 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
                         key={chat._id}
                         className='w-full h-[20%] grid grid-cols-[17.5%_65%_17.5%] items-center justify-between border-b-2 border-b-[#464b5f] cursor-pointer hover:bg-[#464b5f] hover:bg-opacity-10'
                         onClick={() => {
-                            setRecipient(contactInfo);
+                            handleSetRecipient(contactInfo);
                             setChatId(chat._id);
                         }}
                     >
@@ -200,11 +201,11 @@ const Contacts = ({ setChatId, setRecipient, chatId, recipient }) => {
     
 
     return (
-        <div className={((chatId && recipient) ? 'hidden ' : 'flex flex-col ') + 'w-full h-full md:flex md:flex-col md:border-r-2 md:border-[#464b5f] pt-2'}>
-            <SearchBar chatMode={true} setRecipient={setRecipient} />
-            <div className='w-full h-[80%] bg-[#282c37] flex flex-col items-center overflow-y-scroll  md:border-t-2 md:border-[#464b5f] scrollbar:bg-blue-500 scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+        <div className={((chatId || recipient) ? 'hidden ' : 'flex flex-col ') + 'w-full h-full md:flex md:flex-col md:border-r-2 md:border-[#464b5f] pt-2'}>
+                <SearchBar chatMode={true} handleSetRecipient={handleSetRecipient} />
+            <div className='w-full h-[80%] bg-[#282c37] flex flex-col items-center overflow-y-scroll border-t-2 border-t-[#464b5f] md:border-t-2 md:border-[#464b5f] scrollbar:bg-blue-500 scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
                 {chats.length <= 0 ? (
-                    <div className='p-2 text-center h-full flex flex-col justify-center items-center'>No chats found. Serach foar a user to start messaging</div>
+                    <div className='p-2 text-center h-full flex flex-col justify-center items-center text-[#ffffff3f]'>No chats found. Serach foar a user to start messaging</div>
                 ) : (
                     <>
                         {error ? error : populateChats()}

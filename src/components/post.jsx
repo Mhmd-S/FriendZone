@@ -8,7 +8,7 @@ import Spinner from './Spinner';
 
 export default function Post({ postInfo, setShowPost }) {
 
-  const { user, setGeneralError } = useAuth();
+  const { user, handleGeneralError } = useAuth();
   
   const [ userLiked, setUserLiked ] = useState(false);
   const [isLoading , setIsLoading ] = useState(false);
@@ -55,9 +55,7 @@ export default function Post({ postInfo, setShowPost }) {
           }
         })
         .catch(err => {
-          //Display error message using general error for 4  seconds
-          setGeneralError("Couldn't like post");
-          setTimeout(()=>setGeneralError(null), 4000);
+          handleGeneralError("Couldn't like post");
         })
       }
   }

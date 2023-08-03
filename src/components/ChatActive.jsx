@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { socket } from '../api/socket';
 import Spinner from './Spinner';
 
-const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
+const ChatActive = ({ chatId, recipient, handleSetRecipient, setChatId }) => {
 
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState([]);
@@ -22,7 +22,12 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
 
   useEffect( ()=> {
     fetchChat();
-  }, [recipient, chatId])
+    setMessages([]);
+    setPage(1);
+    setStopFetching(false);
+  }, [chatId,recipient])
+
+
 
   useEffect(()=>{
     socket.on('receive-message', (data) => {
@@ -80,7 +85,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     return () => {
         observer.disconnect();
     };
-  }, [messages]);
+  }, []);
 
   const fetchChat = async() => {
     if (stopFetching || !recipient || !chatId) {
@@ -89,7 +94,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     
     setIsLoading(true);
 
-    const res = await chatAPI.getChat(recipient._id, page);
+    const res = await chatAPI.getChat(chatId, page);
 
     if (res.status === 'error') {
       setError(<div className='p-2 text-center h-full flex flex-col justify-center items-center'>A problem was encounterd. Try again later</div>);
@@ -127,7 +132,7 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     // Add the sent message to the local state
     setMessages((prevMessages) => [
       ...prevMessages,
-      { senderId: user._id, content: messageInput, createdAt: new Date(), chatId: chatId },
+      { senderId: user._id, content: messageInput, createdAt: new Date(), chatId: chatId, _id: generateUUID() },
     ]); 
 
     // Clear the message input
@@ -196,11 +201,11 @@ const ChatActive = ({ chatId, recipient, setRecipient, setChatId }) => {
     <>
       {chatId || recipient ? 
       
-      <div className='w-full h-full grid md:grid-rows-[13%_75%_12%] grid-rows-[10%_80%_10%] grid-cols-1'>
+      <div className='w-full h-full grid grid-rows-[10%_80%_10%] grid-cols-1 md:grid-rows-[13%_75%_12%]'>
 
         <div className='w-full  bg-[#60698459] flex items-center'>
 
-          <button className='w-fit h-full p-3 flex items-center group md:hidden' onClick={ ()=> { setRecipient(null); setChatId(null) } }>
+          <button className='w-fit h-full p-3 flex items-center group md:hidden' onClick={ ()=> { handleSetRecipient(null); setChatId(null) } }>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
               <path fillRule="evenodd" d="M9.53 2.47a.75.75 0 010 1.06L4.81 8.25H15a6.75 6.75 0 010 13.5h-3a.75.75 0 010-1.5h3a5.25 5.25 0 100-10.5H4.81l4.72 4.72a.75.75 0 11-1.06 1.06l-6-6a.75.75 0 010-1.06l6-6a.75.75 0 011.06 0z" clipRule="evenodd" />
             </svg>

@@ -59,7 +59,7 @@ export default function Login() {
       </form>
       }
     
-      {generalSuccess && <div className='text-center h-fit break-words absolute text-white p-4 bg-green-600 border-2 border-green-700 opacity-90 right-[10%] top-[10%]'>{generalSuccess}</div>}
+      {generalSuccess && <div className='text-center h-fit break-words absolute text-white p-4 bg-green-600 border-2 border-green-700 opacity-90 translate-x-[-50%] trans-y-[-50%] right-[50%] top-[25%]'>{generalSuccess}</div>}
 
     </div>
   )

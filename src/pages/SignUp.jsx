@@ -30,7 +30,7 @@ export default function Signup() {
       for (const key in data) {
         signUpCreds.set(key, data[key]);
       }
-    
+      
       await signUp(signUpCreds);
 
       if (!error) {
@@ -56,8 +56,8 @@ export default function Signup() {
           className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.email || error?.email ? 'border-red-500 focus:border-red-500' : '')}
           {...register('email', { required: 'Email must be a valid email address', pattern: { value: /^\S+@\S+$/i, message: 'Email must be a valid email address'}, })}
         />
-        {errors?.email && <div className='py-px text-sm text-red-500'>{errors.email.message}</div>} {/* Client Validation */}
-        {error?.email && <div className='py-px text-sm text-red-500'>{error.email}</div>} {/* Server Validation */}
+        {errors?.email && <div className='py-px text-sm text-red-500 text-center'>{errors.email.message}</div>} {/* Client Validation */}
+        {error?.email && <div className='py-px text-sm text-red-500 text-center'>{error.email}</div>} {/* Server Validation */}
 
         <label htmlFor="username" className='hidden'>Username</label>
         <input
@@ -72,8 +72,8 @@ export default function Signup() {
           })}
           className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[#787ad9] outline-none " + (errors?.username || error?.username ? 'border-red-500 focus:border-red-500' : '')}
         />
-       {errors?.username && <div className='py-px text-sm text-red-500'>{errors.username.message}</div>}
-        {error?.username && <div className='py-px text-sm text-red-500'>{error.username}</div>}
+       {errors?.username && <div className='py-px text-sm text-red-500 text-center'>{errors.username.message}</div>}
+        {error?.username && <div className='py-px text-sm text-red-500 text-center'>{error.username}</div>}
 
         <label htmlFor="password" className='hidden'>Password</label>
         <input
@@ -88,8 +88,8 @@ export default function Signup() {
           })}
           className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.password || error?.password ? 'border-red-500 focus:border-red-500' : '')}
         />
-        {errors?.password && <div className='py-px text-sm text-red-500'>{errors.password.message}</div>}
-        {error?.password && <div className='py-px text-sm text-red-500'>{error.password}</div>}
+        {errors?.password && <div className='py-px text-sm text-red-500 text-center'>{errors.password.message}</div>}
+        {error?.password && <div className='py-px text-sm text-red-500 text-center'>{error.password}</div>}
 
         <label htmlFor="confirmPassword" className='hidden'>Confirm Password</label>
         <input
@@ -102,8 +102,8 @@ export default function Signup() {
           })}
           className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.confirmPassword || error?.confirmPassword ? 'border-red-500 focus:border-red-500' : '')}
         />
-        {errors?.confirmPassword && <div className='py-px text-sm text-red-500'>{errors.confirmPassword.message}</div>}
-        {error?.confirmPassword && <div className='py-px text-sm text-red-500'>{error.confirmPassword}</div>}
+        {errors?.confirmPassword && <div className='py-px text-sm text-red-500 text-center'>{errors.confirmPassword.message}</div>}
+        {error?.confirmPassword && <div className='py-px text-sm text-red-500 text-center'>{error.confirmPassword}</div>}
 
          <label htmlFor="dob" className='hidden'>Date of Birth</label>
           <input
@@ -121,8 +121,8 @@ export default function Signup() {
             })}
             className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.dob || error?.dob ? 'border-red-500 focus:border-red-500' : '')}
           />
-          {errors?.dob && <div className='py-px text-sm text-red-500'>{errors.dob.message}</div>}
-          {error?.dob && <div className='py-px text-sm text-red-500'>{error.dob}</div>}
+          {errors?.dob && <div className='py-px text-sm text-red-500 text-center'>{errors.dob.message}</div>}
+          {error?.dob && <div className='py-px text-sm text-red-500 text-center'>{error.dob}</div>}
 
           <button type="submit" className="w-3/5 md:w-1/4 py-2 bg-[#595aff] rounded-lg mt-2 self-center">
             Sign Up

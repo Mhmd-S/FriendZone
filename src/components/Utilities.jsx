@@ -16,7 +16,7 @@ const Utilities = ({ displayMenu, setDisplayMenu }) => {
               <>
                 <div className='w-full h-full flex flex-col justify-between items-center'>
 
-                  <Link to={'profile/' + user.username} className='flex items-center w-full hover:bg-[#424858] bg-[#282c37] rounded-lg p-2 text-[#d9e1e8]'>
+                  <Link to={'profile/' + user.username} className='flex items-center w-full hover:bg-[#424858] bg-[#282c37] rounded-lg p-2 mt-4 text-[#d9e1e8]'>
                     <div onClick={()=>setDisplayMenu(false)} className='flex items-center w-full h-full'>
                         <span className='w-1/5'>
                             {user.profilePicture ? <img src={user.profilePicture} alt="Profile Picture" className='w-10 h-10 rounded-full'/> : <DefaultProfilePicture size={8}/>}

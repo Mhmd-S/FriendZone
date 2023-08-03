@@ -35,27 +35,38 @@ export const AuthProvider = ({ children }) => { // I also included general error
   }
 
   // Send the API the user's information and set the user state to the response. If error is found we set the error state.
-  const signUp = async(signUpCreds) => {
+  const signUp = (signUpCreds) => {
     setIsLoading(true);
     
     userAPI.signUp(signUpCreds)
       .then((res)=> {
         if (res.status == 'fail') {
           setError(res.data);
-          setIsLoading(false);
+        } else {
+          handleGeneralSuccess('Account created successfully!')
         }
       })
       .catch(err => setError(err.data))
       .finally(()=> setIsLoading(false));  
-      
-      setGeneralSuccess('Account created successfully!')
-      setTimeout(()=>setGeneralSuccess(null), 5000);
   };
 
   // Make a request to the API to log the user out and then set the user state to null.
   const logout = () => {
     userAPI.logout().then(()=>setUser(null));
   };
+
+  
+  const handleGeneralError = (errorMsg) => {
+    setGeneralError(errorMsg);
+    setTimeout(()=>setGeneralError(null), 4000);
+  }
+
+  const handleGeneralSuccess = (successMsg) => {
+    setGeneralSuccess(successMsg);
+    setTimeout(()=>setGeneralSuccess(null), 4000);
+  }
+
+
 
   // We are using useMemo here to avoid re-rendering the context provider when the user state changes.
   // We are going only to re-render the context provider when the user, loading or error state changes.
@@ -65,8 +76,8 @@ export const AuthProvider = ({ children }) => { // I also included general error
     error,
     generalError,
     generalSuccess,
-    setGeneralSuccess,
-    setGeneralError,
+    handleGeneralError,
+    handleGeneralSuccess,
     login,
     signUp,
     logout

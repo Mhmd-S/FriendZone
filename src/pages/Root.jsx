@@ -21,6 +21,8 @@ const Root = () => {
       setTimeout(() => setGeneralError(null), 4000);
     }
 
+    setDisplayMenu(false);
+
   }, [location.pathname]);
 
   

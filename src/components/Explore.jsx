@@ -84,14 +84,16 @@ const Explore = () => {
                     </svg>
                   <span className='text-xl text-white'>Explore</span>
                 </h3>
-                <div className=' flex flex-col w-full flex-grow overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+                <div className=' flex flex-col w-full flex-grow overflow-y-scroll overflow-x-hidden scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
                     {errors && <div className='text-red-500 text-center'>{errors}</div>}
                     {posts && posts.length === 0 && <div className='text-center text-white'>No posts</div>}
                     {posts.length > 0 && 
                         <>
                             {posts}
                             {isLoading ? 
+                            <div className='w-full pt-4 flex justify-center items-center'>
                               <Spinner size={12} /> 
+                            </div>
                             :
                               <div ref={containerRef} className='border-[1px] border-transparent'></div>
                             }
