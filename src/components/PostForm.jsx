@@ -54,9 +54,9 @@ const PostForm = ({ setPosts, setShowPost }) => {
       }
 
     return (
-      <div className='w-full min-h-[40%] max-h-[70%] flex-grow text-white border-b-[1px] border-b-[#464b5f] flex justify-center items-center'>
+      <div className='w-full h-fit text-white border-b-[1px] border-b-[#464b5f] flex justify-center items-center'>
         {isLoading ? <Spinner size={10}/> : 
-        <form onSubmit={handleSubmit(onSubmit)} className='w-full h-full p-4 flex flex-col justify-evenly' >
+        <form onSubmit={handleSubmit(onSubmit)} className='w-full h-fit p-4 flex flex-col justify-evenly' >
           
           {formError && <div className='py-px text-sm text-red-500'>{formError}</div>}
           {success && <div className='py-px text-sm text-green-500'>{success}</div>}

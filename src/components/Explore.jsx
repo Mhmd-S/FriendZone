@@ -45,7 +45,7 @@ const Explore = () => {
         return () => {
           observer.disconnect();
         };
-      }, [posts]);
+      }, [stopFetching, page]);
 
       const fetchPosts = async() => {
         

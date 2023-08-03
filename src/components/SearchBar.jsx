@@ -68,7 +68,7 @@ const SearchBar = ({ chatMode, handleSetRecipient }) => {
   };
 
   return (
-    <div className='w-full h-[10%] relative flex flex-col items-center justify-center mb-2 md:border-b-0'>
+    <div className='w-full relative flex flex-col items-center justify-center mb-2 md:border-b-0'>
       <div className='w-full h-[85%] pl-2 text-[#9298a5] bg-[#282c37] outline-0 flex items-center rounded-md'>
         <input className='w-[90%] h-[85%] pl-2 text-[#9298a5] bg-[#282c37] outline-0 overflow-x-hidden' type="text" placeholder="Search" onChange={(e) => setSearchInput(e.target.value)} value={searchInput} />
         <svg onClick={()=>setSearchInput('')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 cursor-pointer pr-2">

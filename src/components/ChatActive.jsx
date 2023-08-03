@@ -85,7 +85,7 @@ const ChatActive = ({ chatId, recipient, handleSetRecipient, setChatId }) => {
     return () => {
         observer.disconnect();
     };
-  }, []);
+  }, [stopFetching, page]);
 
   const fetchChat = async() => {
     if (stopFetching || !recipient || !chatId) {
@@ -201,7 +201,7 @@ const ChatActive = ({ chatId, recipient, handleSetRecipient, setChatId }) => {
     <>
       {chatId || recipient ? 
       
-      <div className='w-full h-full grid grid-rows-[10%_80%_10%] grid-cols-1 md:grid-rows-[13%_75%_12%]'>
+      <div className='w-full h-full grid grid-rows-[10%_80%_10%] grid-cols-1'>
 
         <div className='w-full  bg-[#60698459] flex items-center'>
 
@@ -222,7 +222,7 @@ const ChatActive = ({ chatId, recipient, handleSetRecipient, setChatId }) => {
         {isLoading ? 
         <div className='w-full h-full flex justify-center items-center'><Spinner size={12} /></div> 
         :
-        <ul className=' bg-[#282c37] p-2 text-sm w-full flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+        <ul className=' bg-[#282c37] p-2 text-sm w-full h-full flex flex-col items-center overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
             <li ref={containerRef}></li>
             {error ? error : populateMessages()}
             <li ref={bottomRef}></li>

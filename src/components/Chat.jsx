@@ -53,9 +53,9 @@ const Chat = () => {
   }
 
   return (
-    <div className={((chatId || recipient) ? 'grid md:grid-rows-[10%_90%] grid-cols-1' : 'grid grid-rows-[10%_90%] grid-cols-1') +' h-full w-full bg-[#282c37] rounded-lg'}>
+    <div className={(recipient ? 'md:grid md:grid-rows-[10%_90%] md:grid-flow-cols-1 flex flex-col' :  'grid grid-rows-[10%_90%] grid-cols-1') + ' h-full w-full bg-[#282c37] rounded-lg'}>
       
-      <h3 className={((chatId || recipient) ? 'hidden md:flex ' : 'flex ') + 'w-full sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'}>
+      <h3 className={' flex w-full sticky border-b-2 border-b-[#464b5f] px-4 py-2 items-center bg-[#282c37] rounded-t-lg'}>
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='#787ad9' className='w-8 h-8 pr-2'>
             <path
                 fillRule='evenodd'
@@ -68,14 +68,14 @@ const Chat = () => {
       
       { 
         user ?
-          <div className=' text-white flex flex-col md:grid md:grid-cols-[40%_60%] md:grid-rows-1'>
+          <div className=' text-white h-full w-full flex flex-col md:grid md:grid-cols-[40%_60%] md:grid-rows-1'>
               <Contacts 
                 handleSetRecipient={handleSetRecipient} 
                 setChatId={setChatId} 
                 chatId={chatId}
                 recipient={recipient
                 }/>
-              {(recipient || chatId) &&
+              {(recipient) &&
               <ChatActive
                 chatId={chatId}
                 recipient={recipient}
@@ -88,13 +88,13 @@ const Chat = () => {
           <div className='flex justify-center items-center w-full h-full'>
               <span className='text-2xl text-[#ffffff3f]'>Please login to chat</span>
           </div>
-          }
-      
-      { error &&
+        }
+              { error &&
       <div className='flex justify-center items-center p-4 bg-red-700 absolute top-[15%] left-[15%]'>
         <span className='text-2xl text-red-600'>{error}</span>
       </div>
       }
+
     </div>
   );
 };

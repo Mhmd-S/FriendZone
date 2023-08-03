@@ -130,20 +130,20 @@ const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
 
     const populateChats = () => {
          const chatsEle = chats.map((chat) => {
-            console.log(chat)
+
                 const contactInfo = chat.participants[0]._id === user._id ? chat.participants[1] : chat.participants[0];
                 
 
                 return (
                     <div
                         key={chat._id}
-                        className='w-full h-[20%] grid grid-cols-[17.5%_65%_17.5%] items-center justify-between border-b-2 border-b-[#464b5f] cursor-pointer hover:bg-[#464b5f] hover:bg-opacity-10'
+                        className='w-full h-[15%] grid grid-cols-[17.5%_65%_17.5%] grid-rows-1 items-center justify-between border-b-2 border-b-[#464b5f] cursor-pointer hover:bg-[#464b5f] hover:bg-opacity-10'
                         onClick={() => {
                             handleSetRecipient(contactInfo);
                             setChatId(chat._id);
                         }}
                     >
-                        <div className='w-full h-full flex justify-center items-center'>
+                        <div className='h-full flex justify-center items-start pt-4'>
                         {contactInfo.profilePicture ? (
                             <img
                                 src={contactInfo.profilePicture}
@@ -154,8 +154,8 @@ const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
                             <DefaultProfilePicture size={10}/>
                         )}
                         </div>
-                        <div className='h-full w-full  grid grid-rows-[40%_60%] pt-2 px-1'>
-                            <div className='w-full overflow-hidden truncate'>{contactInfo.username}</div>
+                        <div className='h-full  grid grid-rows-[40%_60%] pt-2 px-1'>
+                            <div className='overflow-hidden truncate'>{contactInfo.username}</div>
                             <div className='text-[#71768b] w-full overflow-hidden md:text-sm'>
                                 {chat.lastMessage.content}
                             </div>
@@ -189,7 +189,7 @@ const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
             });
         } else if (Math.abs(now - dateObj) < 7 * 24 * 60 * 60 * 1000) {
             // Check if the date is within the last 7 days (604800000 milliseconds)
-            dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
+            dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
             timeStr = '';
         } else {
             dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
@@ -201,11 +201,11 @@ const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
     
 
     return (
-        <div className={((chatId || recipient) ? 'hidden ' : 'flex flex-col ') + 'w-full h-full md:flex md:flex-col md:border-r-2 md:border-[#464b5f] pt-2'}>
-                <SearchBar chatMode={true} handleSetRecipient={handleSetRecipient} />
-            <div className='w-full h-[80%] bg-[#282c37] flex flex-col items-center overflow-y-scroll border-t-2 border-t-[#464b5f] md:border-t-2 md:border-[#464b5f] scrollbar:bg-blue-500 scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+        <div className={(recipient ? 'md:grid md:grid-rows-[10%_90%] md:grid-cols-1 hidden ' : 'grid grid-rows-[10%_90%] grid-cols-1 ') + 'w-full h-full md:border-r-2 md:border-[#464b5f] pt-2'}>
+            <SearchBar chatMode={true} handleSetRecipient={handleSetRecipient} />
+            <div className='w-full bg-[#282c37] flex flex-col items-center overflow-y-scroll overflow-x-hidden border-t-2 border-t-[#464b5f] md:border-t-2 md:border-[#464b5f] scrollbar:bg-blue-500 scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
                 {chats.length <= 0 ? (
-                    <div className='p-2 text-center h-full flex flex-col justify-center items-center text-[#ffffff3f]'>No chats found. Serach foar a user to start messaging</div>
+                    <div className='p-2 text-center h-full w-full flex flex-col justify-center items-center text-[#ffffff3f]'>No chats found. Serach foar a user to start messaging</div>
                 ) : (
                     <>
                         {error ? error : populateChats()}
