@@ -21,49 +21,90 @@ const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
         fetchChats();
     })
 
-    useEffect(()=>{
-        socket.on('receive-message', (data) => {
+    useEffect(() => {
 
+        socket.on('sent-message', (data) => {
             const { chatId, sender, recipient, message, timestamp } = data;
-
-            let chatsTemp = [...chats];
-            let chatFound;
-            let ind; 
-
-            chatFound = chats.find((chat, index)=>{
-                if (chat._id === chatId) {
-                    ind = index;
-                    return true;
-                }
-            })
-
-            if (chatFound) {
-                chatFound.lastMessage = message;
-                chatFound.updatedAt = timestamp;
+            console.log('sent message recived');
+            
+            setChats(prevChats => {
+                const chatIndex = prevChats.findIndex(chat => chat._id === chatId);
                 
-                chatsTemp.splice(ind, 1);
-                chatsTemp.unshift(chatFound);
+                if (chatIndex !== -1) {
+                // Chat exists, update the last message
+                const updatedChat = {
+                    ...prevChats[chatIndex],
+                    lastMessage: {
+                    content: message,
+                    updatedAt: timestamp,
+                    }
+                };
                 
-                setChats(chatsTemp);
-
-            } else {
+                // Move the updated chat to the beginning of the array
+                prevChats.splice(chatIndex, 1);
+                prevChats.unshift(updatedChat);
+                
+                return [...prevChats];
+                } else {
+                // Chat doesn't exist, create a new chat
                 const newChat = {
                     _id: chatId,
                     participants: [sender, recipient],
                     lastMessage: {
-                        content: message,
-                        updatedAt: timestamp,
+                    content: message,
+                    updatedAt: timestamp,
                     },
                 };
-               
-                setChats([newChat, ...chats]);
-            }
+                
+                return [newChat, ...prevChats];
+                }
+            });
         })
 
+        socket.on('receive-message', (data) => {
+          const { chatId, sender, recipient, message, timestamp } = data;
+          console.log(data);
+          
+          setChats(prevChats => {
+            const chatIndex = prevChats.findIndex(chat => chat._id === chatId);
+            
+            if (chatIndex !== -1) {
+              // Chat exists, update the last message
+              const updatedChat = {
+                ...prevChats[chatIndex],
+                lastMessage: {
+                  content: message,
+                  updatedAt: timestamp,
+                }
+              };
+              
+              // Move the updated chat to the beginning of the array
+              prevChats.splice(chatIndex, 1);
+              prevChats.unshift(updatedChat);
+              
+              return [...prevChats];
+            } else {
+              // Chat doesn't exist, create a new chat
+              const newChat = {
+                _id: chatId,
+                participants: [sender, recipient],
+                lastMessage: {
+                  content: message,
+                  updatedAt: timestamp,
+                },
+              };
+              
+              return [newChat, ...prevChats];
+            }
+          });
+        });
+      
         return () => {
-            socket.off('message');
+          socket.off('receive-message');
+          socket.off('sent-message')
         }
-    }, [])
+      }, []);
+      
 
 
     useEffect(() => {
@@ -112,12 +153,8 @@ const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
 
         if (res.status === 'success') {
             setError(null);
-            if (res.data.length === 0 && page === 1) {
-                setIsLoading(false);
-                return;
-            }
-    
-            if (res.data.length === 0 && page > 1) {
+
+            if (res.data.length === 0) {
                 setIsLoading(false);
                 setStopFetching(true);
                 return;

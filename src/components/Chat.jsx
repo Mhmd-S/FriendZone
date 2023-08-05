@@ -15,7 +15,6 @@ const Chat = () => {
     if (!user) {
       return;
     }
-    socket.connect();
 
     const onDisconnect = () => {
       // Disconnect from socket
@@ -68,7 +67,7 @@ const Chat = () => {
       
       { 
         user ?
-          <div className=' text-white h-full w-full flex flex-col md:grid md:grid-cols-[40%_60%] md:grid-rows-1'>
+          <div className=' text-white h-full w-full overflow-y-hidden flex flex-col md:grid md:grid-cols-[40%_60%] md:grid-rows-1'>
               <Contacts 
                 handleSetRecipient={handleSetRecipient} 
                 setChatId={setChatId} 

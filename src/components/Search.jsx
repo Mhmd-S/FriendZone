@@ -142,20 +142,20 @@ const Search = () => {
           </li>
         </ul>
 
-        <div className='w-full h-[70%] flex flex-col overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
+        <div className='w-full h-[70%] flex flex-col '>
               {(searchResult.length <= 0 && searchInput.trim().length <= 0) && 
               <div className='w-full h-full flex justify-center items-center text-[#ffffff3f] text-2xl'>
                 <span className='text-center'>{category === 0 ? "Insert the name of a user to search" : "Search for posts with a certain keyword"}</span>
               </div>}
               {searchResult.length > 0 && 
-              <>
+              <div className='w-full h-full grid grid-flow-row grid-cols-1 auto-rows-min overflow-y-scroll scrollbar:bg-blue-500 rounded-xl scrollbar scrollbar-thumb-blue-500 scrollbar-track-gray-200'>
                 {searchResult}
                 {isLoading ? 
                   <Spinner size={12} /> 
                 :
                   <div ref={containerRef} className='border-[1px] border-transparent'></div>
                 }
-              </>
+              </div>
               }
         </div>
       </>  

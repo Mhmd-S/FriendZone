@@ -14,13 +14,15 @@ export default function Signup() {
 
     const {signUp, 
           isLoading, 
-          error, 
+          setErrorSignUp,
           user,} = useAuth();
 
     useEffect(()=>{
         // If the user is already logged in, redirect them to the home page.
+        
         if(!isLoading && user) {
             navigate('/home');
+            return;
         }
     },[isLoading, user])
 
@@ -33,7 +35,7 @@ export default function Signup() {
       
       await signUp(signUpCreds);
 
-      if (!error) {
+      if (!setErrorSignUp) {
         navigate('/login');
       }
     };
@@ -53,11 +55,11 @@ export default function Signup() {
         <input
           type="email"
           placeholder='Email'
-          className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.email || error?.email ? 'border-red-500 focus:border-red-500' : '')}
+          className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.email || setErrorSignUp?.email ? 'border-red-500 focus:border-red-500' : '')}
           {...register('email', { required: 'Email must be a valid email address', pattern: { value: /^\S+@\S+$/i, message: 'Email must be a valid email address'}, })}
         />
         {errors?.email && <div className='py-px text-sm text-red-500 text-center'>{errors.email.message}</div>} {/* Client Validation */}
-        {error?.email && <div className='py-px text-sm text-red-500 text-center'>{error.email}</div>} {/* Server Validation */}
+        {setErrorSignUp?.email && <div className='py-px text-sm text-red-500 text-center'>{setErrorSignUp.email}</div>} {/* Server Validation */}
 
         <label htmlFor="username" className='hidden'>Username</label>
         <input
@@ -70,10 +72,10 @@ export default function Signup() {
               message: 'Username must be 4-15 characters long and can only contain letters, numbers, and underscores',
             },
           })}
-          className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[#787ad9] outline-none " + (errors?.username || error?.username ? 'border-red-500 focus:border-red-500' : '')}
+          className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[#787ad9] outline-none " + (errors?.username || setErrorSignUp?.username ? 'border-red-500 focus:border-red-500' : '')}
         />
        {errors?.username && <div className='py-px text-sm text-red-500 text-center'>{errors.username.message}</div>}
-        {error?.username && <div className='py-px text-sm text-red-500 text-center'>{error.username}</div>}
+        {setErrorSignUp?.username && <div className='py-px text-sm text-red-500 text-center'>{setErrorSignUp.username}</div>}
 
         <label htmlFor="password" className='hidden'>Password</label>
         <input
@@ -86,10 +88,10 @@ export default function Signup() {
               message: 'Password must be 8-15 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character',
             },
           })}
-          className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.password || error?.password ? 'border-red-500 focus:border-red-500' : '')}
+          className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.password || setErrorSignUp?.password ? 'border-red-500 focus:border-red-500' : '')}
         />
         {errors?.password && <div className='py-px text-sm text-red-500 text-center'>{errors.password.message}</div>}
-        {error?.password && <div className='py-px text-sm text-red-500 text-center'>{error.password}</div>}
+        {setErrorSignUp?.password && <div className='py-px text-sm text-red-500 text-center'>{setErrorSignUp.password}</div>}
 
         <label htmlFor="confirmPassword" className='hidden'>Confirm Password</label>
         <input
@@ -100,10 +102,10 @@ export default function Signup() {
             validate: (value) =>
               value !== watchPassword.current || 'Passwords do not match',
           })}
-          className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.confirmPassword || error?.confirmPassword ? 'border-red-500 focus:border-red-500' : '')}
+          className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.confirmPassword || setErrorSignUp?.confirmPassword ? 'border-red-500 focus:border-red-500' : '')}
         />
         {errors?.confirmPassword && <div className='py-px text-sm text-red-500 text-center'>{errors.confirmPassword.message}</div>}
-        {error?.confirmPassword && <div className='py-px text-sm text-red-500 text-center'>{error.confirmPassword}</div>}
+        {setErrorSignUp?.confirmPassword && <div className='py-px text-sm text-red-500 text-center'>{setErrorSignUp.confirmPassword}</div>}
 
          <label htmlFor="dob" className='hidden'>Date of Birth</label>
           <input
@@ -119,12 +121,12 @@ export default function Signup() {
                 message: 'Date of Birth must be before 2023-01-01',
               },
             })}
-            className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.dob || error?.dob ? 'border-red-500 focus:border-red-500' : '')}
+            className={"w-3/5 md:w-1/4 py-2 px-4 bg-[#14161b] border-[#464b5f] border-[1px] rounded-md focus:border-[1px] focus:border-[#787ad9] outline-none " + (errors?.dob || setErrorSignUp?.dob ? 'border-red-500 focus:border-red-500' : '')}
           />
           {errors?.dob && <div className='py-px text-sm text-red-500 text-center'>{errors.dob.message}</div>}
-          {error?.dob && <div className='py-px text-sm text-red-500 text-center'>{error.dob}</div>}
+          {setErrorSignUp?.dob && <div className='py-px text-sm text-red-500 text-center'>{setErrorSignUp.dob}</div>}
 
-          <button type="submit" className="w-3/5 md:w-1/4 py-2 bg-[#595aff] rounded-lg mt-2 self-center">
+          <button type="submit" className="w-1/3 md:w-1/4 py-2 bg-[#595aff] rounded-lg mt-2 self-center">
             Sign Up
           </button>
           <Link to={'/login'} className='text-md text-slate-500 underline'>

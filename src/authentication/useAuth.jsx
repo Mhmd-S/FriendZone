@@ -6,10 +6,9 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => { // I also included general error handling here hehehe
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const [errorLogIn, setErrorLogIn] = useState(null);
+  const [errorSignUp, setErrorSignUp] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [ generalError, setGeneralError ] = useState(null);
-  const [ generalSuccess, setGeneralSuccess ] = useState(null);
 
   // Check if user already has a session, if so, set the user state and finaly set the initail loading to false.
   useEffect(()=>{
@@ -24,13 +23,13 @@ export const AuthProvider = ({ children }) => { // I also included general error
     userAPI.login(loginCreds)
       .then((res)=> {
         if (res.status !== 'success') {
-          setError(res.data);
+          setErrorLogIn(res.data);
           setIsLoading(false);
           return;
         }
         setUser(res.data);
       })
-      .catch(err => setError(err))
+      .catch(err => setErrorLogIn(err))
       .finally(()=> setIsLoading(false));
   }
 
@@ -41,12 +40,10 @@ export const AuthProvider = ({ children }) => { // I also included general error
     userAPI.signUp(signUpCreds)
       .then((res)=> {
         if (res.status == 'fail') {
-          setError(res.data);
-        } else {
-          handleGeneralSuccess('Account created successfully!')
+          setErrorSignUp(res.data);
         }
       })
-      .catch(err => setError(err.data))
+      .catch(err => setErrorSignUp(err.data))
       .finally(()=> setIsLoading(false));  
   };
 
@@ -55,33 +52,18 @@ export const AuthProvider = ({ children }) => { // I also included general error
     userAPI.logout().then(()=>setUser(null));
   };
 
-  
-  const handleGeneralError = (errorMsg) => {
-    setGeneralError(errorMsg);
-    setTimeout(()=>setGeneralError(null), 4000);
-  }
-
-  const handleGeneralSuccess = (successMsg) => {
-    setGeneralSuccess(successMsg);
-    setTimeout(()=>setGeneralSuccess(null), 4000);
-  }
-
-
 
   // We are using useMemo here to avoid re-rendering the context provider when the user state changes.
   // We are going only to re-render the context provider when the user, loading or error state changes.
   const memoValue = useMemo(()=>({
     user,
     isLoading,
-    error,
-    generalError,
-    generalSuccess,
-    handleGeneralError,
-    handleGeneralSuccess,
+    errorLogIn,
+    errorSignUp,
     login,
     signUp,
     logout
-  }),[user, isLoading, error]);
+  }),[user, isLoading, errorLogIn, errorSignUp]);
 
   return (
     <AuthContext.Provider value={memoValue}>
