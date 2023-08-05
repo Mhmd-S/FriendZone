@@ -1,5 +1,3 @@
-import React from 'react'
-
 const DefaultProfilePicture = ({ size }) => {
   return (
     <div className={`bg-[#595aff] rounded-full w-${size ? size : 12} h-${size ? size : 12}`}>

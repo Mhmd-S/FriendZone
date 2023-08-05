@@ -180,14 +180,14 @@ const ChatActive = ({ chatId, recipient, handleSetRecipient, setChatId }) => {
       messages.map((message) => {
       if (message.senderId === user._id) {
         return (
-          <div key={message._id} className='bg-[#99acc6] max-w-[90%] my-1 px-3 py-1 self-end rounded-3xl'>
+          <div key={message._id} className='bg-[#99acc6] max-w-[90%] my-1 px-4 py-1 self-end rounded-3xl'>
             <div className='max-w-full break-words'>{message.content}</div>
             <div className='text-[0.7rem]'>{convertDate(message.createdAt)}</div>
           </div>
         );
       } else {
         return (
-          <div key={message._id} className='bg-[#787ad9] flex flex-col max-w-[90%]  my-1 px-3 py-1 self-start rounded-3xl'>
+          <div key={message._id} className='bg-[#787ad9] flex flex-col max-w-[90%]  my-1 px-4 py-1 self-start rounded-3xl'>
             <div className='max-w-full break-words'>{message.content}</div>
             <div>{convertDate(message.createdAt)}</div>
           </div>

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import * as userAPI from '../api/userAPI';
 import * as postAPI from '../api/postAPI';
 import MiniUser from './MiniUser';

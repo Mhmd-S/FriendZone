@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import {  useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { createPost } from '../api/postAPI';
 import useAuth from '../authentication/useAuth';
 import Spinner from './Spinner';

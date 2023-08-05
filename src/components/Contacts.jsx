@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import  { useEffect, useState, useRef } from 'react';
 import * as chatAPI from '../api/chatAPI';
 import useAuth from '../authentication/useAuth';
 import DefaultProfilePicture from './DefaultProfilePicture';
@@ -25,7 +25,6 @@ const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
 
         socket.on('sent-message', (data) => {
             const { chatId, sender, recipient, message, timestamp } = data;
-            console.log('sent message recived');
             
             setChats(prevChats => {
                 const chatIndex = prevChats.findIndex(chat => chat._id === chatId);
@@ -63,7 +62,6 @@ const Contacts = ({ setChatId, handleSetRecipient, chatId, recipient }) => {
 
         socket.on('receive-message', (data) => {
           const { chatId, sender, recipient, message, timestamp } = data;
-          console.log(data);
           
           setChats(prevChats => {
             const chatIndex = prevChats.findIndex(chat => chat._id === chatId);

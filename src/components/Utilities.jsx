@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+
 import useAuth from '../authentication/useAuth';
 import { Link } from 'react-router-dom';
-import * as userAPI from '../api/userAPI';
 import DefaultProfilePicture from './DefaultProfilePicture';
 import MiniForm from './MiniForm';
 import Notifications from './Notifications';
 
-const Utilities = ({ displayMenu, setDisplayMenu }) => {
+const Utilities = ({ setDisplayMenu }) => {
 
     const { user, logout } = useAuth();
     

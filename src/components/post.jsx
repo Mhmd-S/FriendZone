@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import PostSingle  from './PostSingle';
+import { useEffect, useState } from 'react'
 import useAuth from '../authentication/useAuth';
 import * as postAPI from '../api/postAPI';
 import { Link } from 'react-router-dom';

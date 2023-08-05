@@ -16,11 +16,6 @@ const Chat = () => {
       return;
     }
 
-    const onDisconnect = () => {
-      // Disconnect from socket
-      console.log('Disconnected');
-    };
-
     const onError = () => {
       // Display error message
       setError("Couldn't perform the action");
@@ -34,11 +29,9 @@ const Chat = () => {
     };
 
     socket.on('error', onError);
-    socket.on('disconnect', onDisconnect);
     socket.on('chatId', onChatId);
 
     return () => {
-      socket.off('disconnect', onDisconnect);
       socket.off('error', onError);
     };
   }, []);

@@ -1,8 +1,7 @@
 import './styles/globals.css';
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider, Route, useParams } from "react-router-dom";
-import useAuth, { AuthProvider } from './authentication/useAuth';
+import { createBrowserRouter, RouterProvider} from "react-router-dom";
+import { AuthProvider } from './authentication/useAuth';
 
 // Pages
 import Root from './pages/Root';
@@ -29,38 +28,51 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+        errorElement: <ErrorPage />,
       },
       {
         path: 'home',
         element: <Home />,
+        errorElement: <ErrorPage />,
       },
       {
         path: 'search',
-        element: <Search />
+        element: <Search />,
+        errorElement: <ErrorPage />,
       },
       {
         path: 'explore',
-        element: <Explore />
+        element: <Explore />,
+        errorElement: <ErrorPage />,
       },
       {
         path: 'chat',
-        element: <Chat />
+        element: <Chat />,
+        errorElement: <ErrorPage />,
       },
       {
-        path: 'profile/:username', // Add the URL parameter ":username"
+        path: 'profile/:username',
         element: <Profile />,
+        errorElement: <ErrorPage />,
         loader:  userLoader,
       }
     ]
   },
   {
     path: '/login',
-    element: <Login />
+    element: <Login />,
+    errorElement: <ErrorPage />,
   },
   {
     path: '/signup',
-    element: <Signup />
-  }
+    element: <Signup />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '*', 
+    element: <ErrorPage />,
+    errorElement: <ErrorPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

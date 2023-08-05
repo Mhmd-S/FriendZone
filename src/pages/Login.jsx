@@ -1,7 +1,7 @@
 import useAuth from '../authentication/useAuth';
 import Spinner from '../components/Spinner';
 import Logo from '../components/Logo';
-import { useState, useEffect } from 'react';
+import {  useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
