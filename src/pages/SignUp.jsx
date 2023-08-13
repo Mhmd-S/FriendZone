@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 
 
-export const Signup = () => {
+const Signup = () => {
     const navigate = useNavigate();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
