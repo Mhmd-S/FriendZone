@@ -6,8 +6,7 @@ import Logo from '../components/Logo';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 
-
-const Signup = () => {
+export default function Signup() {
     const navigate = useNavigate();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
@@ -139,5 +138,3 @@ const Signup = () => {
       </div>
   ) 
 } 
-
-export default Signup;
