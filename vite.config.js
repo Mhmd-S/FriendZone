@@ -6,4 +6,11 @@ import fs from 'fs';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build:{
+    rollupOptions: {
+      external: [
+       'react-dom/client',
+      ]
+    }
+  }
 })
