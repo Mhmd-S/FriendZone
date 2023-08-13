@@ -5,8 +5,8 @@ import { AuthProvider } from './authentication/useAuth';
 
 // Pages
 import Root from './pages/Root';
+import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Signup from './pages/Signup.jsx';
 import ErrorPage from './pages/error-page';
 
 // Components
