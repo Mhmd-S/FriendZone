@@ -61,10 +61,9 @@ export async function logout() {
 
 export async function checkIfAuthenticated() {
     try {
-        const response = await fetch('https://friend-zone-2rm0.onrender.com/user/auth', {
+        const response = await fetch('https://friend-zone-2rm0.onrender.com:443/user/auth', {
             method: 'GET',
             credentials: 'include',
-
         });
         
         const res = await response.json();

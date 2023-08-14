@@ -11,7 +11,6 @@ export const getChat = async(chatId, pageNum) => {
         });
 
         const result = await response.json();
-        console.log(12222)
         return result;
     } catch(err) {
         console.log('Could not proccess your request at the moment. Try again later!');
