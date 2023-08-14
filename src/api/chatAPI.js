@@ -2,7 +2,7 @@
 // Test these! and modify the postAPI.js
 export const getChat = async(chatId, pageNum) => {
     try {
-        const url = `https://friend-zone-2rm0.onrender.com:10000/chat/get-chat?` + new URLSearchParams({ chatId: chatId, page : pageNum }).toString()
+        const url = `https://friend-zone-2rm0.onrender.com/chat/get-chat?` + new URLSearchParams({ chatId: chatId, page : pageNum }).toString()
 
         const response = await fetch(url, {
             mode: 'cors',
@@ -21,7 +21,7 @@ export const getChat = async(chatId, pageNum) => {
 export const getChats = async(pageNum) => {
     try {
         const url = (
-            'https://friend-zone-2rm0.onrender.com:10000/chat/user-contacts?' +
+            'https://friend-zone-2rm0.onrender.com/chat/user-contacts?' +
             new URLSearchParams({ page : pageNum }).toString()
         )
 
@@ -40,7 +40,7 @@ export const getChats = async(pageNum) => {
 
 export const createChat = async(participants) => {
     try {
-        const url = `https://friend-zone-2rm0.onrender.com:10000/create-chat`;
+        const url = `https://friend-zone-2rm0.onrender.com/create-chat`;
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -62,7 +62,7 @@ export const createChat = async(participants) => {
 export const addToChat = async(chatId, message) => {
     try {
         const url = (
-            `https://friend-zone-2rm0.onrender.com:10000/chat/${chatId}` 
+            `https://friend-zone-2rm0.onrender.com/chat/${chatId}` 
         )
 
         const response = await fetch(url, {
