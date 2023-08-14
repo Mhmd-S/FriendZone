@@ -1,6 +1,6 @@
 import './styles/globals.css';
-import ReactDOM from '../node_modules/react-dom/client';
-import { createBrowserRouter, RouterProvider} from "react-router-dom";
+import ReactDO from 'react-dom';
+import { createBrowserRouter, RouterProvider} from 'react-router-dom';
 import { AuthProvider } from './authentication/useAuth';
 
 // Pages
