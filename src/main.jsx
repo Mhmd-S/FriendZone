@@ -1,5 +1,5 @@
 import './styles/globals.css';
-import ReactDO from 'react-dom';
+import ReactDOM from '../node_modules/react-dom/index.js';
 import { createBrowserRouter, RouterProvider} from 'react-router-dom';
 import { AuthProvider } from './authentication/useAuth';
 
