@@ -2,7 +2,7 @@
 export const getPosts = async(pageNum, explore) => {
     try {
         const url = (
-            'http://127.0.0.1:3000/post/posts?' +
+            'https://friend-zone-2rm0.onrender.com:10000/post/posts?' +
             new URLSearchParams({ page : pageNum }).toString()
           );
           
@@ -23,7 +23,7 @@ export const getPosts = async(pageNum, explore) => {
 export const searchPosts = async(searchQuery, page, limit) => {
     try {
         const url = (
-            'http://127.0.0.1:3000/post/search?' +
+            'https://friend-zone-2rm0.onrender.com:10000/post/search?' +
             new URLSearchParams({ keywords: searchQuery, page: page, limit : limit }).toString()
           );
           
@@ -42,7 +42,7 @@ export const searchPosts = async(searchQuery, page, limit) => {
 
 export const createPost = async(postData) => {
     try {
-        const response = await fetch('http://127.0.0.1:3000/post/create-post', {
+        const response = await fetch('https://friend-zone-2rm0.onrender.com:10000/post/create-post', {
             method: 'POST',
             body: postData,
             credentials: 'include',
@@ -57,7 +57,7 @@ export const createPost = async(postData) => {
 
 export const likePost = async(postId) => {
     try {
-        const response = await fetch(`http://127.0.0.1:3000/post/like/${postId}`, {
+        const response = await fetch(`https://friend-zone-2rm0.onrender.com:10000/post/like/${postId}`, {
             method: 'PUT',
             credentials: 'include',
             mode: 'cors',
@@ -71,7 +71,7 @@ export const likePost = async(postId) => {
 
 export const unlikePost = async(postId) => {
     try {
-        const response = await fetch(`http://127.0.0.1:3000/post/unlike/${postId}`, {
+        const response = await fetch(`https://friend-zone-2rm0.onrender.com:10000/post/unlike/${postId}`, {
             method: 'DELETE',
             credentials: 'include',
             mode: 'cors',
@@ -86,7 +86,7 @@ export const unlikePost = async(postId) => {
 
 export const deletePost = async(postId) => {
     try {
-        const response = await fetch(`http://127.0.0.1:3000/post/${postId}`, {
+        const response = await fetch(`https://friend-zone-2rm0.onrender.com:10000/post/${postId}`, {
             method: 'DELETE',
             credentials: 'include',
             mode: 'cors',

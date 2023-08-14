@@ -2,7 +2,7 @@
 // Test these! and modify the postAPI.js
 export const getComment = async(commentId) => {
     try {
-        const url = `http://127.0.0.1:3000/comment/${commentId}`;
+        const url = `https://friend-zone-2rm0.onrender.com:10000/comment/${commentId}`;
 
         const response = await fetch(url, {
             mode: 'cors',
@@ -20,7 +20,7 @@ export const getComment = async(commentId) => {
 export const getComments = async(pageNum, postId) => {
     try {
         const url = (
-            'http://127.0.0.1:3000/comment/post?' +
+            'https://friend-zone-2rm0.onrender.com:10000/comment/post?' +
             new URLSearchParams({ id: postId, page : pageNum }).toString()
         )
 
@@ -39,7 +39,7 @@ export const getComments = async(pageNum, postId) => {
 
 export const addComment = async(commentData, postId) => {
     try {
-        const url = `http://127.0.0.1:3000/comment/${postId}`;
+        const url = `https://friend-zone-2rm0.onrender.com:10000/comment/${postId}`;
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
@@ -58,7 +58,7 @@ export const addComment = async(commentData, postId) => {
 
 export const deleteComment = async(commentId) => {
     try {
-        const url = `http://127.0.0.1:3000/comment/${commentId}`;
+        const url = `https://friend-zone-2rm0.onrender.com:10000/comment/${commentId}`;
         const response = await fetch(url, {
             method: 'DELETE',
             credentials: 'include',
@@ -74,7 +74,7 @@ export const deleteComment = async(commentId) => {
 
 export const addLike = async(commentId) => {
     try{
-        const url = `http://127.0.0.1:3000/comment/likes/${commentId}`;
+        const url = `https://friend-zone-2rm0.onrender.com:10000/comment/likes/${commentId}`;
         const response = await fetch(url, {
             method: 'PUT',
             credentials: 'include',
@@ -90,7 +90,7 @@ export const addLike = async(commentId) => {
 
 export const deleteLike = async(commentId) => {
     try{
-        const url = `http://127.0.0.1:3000/comment/likes/${commentId}`;
+        const url = `https://friend-zone-2rm0.onrender.com:10000/comment/likes/${commentId}`;
         const response = await fetch(url, {
             method: 'DELETE',
             credentials: 'include',
