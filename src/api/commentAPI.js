@@ -2,7 +2,7 @@
 // Test these! and modify the postAPI.js
 export const getComment = async(commentId) => {
     try {
-        const url = `https://friend-zone-2rm0.onrender.com/comment/${commentId}`;
+        const url = `https://friendzone-backend-production.up.railway.app/comment/${commentId}`;
 
         const response = await fetch(url, {
             mode: 'cors',
@@ -20,7 +20,7 @@ export const getComment = async(commentId) => {
 export const getComments = async(pageNum, postId) => {
     try {
         const url = (
-            'https://friend-zone-2rm0.onrender.com/comment/post?' +
+            'https://friendzone-backend-production.up.railway.app/comment/post?' +
             new URLSearchParams({ id: postId, page : pageNum }).toString()
         )
 
@@ -39,7 +39,7 @@ export const getComments = async(pageNum, postId) => {
 
 export const addComment = async(commentData, postId) => {
     try {
-        const url = `https://friend-zone-2rm0.onrender.com/comment/${postId}`;
+        const url = `https://friendzone-backend-production.up.railway.app/comment/${postId}`;
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
@@ -58,7 +58,7 @@ export const addComment = async(commentData, postId) => {
 
 export const deleteComment = async(commentId) => {
     try {
-        const url = `https://friend-zone-2rm0.onrender.com/comment/${commentId}`;
+        const url = `https://friendzone-backend-production.up.railway.app/comment/${commentId}`;
         const response = await fetch(url, {
             method: 'DELETE',
             credentials: 'include',
@@ -74,7 +74,7 @@ export const deleteComment = async(commentId) => {
 
 export const addLike = async(commentId) => {
     try{
-        const url = `https://friend-zone-2rm0.onrender.com/comment/likes/${commentId}`;
+        const url = `https://friendzone-backend-production.up.railway.app/comment/likes/${commentId}`;
         const response = await fetch(url, {
             method: 'PUT',
             credentials: 'include',
@@ -90,7 +90,7 @@ export const addLike = async(commentId) => {
 
 export const deleteLike = async(commentId) => {
     try{
-        const url = `https://friend-zone-2rm0.onrender.com/comment/likes/${commentId}`;
+        const url = `https://friendzone-backend-production.up.railway.app/comment/likes/${commentId}`;
         const response = await fetch(url, {
             method: 'DELETE',
             credentials: 'include',

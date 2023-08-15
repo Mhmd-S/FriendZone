@@ -1,7 +1,7 @@
 
 export async function signUp (signUpCreds) {
     try {
-        const response = await fetch('https://friend-zone-2rm0.onrender.com/user/signup', {
+        const response = await fetch('https://friendzone-backend-production.up.railway.app/user/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -23,7 +23,7 @@ export async function login(loginCreds) {
         // Convert the loginCreds object to URL-encoded string
         const body = new URLSearchParams(loginCreds).toString();
 
-        const response = await fetch('https://friend-zone-2rm0.onrender.com/user/login', {
+        const response = await fetch('https://friendzone-backend-production.up.railway.app/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -42,10 +42,9 @@ export async function login(loginCreds) {
 
 export async function logout() {
     try {
-        const response = await fetch('https://friend-zone-2rm0.onrender.com/user/logout', {
+        const response = await fetch('https://friendzone-backend-production.up.railway.app/user/logout', {
             method: 'DELETE',
             credentials: 'include',
-            mode: 'cors',
         });
         
         const res = await response.json();
@@ -61,7 +60,7 @@ export async function logout() {
 
 export async function checkIfAuthenticated() {
     try {
-        const response = await fetch('https://friend-zone-2rm0.onrender.com:443/user/auth', {
+        const response = await fetch('https://friendzone-backend-production.up.railway.app/user/auth', {
             method: 'GET',
             credentials: 'include',
         });
@@ -81,7 +80,7 @@ export async function searchUsers (value, page, limit) {
     try{
         console.log(limit)
         const url = (
-            'https://friend-zone-2rm0.onrender.com/user/search?' +
+            'https://friendzone-backend-production.up.railway.app/user/search?' +
             new URLSearchParams({ keyword : value, page : page, limit: limit }).toString()
         );
 
@@ -100,7 +99,7 @@ export async function searchUsers (value, page, limit) {
 export async function getUser (username) {
     try{
         const url = (
-            'https://friend-zone-2rm0.onrender.com/user/get-user?' +
+            'https://friendzone-backend-production.up.railway.app/user/get-user?' +
             new URLSearchParams({ username: username }).toString()
         );
         const response = await fetch(url, {
@@ -119,7 +118,7 @@ export async function getUser (username) {
 export async function getUserFriends() { // This will get the logged in user's friends and requests
     try {
         const url = (
-            'https://friend-zone-2rm0.onrender.com/user/get-user-friends'
+            'https://friendzone-backend-production.up.railway.app/user/get-user-friends'
         );
         const response = await fetch(url,
             {
@@ -138,7 +137,7 @@ export async function getUserFriends() { // This will get the logged in user's f
 export async function sendFriendRequest(userId) {
     try {
         const url = (
-            'https://friend-zone-2rm0.onrender.com/user/friend-request?' +
+            'https://friendzone-backend-production.up.railway.app/user/friend-request?' +
             new URLSearchParams({ userId: userId }).toString()
         )
         
@@ -158,7 +157,7 @@ export async function sendFriendRequest(userId) {
 export async function acceptFriendRequest(userId) {
     try {
         const url = (
-            'https://friend-zone-2rm0.onrender.com/user/friend-accept?' +
+            'https://friendzone-backend-production.up.railway.app/user/friend-accept?' +
             new URLSearchParams({ userId: userId }).toString()
         )
             console.log(url, userId)
@@ -178,7 +177,7 @@ export async function acceptFriendRequest(userId) {
 export async function declineFriendRequest(userId) {
     try{
         const url = (
-            'https://friend-zone-2rm0.onrender.com/user/friend-reject?' +
+            'https://friendzone-backend-production.up.railway.app/user/friend-reject?' +
             new URLSearchParams({ userId: userId }).toString()
         )
 
@@ -198,7 +197,7 @@ export async function declineFriendRequest(userId) {
 export async function removeFriend(userId) {
     try{
         const url = (
-            'https://friend-zone-2rm0.onrender.com/user/friend-remove?' +
+            'https://friendzone-backend-production.up.railway.app/user/friend-remove?' +
             new URLSearchParams({ userId: userId }).toString()
         )
 
@@ -218,7 +217,7 @@ export async function removeFriend(userId) {
 export async function updateProfile (formData) {
     try{
         const url = (
-            'https://friend-zone-2rm0.onrender.com/user/update-info'
+            'https://friendzone-backend-production.up.railway.app/user/update-info'
         )
 
         const response = await fetch(url, {
